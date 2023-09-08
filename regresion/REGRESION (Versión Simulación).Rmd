@@ -1,6 +1,9 @@
 ---
-title: "REGRESIÓN LINEAL - PRIMERA CLASE"
-author: "Maestría en Investigación Operativa y Estadística"
+title: "PRIMERA CLASE: REGRESIÓN LINEAL"
+subtitle: "Maestría en Investigación Operativa y Estadística"
+author:
+  - "Julián Piedrahíta Monroy"
+  - "Héctor Hernán Montes"
 output: 
   rmdformats::readthedown:
     css: styles.css
@@ -53,7 +56,6 @@ library(gridExtra)
 Ingeniero industrial de la Universidad Tecnológica de Pereira.
 
 Estudios en Maestría en Ciencias con orientación en Matemáticas
-(pendiente trabajo de grado).
 
 [Desempeño laboral]{style="color: red;"}
 
@@ -65,9 +67,12 @@ pandas, numpy), modelos matemáticos y estadísticos para ofrecer
 soluciones robustas que agregan valor al negocio.
 
 Ha trabajado para clientes del sector industrial y financiero en México
-y Colombia, en áreas tales como: - Mantenimiento predictido - Diseño de
-campañas basadas en datos - Reconocimiento de imágenes y aplicaciones de
-datos no estructurados.
+y Colombia, en áreas tales como: 
+
+- Mantenimiento predictivo
+- Diseño de campañas comerciales basadas en datos
+- Reconocimiento de imágenes
+- Modelos de procesamiento de lenguaje natural (NER).
 
 ### Julián Piedrahíta Monroy
 
@@ -90,15 +95,14 @@ Universidad Tecnológica de Pereira
 
 ## Contenido del curso
 
-T1. Regresión Lineal, suposiciones y requisitos. T2. Estimación de los
-parámetros e interpretación de los valores. T3. Pruebas de hipótesis
-relacionadas con los parámetros. T4. Evaluación de modelos de acuerdo a
-las suposiciones de normalidad e independencia. T5. Transformaciones de
-las variables, y sus implicaciones en las pruebas de hipótesis. T6.
-Series de Tiempo. Estacionariedad y cómo obtener una serie estacionaria
-a partir de una que no lo es. Correlogramas. T7. Modelos de Box y Cox.
-Estimación de parámetros. T8. Criterios de evaluación de un modelo de
-series de tiempo. Transformaciones.
+- T1. Regresión Lineal, suposiciones y requisitos. 
+- T2. Estimación de los parámetros e interpretación de los valores.
+- T3. Pruebas de hipótesis relacionadas con los parámetros.
+- T4. Evaluación de modelos de acuerdo a las suposiciones de normalidad e independencia.
+- T5. Transformaciones de las variables, y sus implicaciones en las pruebas de hipótesis.
+- T6. Series de Tiempo. Estacionariedad y cómo obtener una serie estacionaria a partir de una que no lo es. Correlogramas.
+- T7. Modelos de Box y Cox. Estimación de parámetros.
+- T8. Criterios de evaluación de un modelo de series de tiempo. Transformaciones.
 
 ## Bibliografía.
 
@@ -118,13 +122,16 @@ Box, Gwilym M. Jenkins, Gregory C. Reinsel, Greta M. Ljung.\
 Los métodos de regresión son técnicas estadísticas utilizadas para
 modelar y comprender la relación entre variables. La motivación detrás
 de estos métodos radica en la necesidad de analizar y cuantificar cómo
-una o más variables independientes influyen en una variable dependiente.
+una o más variables predictoras influyen en una variable respuesta.
 Los métodos de regresión son ampliamente utilizados en diversos campos,
 incluyendo la investigación científica, la economía, la medicina, la
 ingeniería y más. A continuación, se detallan algunas de las principales
 motivaciones detrás de estos métodos:
 
-![Imagen 1](Imagen%20de%20regresión%20lineal%201.jpeg)
+<figure>
+<img src ="Imagen de regresión lineal 1.jpeg">
+<figcaption>Img 1: Ejemplo de fenómeno lineal</figcaption>
+</figure>
 
 
 [Modelado de Relaciones:]{style="color: red;"}
@@ -142,18 +149,17 @@ predecir valores futuros de la variable dependiente en función de los
 valores de las variables independientes. Esto es especialmente útil en
 campos como la meteorología, la finanzas y el marketing.
 
-![Imagen 2](Imagen%20de%20regresión%20lineal%202.jpeg)
+<figure>
+<img src ="Imagen de regresión lineal 2.jpeg">
+<figcaption>Img 2: Prediciendo la tendencia histórica del S&P</figcaption>
+</figure>
+
+
 [Control y Optimización:]{style="color: red;"} En algunos casos, se
 utilizan modelos de regresión para optimizar y controlar procesos. Por
 ejemplo, en la manufactura, los modelos de regresión pueden usarse para
 identificar las condiciones ideales que conducen a la máxima eficiencia
 o calidad del producto.
-
-[Identificación de Factores Importantes:]{style="color: red;"} Los
-métodos de regresión pueden ayudar a identificar qué variables
-independientes tienen un impacto significativo en la variable
-dependiente. Esto es valioso para comprender qué factores son más
-relevantes y merecen más atención en un análisis.
 
 [Validación de Teorías:]{style="color: red;"} En la investigación
 científica y social, los modelos de regresión pueden usarse para validar
@@ -165,7 +171,7 @@ también se utilizan para evaluar riesgos y tomar decisiones informadas.
 En finanzas, por ejemplo, se pueden utilizar para evaluar el riesgo de
 inversión y la exposición a diferentes factores del mercado.
 
-** Ejemplo**
+**Ejemplo**
 
 El modelo CAPM (Capital Asset Pricing Model) es un modelo de valoración de activos financieros desarrollado por William Sharpe que permite estimar su rentabilidad esperada en función del riesgo sistemático. Su desarrollo está basado en diversas formulaciones de Harry Markowitz sobre la diversificación y la teoría moderna de Portfolio 1. El modelo CAPM es utilizado para calcular la rentabilidad que un inversionista debe exigir al realizar una inversión en un activo financiero en función del riesgo que está asumiendo 2. El modelo CAPM establece una relación lineal entre el rendimiento esperado de un activo y su riesgo sistemático, medido por su beta 1. La fórmula del modelo CAPM es la siguiente:
 
@@ -179,14 +185,21 @@ $\beta_i$ es la medida de la sensibilidad del activo respecto a su benchmark.
 $E(r_m)$ es la tasa de rentabilidad esperada del mercado en que cotiza el activo.
 
 
-![Imagen 3](Imagen%20de%20regresión%20lineal%203.jpeg)
+<figure>
+<img src ="Imagen de regresión lineal 3.jpeg">
+<figcaption>Img 3: Modelo CAMP para valoración de activos financieros</figcaption>
+</figure>
 
 [Análisis de Causa y Efecto:]{style="color: red;"} Los modelos de
 regresión pueden ayudar a establecer relaciones causa-efecto entre
 variables. Esto es útil para comprender cómo los cambios en una variable
 influyen en otras variables y viceversa.
 
-![Imagen 4](Imagen%20de%20regresión%20lineal%204.png)
+
+<figure>
+<img src ="Imagen de regresión lineal 4.png">
+<figcaption>Img 4: Predicción de rendimientos de cultivos</figcaption>
+</figure>
 
 
 En resumen, la motivación detrás de los métodos de regresión radica en
@@ -196,31 +209,24 @@ decisiones informadas, realizar análisis profundos y obtener información
 valiosa a partir de los datos disponibles.
 
 
-
 # Ejercicio de introducción.
 
 ## Lectura de datos
 
-A continuación, cargaremos dos tablas de datos que contienen información sobre el precio del dolar, también conocida como tasa representativa del mercado, y otra con la información del precio del aguacate Hass tomada de fuente gubernal y página del SIPSA.
+A continuación, cargaremos dos tablas de datos que contienen información sobre el precio del dolar, también conocida como tasa representativa del mercado, y otra con la información del precio del aguacate Hass tomada de una fuente gubernamental y de la página del SIPSA.
 
-Los enlaces para acceder a mayor información relacionada son:
-
+Los enlaces para acceder a información relacionada son:
 
 https://www.agronet.gov.co/estadistica/Paginas/home.aspx?cod=11
 https://www.bde.es/webbe/es/estadisticas/temas/tipos-cambio.html
 
 
 ```{r}
-
 # Cargue y limpieza de datos.
 
-dolar <- read.csv2("DATASETS/Tasa_de_Cambio_Representativa_del__Mercado_-Historico.csv") %>% 
+dolar <- read.csv2("datasets/Tasa_de_Cambio_Representativa_del__Mercado_-Historico.csv") %>% 
             clean_names()
-
-
-hass <- read.xlsx("DATASETS/Hass_Precios_Historicos.xlsx") %>% clean_names()
-
-
+hass <- read.xlsx("datasets/Hass_Precios_Historicos.xlsx") %>% clean_names()
 ```
 
 ## Creación de funciones.
@@ -229,7 +235,6 @@ Se programa una función de flextable que mejorará la impresión de tablas de r
 Para usarla sólo bastará invocar la función ftable() al final de la sentencia (usando %>% tidyverse) o con el ftable() encapsular o encerrar la tabla que se quiere ajustar.
 
 ```{r}
-
 # Funciones
 
 ## Función para crear flextable
@@ -247,8 +252,6 @@ ftable <- function(x) {
     # width(j=1, width = 3) %>%
     align(i = NULL, j = c(2:ncol(x)), align = "right", part = "all")
 }
-
-
 ```
 
 Como ejemplo del uso de la función:
@@ -256,34 +259,26 @@ Como ejemplo del uso de la función:
 *Sin flextable*
 
 ```{r}
-
 dolar %>% 
   head(5) 
-  
-
 ```
 
 *Con flextable*
 
 ```{r}
-
 dolar %>% 
   head(5) %>% 
   ftable()
-  
-
 ```
-
 
 
 # DEPURACIÓN DE LOS DATOS
 
 ## Dolar
 
-Como todo proceso de análisis de datos, al menos en su mayoría, es necesario realizar una depuración y ajuste de los datos. Para este caso, fue necesario trabajar sobre la variable de la fecha y el valor.
+Como en todo proceso de análisis de datos, es necesario realizar una depuración y ajuste de los datos. Para este caso, fue necesario trabajar sobre la variable de la fecha y el valor.
 
 ```{r}
-
 # Vamos a sacar un valor promedio de cada variable por mes
 #Para el dolar vamos a tomar el campo vigenciadesde
 
@@ -292,38 +287,31 @@ dolar <- dolar %>%
     mutate(mes = month(fecha), anio = year(fecha)) %>% 
     mutate(valor = as.double(str_replace(valor,",",""))) %>% 
     group_by(anio,mes) %>%
-    summarise(promedio_dolar = mean(valor), .groups = "drop") 
-    
-
+    summarise(precio_dolar = mean(valor), .groups = "drop") 
 ```
 
 A continuación se muestra una fracción de los datos depurados.
 
 ```{r}
-
 dolar %>%
   datatable()
-
 ```
 
 ## Aguacate
 
-
 ```{r}
-
 hass %>% 
   head(5) %>% 
   ftable()
-
-
 ```
 
 
 ```{r}
 
 # 🖇️ Se genera el vector de meses para usarlo más abajo con la función match.
-meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
-
+meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo",
+           "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+           "Noviembre", "Diciembre")
 
 hass <- hass %>% 
       # Otra forma de sacar el anio.
@@ -335,9 +323,7 @@ hass <- hass %>%
       # 🖇 Se utiliza la función match con el vector meses.
       mutate(mes = match(mes,meses)) %>% 
       group_by(anio,mes) %>%
-      summarise(promedio_aguacate_kg = mean(precio_kg), .groups = "drop") 
-
-
+      summarise(precio_aguacate_kg = mean(precio_kg), .groups = "drop") 
 ```
 
 ```{r}
@@ -353,7 +339,9 @@ hass %>% datatable()
 hass_dolar <- dolar %>% 
   right_join(hass, by = c("mes","anio")) 
 
-
+hass_dolar %>% 
+  head(5) %>% 
+  ftable()
 ```
 
 # Regresión Lineal con los datos.
@@ -361,30 +349,63 @@ hass_dolar <- dolar %>%
 ## Gráfico de dispersión
 
 ```{r}
-
-
 hass_dolar %>% 
-  ggplot(aes(x= promedio_dolar, y= promedio_aguacate_kg )) +
+  ggplot(aes(x= precio_dolar, y= precio_aguacate_kg )) +
   geom_point()+ theme_light()
-
 ```
+
+Cómo se puede notar uno intuye que hay alguna relación entre ambas variables en la medida en que parece suceder que cuando el precio del dólar aumenta, también lo hace el precio de aguacate. La relación no es perfecta pues no vemos una curva suave que sea capaz de pasar por todos los puntos, más bien debemos reconocer que hay ciertas variaciones en el proceso. Estas variaciones pueden deberse a factores no contemplados por el modelo, después de todo no podemos esperar que el precio del aguacate dependa exclusivamente del precio del dólar. 
 
 ## Generando un modelo súper simplificado
 
-Modelo ingenuo.
+Ahora vamos a generar el modelo más sencillo que podamos imaginar para predecir el precio del aguacate, al cual llamaremos un modelo ingenuo. La razón del apelativo es que el modelo "ingenuamente" supondrá que es posible predecir el precio que tendrá el aguacate con el promedio histórico. 
+
+La siguiente gráfica muestra la linea horizontal que simboliza el promedio histórico del precio del aguacate. También debe notar que predecir basado en esta línea es despreciar cualquier aporte de la variable precio del dólar en la predicción, es decir, es un modelo que no explota la relación (sea esta débil o sea esta fuerte) entre el precio del aguacate y su variable explicativa precio del dólar. 
 
 ```{r}
-
 hass_dolar %>% 
-  ggplot(aes(x= promedio_dolar, y= promedio_aguacate_kg )) +
+  ggplot(aes(x= precio_dolar, y= precio_aguacate_kg )) +
   geom_point()+ 
-  geom_hline(yintercept = mean(hass_dolar$promedio_aguacate_kg))+
+  geom_hline(yintercept = mean(hass_dolar$precio_aguacate_kg), color = "red")+
+  geom_text(aes(x= 5700, y = mean(hass_dolar$precio_aguacate_kg),
+                label = paste("Precio promedio histórico: $",
+                              round(mean(hass_dolar$precio_aguacate_kg), 2))),
+    hjust = 1.2, vjust = -0.2, color = "red"
+  ) +
   theme_light()
-
-
 ```
 
-Varianza de la variable a predecir
+Observe que el modelo ingenuo no sería tan inadecuado en dos circunstancias:
+
+- Si los datos se encuentran muy cercanos al precio histórico de manera consistente sin importar en que valor del precio del dólar me posicione. Lo que vendría a indicar un escenario donde moverme a lo largo de diferentes valores del precio del dólar no genera ningún patrón de distanciamiento frente al valor histórico de referencia.
+
+- Si los datos del precio del aguacate se alejan de la línea histórica de referencia pero el precio del dólar tampoco puede seguirlos, es decir, si la relación entre precio del dólar y precio del aguacate se parece a una nube de puntos sin ningún patrón o tendencia evidente. En este caso cualquier cosa que supongamos de la relación entre precio de dólar y precio del aguacate será producto de nuestra imaginación :)
+
+En estos dos escenarios es mejor retener el modelo ingenuo a falta de una variable que de verdad explique lo que pasa con el precio del aguacate.
+
+Ahora bien, ninguno de los dos escenarios anteriores parece ser el nuestro, más bien acá se nota que el precio del dólar si está acompasado con el precio del aguacate. Sin embargo antes de entrar en la búsqueda de esas relaciones es importante notar dos cosas:
+
+- El modelo ingenuo es mi modelo de referencia, esto significa que si un modelo predictivo construido para predecir el precio del aguacate es mejor, lo tendrá que ser respecto a este modelo ingenuo.
+
+- Es posible medir el desajuste actual de mi modelo ingenuo tomando la distancia de cada punto a la recta horizontal de promedio histórico, esto es:
+
+Sea $e_i = y_i - \bar{y}$ las diferencia entre el dato del precio de aguacate $y_i$ y el promedio histórico $\bar{y}$. Como tengo muchas diferencias, será necesario definir una métrica resumen, por conveniencia elijamos la suma de los cuadrados de las diferencias, debido a que si sumamos las diferencias, éstas se me compensarán, pues diferencias negativas cancelarán las positivas, y no quiero esto. Más bien me interesa que ambas sumen a mi medida de desajuste. Llamemos a esta medida la suma de cuadrados del error:
+
+$$SCE_{\text{ingenuo}} = \sum^{n}_{i=1}e_i²=\sum^{n}_{i=1}(y_i - \bar{y})²$$
+En la definición de la cantidad quisimos usar el subíndice "ingenuo" para nombra al SCE, esto con el fin de hacer énfasis que tal métrica se asocia al modelo, si el modelo cambia a otro tipo de modelo el SCE cambiará también: será la distancia de cada $y_i$ a la curva definida por el otro modelo. Veremos esto más adelante. No obstante ya podemos sacar nuestras primeras conclusiones:
+
+1. Entre más grandes sean cada una de las distancias $e_i$ individuales, más grande será SCE.
+2. Todas las distancias contribuyen con igual importancia al SCE, excepto en lo que se refiere a su magnitud no hay porque pensar que un distanciamiento de $u$ unidades se más importante que otro de las mismas $u$ unidades. Esto puede ser obvio, pero no lo es cuando queremos castigar más las distancias que se dan en la zona central del gráfico que las que se dan en los extremos del gráfico, por ejemplo. 
+3. El SCE es sensible a la cantidad de datos, razón por la cual entre más datos (más grande sea n), más grande será SCE. Esto dificulta seriamente la posibilidad de comparar modelos que fueron calculados sobre una cantidad distinta de puntos. 
+
+De acuerdo con lo anterior modifiquemos un poco nuestra definición de desajuste, así:
+
+$$MSE_{\text{ingenuo}} =  \frac{1}{n}\sum^{n}_{i=1}(y_i - \bar{y})²$$
+
+Es decir, nuestra medida de desajuste será el promedio de la suma de las diferencias cuadradas de cada dato $y_i$ respecto a su media $\bar{y}$, dicho de otra manera la varianza de la variable $Y$ a predecir!!!!
+
+A continuación invitamos al estudiante a calcular la varianza de la variable a predecir,
+es decir, el desajuste del modelo ingenuo.
 
 ```{r}
 
@@ -396,20 +417,22 @@ Varianza de la variable a predecir
 
 ```
 
-```{r}
+Observe el siguiente gráfico donde además hemos pintado las distancias que hay entre cada dato $y_i$ observado y el promedio histórico $\bar{y}$:
 
+```{r}
 hass_dolar %>% 
-  ggplot(aes(x= promedio_dolar, y= promedio_aguacate_kg )) +
+  ggplot(aes(x= precio_dolar, y= precio_aguacate_kg )) +
   geom_point()+ 
-  geom_hline(yintercept = mean(hass_dolar$promedio_aguacate_kg))+
-  geom_segment(aes(xend=promedio_dolar, yend=mean(promedio_aguacate_kg)),
+  geom_hline(yintercept = mean(hass_dolar$precio_aguacate_kg))+
+  geom_segment(aes(xend=precio_dolar, yend=mean(precio_aguacate_kg)),
                col='red', lty='dashed')+
   theme_light()
-
-
 ```
 
 ## Modelo
+
+Este es el momento de comenzar a usar la información extra con la que contamos, esto es, el precio del dólar, la cual se convertirá en una variable predictora del precio del aguacate. En estadística no hay una única forma de hacer esto, pero lo usual es partir de especificaciones muy sencillas. 
+
 
 ```{r}
 
@@ -418,7 +441,7 @@ hass_dolar %>%
 #    singular.ok = TRUE, contrasts = NULL, offset, ...)
 
 
-mod1 <- hass_dolar %>% lm(promedio_aguacate_kg ~ promedio_dolar,.)
+mod1 <- hass_dolar %>% lm(precio_aguacate_kg ~ precio_dolar,.)
 
 summary(mod1)
 
@@ -439,13 +462,10 @@ summary(mod1)
 
 
 ```{r}
-
 hass_dolar %>% 
-  ggplot(aes(x= promedio_dolar, y= promedio_aguacate_kg )) +
+  ggplot(aes(x= precio_dolar, y= precio_aguacate_kg )) +
   geom_point()+ theme_light()+
   geom_smooth(method='lm', formula=y~x, se=FALSE, col='dodgerblue1')
-
-
 ```
 
 # Varianza de los residuales del modelo
@@ -455,25 +475,19 @@ hass_dolar %>%
 # Obteniendo los coeficientes.
 
 ```{r}
-
 mod1$coefficients
-  
-
 ```
 
 # Valores ajustados - Fitted values.
 
 ```{r}
-
 mod1$fitted.values %>% 
   head(20)
-
 ```
 
 # Residuales
 
 ```{r}
-
 mod1$residuals %>% 
   head(20)
 
@@ -524,9 +538,9 @@ hass_dolar <- hass_dolar %>%
 
 
 hass_dolar %>% 
-ggplot(aes(x = promedio_dolar, y = promedio_aguacate_kg)) +
+ggplot(aes(x = precio_dolar, y = precio_aguacate_kg)) +
   geom_smooth(method = "lm", se = FALSE, color="lightblue") +
-  geom_segment(aes(xend=promedio_dolar, yend=predicciones),
+  geom_segment(aes(xend=precio_dolar, yend=predicciones),
                col='red', lty='dashed') +
   geom_point() +
   geom_point(aes(y=predicciones), col='red') +

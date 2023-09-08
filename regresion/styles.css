@@ -1,0 +1,65 @@
+/* Set overall font and background */
+
+h1, h2, h3, h4, h5, h6, legend {
+    color: #ee6c4d;
+}
+
+#toc {
+color:orange;
+background:  #293241; 
+}
+
+#sidebar {
+color:orange;
+background: #293241; 
+}
+
+#sidebar h2 {
+    background-color: #ee6c4d;
+}
+
+#postamble.status {
+color:orange;
+background: #3d5a80; 
+}
+
+#toc #active{
+  background: #3d5a80;
+}
+
+p {
+  text-align: justify;
+}
+
+div {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.watermark {
+  opacity: 0.15;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  margin-left: 13%;
+  height: 50vh;
+  font-size: 500%;
+  color: #00407d;
+}
+
+figure {
+    display: block;
+    margin: 20px; /* adjust as needed */
+}
+figure img {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+}
+figure figcaption {
+    border: 1px dotted blue;
+    text-align: center;
+    font-weight: bold;
+}
+
+
