@@ -431,7 +431,81 @@ hass_dolar %>%
 
 ## Modelo
 
-Este es el momento de comenzar a usar la información extra con la que contamos, esto es, el precio del dólar, la cual se convertirá en una variable predictora del precio del aguacate. En estadística no hay una única forma de hacer esto, pero lo usual es partir de especificaciones muy sencillas. 
+Este es el momento de comenzar a usar la información extra con la que contamos, esto es, el precio del dólar, el cual se convertirá en una variable predictora del precio del aguacate. En estadística no hay una única forma de hacer esto, pero lo usual es partir de especificaciones muy sencillas. Veamos:
+
+Sea $Y$ el precio del aguacate y sea $X$ el precio del dólar. Investiguemos si este modelo sencillo nos funciona:
+
+$$y = \beta_{0} + \beta_{1} * x + e \text{ con } e \text{~}N(0, \sigma^2)$$
+Expliquemos qué implica esto haciendo ciertas anotaciones de gran relevancia práctica para entender cómo los estadísticos piensan al momento de plantear modelos:
+
+[Observación genial 1:]{style="color: red;"} 
+
+Para un x fijo, es decir un x dado, es posible calcular el valor de $y$ con el modelo anterior, donde tácitamente estamos diciendo que valor de $y$ dependerá de $x$ en forma exacta excepto por una perturbación aleatoria $e$ que representará la parte del valor de $y$ que no puede ser capturada por el término $\beta_{0} + \beta_{1} * x$. 
+
+¿Cuándo sucederá que el valor de $y$ pueda ser exactamente capturado por el término $\beta_{0} + \beta_{1} * x$? Cuando $y$ dependa en forma lineal exacta del valor de $x$. Esta es una condición demasiado fuerte que rara vez ocurre en la práctica, por eso agregamos la perturbación $e$ como una forma de modelar la **incertidumbre** en la determinación de $y$ dado un valor de $x$. Esto no soluciona todos los problemas pero ayuda a obtener un modelo relativamente más realista. 
+
+[Observación genial 2:]{style="color: red;"} 
+
+La perturbación $e$ puede recibir varios nombres en estadística, la encontrarás nombrada como: perturbación, choque, error, o residual. Lo importante no es el nombre que reciba, sino las condiciones que vamos a suponer sobre sus valores. 
+
+En particular no vamos a exigir que $e$ tenga valores predecibles, muy al contrario vamos a exigir que sea un valor aleatorio, precisamente porque está modelando incertidumbre. Pero esto no implica que no podamos poner ciertas condiciones sobre el **tipo de aleatoriedad deseada para** $e$. En este caso supondremos que $e$ se distribuye como una variable aleatoria normal con media $\mu=0$ y desviación estándar $\sigma$. 
+
+[Observación genial 3:]{style="color: red;"} 
+
+¿Por qué suponemos normalidad para $e$? Porque si $e$ es en efecto una especie de componente incierto en el valor de $y$, entonces muy seguramente será la suma de muchos efectos independientes que lo están provocando. En nuestro contexto estos efectos inciertos pueden ser: 
+
+- $F_1$: Cambios en la productividad de los cultivos.
+- $F_2$: Condiciones climatológicas.
+- $F_3$: Precios de los insumos agrícolas.
+- $F_4$: Capacidad de negociación de los productores.
+- $F_5$: Presencia o no de subsidios estatales.
+- $F_6$: Precios de productos complementarios o sustitutos.
+
+.
+
+.
+
+.
+
+- $F_k$: precio de la gasolina.
+
+Y un gran etcétera. 
+
+Es decir, existen innumerables factores, distintos al precio del dólar que impiden que el precio del aguacate pueda ser determinado de forma exacta sólo por observar el valor del dólar. En estadística se ha estudiado que cuando no estamos midiendo los demás factores que afectan el valor de una variable, y dejamos que estos contribuyan de forma desacoplada e independiente a dicho valor, el efecto general $e$ que resume el efecto global de todos los factores a la vez, suele comportarse bajo la distribución normal sencillamente porque hay un teorema en matemáticas, conocido como el Teorema del Límite Central que básicamente así lo garantiza, al postular que: ***la suma de*** $k$ ***efectos aleatorios independientes tiende a adoptar el comportamiento normal conforme la cantidad k de efectos crece***.
+
+Es importante destacar que el Teorema del Límite Central tiene algunas condiciones y suposiciones, como la independencia de las variables aleatorias y que la suma debe efectuarse sobre una cantidad $k$ de ellas suficientemente grande. Sin embargo, es uno de los conceptos fundamentales en estadística y es ampliamente utilizado en la teoría y la práctica de esta disciplina.
+
+[Observación para nada genial 4:]{style="color: red;"}
+
+Excepto por el componente aleatorio $e$, el modelo restringe la relación de $Y$ y $X$ al universo de relaciones lineales. Existirá una posible relación por cada par de valores $\beta_0$ y $\beta_1$ que decidamos elegir. Pero por más que nos esforcemos en modificarlos siempre conducirán a relaciones representadas por líneas rectas, de ahí que el modelo asuma el nombre de regresión lineal. 
+
+Si queremos capturar otras posibles dependencias de $Y$ respecto a $X$ podemos generalizar la relación usando $y = f(x) + e$ donde $f(x)$ puede ser una nueva especificación funcional con otra estructura deseada, por ejemplo un polinomio o cualquier otra función que querramos definir. Lo importante es que detrás de la definición de $f(x)$ haya alguna justificación producto de haber analizado los datos en búsqueda de relaciones que capturen bien la dependencia. 
+
+[Observación genial final:]{style="color: red;"}
+
+Son los datos observados para cada valor de $y$ y $x$ los que nos deben informar sobre el par de valores $\beta_0$ y $\beta_1$ que crean la relación lineal que mejor representa nuestra nube de puntos, pero de nada sirven los valores observados si no definimos una métrica que nos informe sobre la calidad del ajuste. ¿Cómo decidimos el par de parámetros si no tenemos un criterio para poder saber cuál es el mejor modelo? 
+
+Para salir de este embrollo reconozcamos que nunca en un problema real sujeto a incertidumbre una recta pasará exactamente por todos los puntos, razón por la cual aparecerán componentes de error $e_i$ por cada $y_i$ y $x_i$ observado. Pasó con el modelo ingenuo y pasará de nuevo acá. La idea es entonces reducir la magnitud de estos errores al mínimo posible y el par de valores $\beta_1$ y $\beta_2$ que así lo logren será nuestra elección óptima de cara al objetivo de minimización del error.
+
+Otro criterio de ajuste que se podría usar es el de maximizar la probabilidad de ocurrencia de los valores observados bajo el supuesto de que el modelo usa valores $\beta_0$ y $\beta_1$ previamente especificados. De esta manera si un par de valores hace menos probable haber obtenido nuestros datos observados deberán descartarse. 
+
+¿Pero cómo podemos medir la probabilidad de ocurrencia de nuestros datos observados una vez damos valores específicos para los betas? Esta es una cuestión que se tratará más adelante cuando discutamos los **métodos de estimación de parámetros**, nombre con el que se conoce al procedimiento estadístico encaminado a elegir los mejores betas para un conjunto de datos observados. 
+
+Por lo pronto vamos a ejemplificar un posible modelo ajustado usando valores $\beta_0=700$ y $\beta_1 = 1.2$. Hemos elegido estos valores por simple inspección visual así que no esperamos que sean óptimos en ningún sentido, veamos:
+
+```{r}
+
+# Calculamos las predicciones de y usando el modelo
+b0 = 700
+b1 = 1.2
+x= hass_dolar$precio_dolar
+y_pred = b0 + b1*x
+
+hass_dolar %>% 
+  ggplot(aes(x= precio_dolar, y= precio_aguacate_kg ))+
+  geom_point() +
+  geom_line( aes( x= x, y = y_pred), col = "red")
+```
 
 
 ```{r}
