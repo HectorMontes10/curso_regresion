@@ -1314,8 +1314,6 @@ datos_simulados <- data.frame(
 # Dibujamos un gráfico de dispersión
 
 ```{r}
-
-
 datos_simulados %>% 
   ggplot(aes(x = x, y = y_obs_1)) +
   geom_smooth(method = "lm", formula = y~x, se = FALSE, color="lightblue") +
@@ -1323,9 +1321,6 @@ datos_simulados %>%
   geom_point(aes(y=y_obs_2), col='red')+ 
   geom_smooth(method="lm", se= FALSE ,formula=y_obs_2~poly(x, 2),color = "blue")+
   ylab("Y")
-
-
-
 ```
 
 # DISCUTIENDO SOBRE LA LINEALIDAD DE LOS BETAS
