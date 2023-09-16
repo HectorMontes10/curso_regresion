@@ -35,7 +35,8 @@ MathJax.Hub.Config({
 knitr::opts_chunk$set(
   warning = FALSE,
   echo = TRUE,
-  message = FALSE
+  message = FALSE,
+  options(scipen=999)
 )
 
 # Librerías
@@ -53,6 +54,8 @@ library(gganimate)
 library(animation)
 library(gifski)
 library(magick)
+library(nortest)
+
 ```
 
 # INTRODUCCIÓN
@@ -753,7 +756,9 @@ Y como $\int_{-\infty}^{\infty}xf(x)dx$ es por definición $E(x)$ y además $E(e
 
 $$E(y) = \beta_0 + \beta_1*E(x)$$
 Dicho de otra manera, la recta del modelo debe pasar por el punto
-$(E(y), E(x))$ !!
+$(E(x), E(y))$ !!
+
+La recta debe pasar por el centroide de la nube de puntos.
 
 Ciertamente no conocemos el valor esperado ni de la variable predictora
 X ni de la variable respuesta Y, pero buenos estimados basados en
@@ -1148,8 +1153,10 @@ b0 <- mean(y) - b1*mean(x)
 print(b0)
 
 residuales <- y - (b0 + b1*x)
-sigma <- var(residuales)
-print(sigma)
+n <- length(x)
+
+sigma_2 <- sum(residuales^2)/(n-2)
+print(sigma_2)
 
 # Confirmamos usando la función lm, a continuación la documentación
 
@@ -1159,6 +1166,19 @@ print(sigma)
 
 mod1 <- hass_dolar %>% lm(precio_aguacate_kg ~ precio_dolar,.)
 print(mod1$coefficients)
+resumen <-  summary(mod1)
+resumen$sigma
+
+parametros <- data.frame(metodo = c("manual","lm"), 
+                         beta_0 = c(b0,mod1$coefficients[1]),
+                         beta_1 = c(b1,mod1$coefficients[2]),
+                         sigma_2 = c(sigma_2, (resumen$sigma)^2))
+
+
+
+parametros %>% 
+  ftable()
+
 #print(mod1$)
 # Generando el modelo con R Base sería así:
 # mod1 <- lm(promedio_aguacate_kg ~ promedio_dolar, hass_dolar)
@@ -1168,15 +1188,24 @@ Podemos notar entonces que ambos métodos son consistentes entre si, algo que no
 
 [¿Cuál es la representación funcional del modelo?{style="color: red;"}
 
-Hemos llegado al punto en que ya tenemos todos los elementos necesarios para definir formalmente el modelo estimado sobre nuestros datos. Podemos ahora concluir que el mejor modelo para describir la relación entre la variable precio del aguacate ($y$) y precio del dólar($x$), pensado desde la perspectiva de minimización de cuadrados del error y estando restringidos a la familia de modelos de regresión lineal con componente de error normal:
+Hemos llegado al punto en que ya tenemos todos los elementos necesarios para definir formalmente el modelo estimado sobre nuestros datos. Podemos ahora concluir que el mejor modelo para describir la relación entre la variable precio del aguacate ($y$) y precio del dólar($x$), pensado desde la perspectiva de minimización de cuadrados del error y estando restringidos a la familia de modelos de regresión lineal con componente de error normal es:
 
-$y = 1436.6790256 + 0.9449775x + e \text{ con e~N(0,sigma)}$
+$y = `r round(b0,2)` + `r round(b1,2)`x + e \text{ con e~N(0,`r round(sigma_2,1)`)}$
 
 Pero, aunque nos hemos esforzado por encontrar las mejores estimaciones de los betas para minimizar la función de pérdida, esto no garantiza que nuestro modelo induzca errores normales, por tal motivo conviene revisar:
 
-```{r}
+Vamos probar la normalidad de los errores utilizando las pruebas de Kolmogórov-Smirnov y la de Shapiro–Wilk
 
+```{r}
 # Probando normalidad del error. 
+
+shapiro.test(mod1$residuals)
+nortest::lillie.test(mod1$residuals)
+ks.test(mod1$residuals, "pnorm")
+ks.test(mod1$residuals, y = pnorm(mod1$residuals,mean = 0, sd = sqrt(sigma_2)))
+
+
+
 
 ```
 
