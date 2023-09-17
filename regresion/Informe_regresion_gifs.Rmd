@@ -20,11 +20,14 @@ editor_options:
   wrap: 72
 chunk_output_type: inline
 ---
+
+```{=html}
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   TeX: { equationNumbers: { autoNumber: "AMS" } }
 });
 </script>
+```
 <div>
 
 <img src="https://media2.utp.edu.co/imagenes/Logo-UTP-Azul.png" alt="UTP" class="watermark"/>
@@ -529,8 +532,9 @@ variable a predecir, es decir, el desajuste del modelo ingenuo.
 
 ```
 
-Observe el siguiente gráfico en el que hemos pintado las distancias
-que hay entre cada dato $y_i$ observado y el promedio histórico (valor predicho $\bar{y}$ por el modelo ingenuo)
+Observe el siguiente gráfico en el que hemos pintado las distancias que
+hay entre cada dato $y_i$ observado y el promedio histórico (valor
+predicho $\bar{y}$ por el modelo ingenuo)
 
 ```{r}
 hass_dolar %>% 
@@ -557,9 +561,9 @@ $$y = \beta_{0} + \beta_{1} * x + e \text{ con } e \text{~}N(0, \sigma^2)$$
 
 ## 1.8 Algunas observaciones sobre las fortalezas y limitaciones del modelo
 
-Expliquemos qué implica la ecuación anterior haciendo ciertas anotaciones de gran
-relevancia práctica para entender **cómo los estadísticos piensan al
-momento de plantear modelos**:
+Expliquemos qué implica la ecuación anterior haciendo ciertas
+anotaciones de gran relevancia práctica para entender **cómo los
+estadísticos piensan al momento de plantear modelos**:
 
 [Observación genial 1:]{style="color: red;"}
 
@@ -575,9 +579,10 @@ lineal exacta del valor de $x$. Esta es una condición demasiado fuerte
 que rara vez ocurre en la práctica, por eso agregamos la perturbación
 $e$ como una forma de modelar la **incertidumbre** en la determinación
 de $y$ dado un valor de $x$. Esto no soluciona todos los problemas pero
-ayuda a obtener un modelo relativamente más realista. 
+ayuda a obtener un modelo relativamente más realista.
 
-[¿Cuáles son los riesgos que implica asumir a priori un comportamiento específico para el error?]{style="color: red;"}
+[¿Cuáles son los riesgos que implica asumir a priori un comportamiento
+específico para el error?]{style="color: red;"}
 
 [Observación genial 2:]{style="color: red;"}
 
@@ -591,7 +596,9 @@ al contrario vamos a exigir que sea un valor aleatorio, precisamente
 porque está modelando incertidumbre. Pero esto no implica que no podamos
 poner ciertas condiciones sobre el **tipo de aleatoriedad deseada para**
 $e$. En este caso supondremos que $e$ se distribuye como una variable
-aleatoria normal con media $\mu=0$ y desviación estándar $\sigma$. Conviene aclarar que esto es una suposición, no implica que efectivamente los errores vayan a cumplir tal supuesto. 
+aleatoria normal con media $\mu=0$ y desviación estándar $\sigma$.
+Conviene aclarar que esto es una suposición, no implica que
+efectivamente los errores vayan a cumplir tal supuesto.
 
 [Observación genial 3:]{style="color: red;"}
 
@@ -660,12 +667,19 @@ informe sobre la calidad del ajuste.
 
 ## 1.9 Introducción a las medidas de ajuste para modelos no ingenuos
 
-De la observación final del apartado anterior nos queda una inquietud: ¿Cómo decidimos el par de valores a asignar a los parámetros del modelo lineal si no tenemos un criterio para poder saber cuál es el mejor modelo?
+De la observación final del apartado anterior nos queda una inquietud:
+¿Cómo decidimos el par de valores a asignar a los parámetros del modelo
+lineal si no tenemos un criterio para poder saber cuál es el mejor
+modelo?
 
 Para salir de este embrollo, reconozcamos que nunca en un problema real
 sujeto a incertidumbre una recta pasará exactamente por todos los
 puntos, razón por la cual aparecerán componentes de error $e_i$ por cada
-$y_i$ y $x_i$ observado. Vimos que esto ocurrión con el modelo ingenuo y por supuesto ocurre también para un modelo no ingenuo. La idea es entonces reducir la magnitud de estos errores al mínimo posible y el par de valores $\beta_1$ y $\beta_2$ que así lo logren será nuestra elección óptima de cara al objetivo de minimización del error.
+$y_i$ y $x_i$ observado. Vimos que esto ocurrión con el modelo ingenuo y
+por supuesto ocurre también para un modelo no ingenuo. La idea es
+entonces reducir la magnitud de estos errores al mínimo posible y el par
+de valores $\beta_1$ y $\beta_2$ que así lo logren será nuestra elección
+óptima de cara al objetivo de minimización del error.
 
 Otro criterio de ajuste que se podría usar es el de maximizar la
 probabilidad de ocurrencia de los valores observados bajo el supuesto de
@@ -680,10 +694,11 @@ estimación de parámetros**, nombre con el que se conoce al procedimiento
 estadístico encaminado a elegir los mejores betas para un conjunto de
 datos observados.
 
-Por lo pronto vamos a proceder de manera más intuitiva, dejando de lado el formalismo matemático, y vamos a ejemplificar un posible modelo ajustado usando
-valores $\beta_0=700$ y $\beta_1 = 1.2$. Hemos elegido estos valores por
-simple inspección visual así que no esperamos que sean óptimos en ningún
-sentido, veamos:
+Por lo pronto vamos a proceder de manera más intuitiva, dejando de lado
+el formalismo matemático, y vamos a ejemplificar un posible modelo
+ajustado usando valores $\beta_0=700$ y $\beta_1 = 1.2$. Hemos elegido
+estos valores por simple inspección visual así que no esperamos que sean
+óptimos en ningún sentido, veamos:
 
 ```{r}
 
@@ -706,7 +721,8 @@ nos ofrece para estimar los betas. Antes de pasar a su uso ciego,
 revisemos en qué consideraciones estadísticas se basan estos métodos.
 Para ello definamos primero los errores cometidos por el modelo, y más
 aún, la medida de desempeño que usaremos para decidir cuál es la mejor
-elección de los betas. Usaremos entonces la métrica MSE(Mean Squared Errors) dada por:
+elección de los betas. Usaremos entonces la métrica MSE(Mean Squared
+Errors) dada por:
 
 $$MSE_{\text{NO ingenuo}} =  \frac{1}{n}\sum^{n}_{i=1}e_i²$$
 
@@ -731,12 +747,23 @@ Sin embargo, como los pares $(x_i, y_i)$ ya vienen dados por nuestra
 base de datos o, hablando en términos más generales, por la información
 recaudada para la construcción del modelo, sólo tendremos opción de
 variar los betas en aras de minimizar la cantidad
-$MSE_{\text{NO ingenuo}}$. Dicho de otra manera los pares de valores  $(x_i, y_i)$
-**se comportan como constantes** a lo largo de mi proceso de minimización. 
+$MSE_{\text{NO ingenuo}}$. Dicho de otra manera los pares de valores
+$(x_i, y_i)$ **se comportan como constantes** a lo largo de mi proceso
+de minimización.
 
 Dado lo anterior, es buena idea definir una función MSE en R que permita
 calcular, para diferentes elecciones de los betas, la medida de
-desempeño. Esta medida de desempeño es conocida también en la literatura como función de pérdida, queriendo indicar con ello una pérdida de ajuste del modelo a los datos. Es importante aclarar que no existe una única elección para la función de pérdida de un modelo predictivo, otras alternativas típicas son la mediana de las desviaciones absolutas (MEDA), la media de los errores absolutos (MAE), entre otros. Sin embargo en regresión lineal es usual usar MSE porque su expresión como cuadrado de errores permite usar teoría de inferencia basada en la distribución F cuando los errores se asumen normales. Veremos esto más a detalle cuando discutamos pruebas de hipótesis sobre el modelo de regresión. 
+desempeño. Esta medida de desempeño es conocida también en la literatura
+como función de pérdida, queriendo indicar con ello una pérdida de
+ajuste del modelo a los datos. Es importante aclarar que no existe una
+única elección para la función de pérdida de un modelo predictivo, otras
+alternativas típicas son la mediana de las desviaciones absolutas
+(MEDA), la media de los errores absolutos (MAE), entre otros. Sin
+embargo en regresión lineal es usual usar MSE porque su expresión como
+cuadrado de errores permite usar teoría de inferencia basada en la
+distribución F cuando los errores se asumen normales. Veremos esto más a
+detalle cuando discutamos pruebas de hipótesis sobre el modelo de
+regresión.
 
 ## 1.10 Una relación importante entre los betas del modelo lineal
 
@@ -746,19 +773,19 @@ $$y = \beta_{0} + \beta_{1} * x + e \text{ con } e \text{~}N(0, \sigma^2)$$
 
 Tomando valor esperado en ambos lados de la ecuación tenemos que:
 
-$$E(y) = E(\beta_{0} + \beta_{1} * x + e)$$
-Pero como $\beta_0$ y $\beta_1$ son constantes, tenemos que:
+$$E(y) = E(\beta_{0} + \beta_{1} * x + e)$$ Pero como $\beta_0$ y
+$\beta_1$ son constantes, tenemos que:
 
-$$E(y) = E(\beta_0) + E(\beta_1*x) + E(e)$$
-Así que:
+$$E(y) = E(\beta_0) + E(\beta_1*x) + E(e)$$ Así que:
 
 $$E(y) = \beta_0 +\int_{-\infty}^{\infty}\beta_1 *xf(x)dx + E(e)$$
-$$E(y) = \beta_0 + \beta_1*\int_{-\infty}^{\infty}xf(x)dx + E(e)$$
-Y como $\int_{-\infty}^{\infty}xf(x)dx$ es por definición $E(x)$ y además $E(e) = 0$ por diseño (de acuerdo con el supuesto usado para la distribución del error), entonces:
+$$E(y) = \beta_0 + \beta_1*\int_{-\infty}^{\infty}xf(x)dx + E(e)$$ Y
+como $\int_{-\infty}^{\infty}xf(x)dx$ es por definición $E(x)$ y además
+$E(e) = 0$ por diseño (de acuerdo con el supuesto usado para la
+distribución del error), entonces:
 
-$$E(y) = \beta_0 + \beta_1*E(x)$$
-Dicho de otra manera, la recta del modelo debe pasar por el punto
-$(E(x), E(y))$ !!
+$$E(y) = \beta_0 + \beta_1*E(x)$$ Dicho de otra manera, la recta del
+modelo debe pasar por el punto $(E(x), E(y))$ !!
 
 La recta debe pasar por el centroide de la nube de puntos.
 
@@ -771,23 +798,26 @@ conformar con buenas estimaciones que cumplan la condición:
 $$\bar{y} = \color{red}{\widetilde\beta_0} + \color{red}{\widetilde\beta_1}\bar{x}$$
 
 El coloreado y la tilde ancha para los betas pretenden enfatizar que
-estos valores son estimados de los correspondientes  $\beta_0$ Y $\beta_1$ del modelo
-teórico subyacente. En conclusión: la mejor recta estimada deberá pasar
-por $(\bar{x}, \bar{y})$, y por lo tanto hay una relación atando a los
-betas estimados:
+estos valores son estimados de los correspondientes $\beta_0$ Y
+$\beta_1$ del modelo teórico subyacente. En conclusión: la mejor recta
+estimada deberá pasar por $(\bar{x}, \bar{y})$, y por lo tanto hay una
+relación atando a los betas estimados:
 
 $$\begin{equation} \label{eq:ec0}
   \color{red}{\widetilde\beta_0} = \bar{y} - \color{red}{\widetilde\beta_1}\bar{x}
 \end{equation}
-$$
-Es decir que dando valores a $\color{red}{\widetilde\beta_1}$ podremos
-obtener valores para $\color{red}{\widetilde\beta_0}$ y en últimas
-dibujar diversas rectas en el plano, con el fin de establecer cuál de
-ellas minimiza el $MSE_{\text{NO ingenuo}}$. 
+$$ Es decir que dando valores a $\color{red}{\widetilde\beta_1}$
+podremos obtener valores para $\color{red}{\widetilde\beta_0}$ y en
+últimas dibujar diversas rectas en el plano, con el fin de establecer
+cuál de ellas minimiza el $MSE_{\text{NO ingenuo}}$.
 
 ## 1.11 Una animación que ilustra la estimación de betas
 
-A continuación presentamos un código en R que permite comprender cómo funcionan numéricamente los métodos de estimación de betas para un modelo lineal simple, específicamente cuando se usa como método de estimación el criterio de minimización del promedio de los cuadrados de los errores:
+A continuación presentamos un código en R que permite comprender cómo
+funcionan numéricamente los métodos de estimación de betas para un
+modelo lineal simple, específicamente cuando se usa como método de
+estimación el criterio de minimización del promedio de los cuadrados de
+los errores:
 
 ```{r}
 # Extraemos las variables de interés
@@ -968,26 +998,35 @@ anim_save("beta_estimation.gif", animation)
 ```
 
 <figure>
-  <img src="beta_estimation.gif"/>
-  <figcaption>
-    Img 1: Estimación de betas por minimización de MSE
-  </figcaption>
+
+<img src="beta_estimation.gif"/>
+
+<figcaption>Img 1: Estimación de betas por minimización de
+MSE</figcaption>
+
 </figure>
 
 ## 1.12 Usando funciones en R para estimar parámetros
 
-Finalmente hemos llegado al punto en que usaremos las funciones de R para estimar parámetros del modelo de regresión lineal. Esto se hará bajo el enfoque de optimización, para ello conviene darle una mirada al siguiente problema:
+Finalmente hemos llegado al punto en que usaremos las funciones de R
+para estimar parámetros del modelo de regresión lineal. Esto se hará
+bajo el enfoque de optimización, para ello conviene darle una mirada al
+siguiente problema:
 
-Estime un par de valores $(\widetilde\beta_0,\widetilde\beta_1)$ tal que minimice la expresión $MSE = f(\beta_0,\beta_1)$, donde:
+Estime un par de valores $(\widetilde\beta_0,\widetilde\beta_1)$ tal que
+minimice la expresión $MSE = f(\beta_0,\beta_1)$, donde:
 
 $$f(\beta_0,\beta_1) = \frac{1}{n}\sum^{n}_{i=1}(y_i - \beta_0 - \beta_1*x_i)²$$
 Tomando en cuenta que no hay restricciones aplicadas a los betas.
 
-Para resolver el problema primero efectuemos algunas simplificaciones tomando partida de la siguiente identidad algebraica: $(a+b+c)² = a²+b²+c²+2ab+2ac+2bc$, de tal manera que:
+Para resolver el problema primero efectuemos algunas simplificaciones
+tomando partida de la siguiente identidad algebraica:
+$(a+b+c)² = a²+b²+c²+2ab+2ac+2bc$, de tal manera que:
 
 $$f(\beta_0,\beta_1) = \frac{1}{n}\sum^{n}_{i=1}(y_i²+\beta_0²+\beta_1²x_i²-2y_i\beta_0-2y_i\beta_1x_i+2\beta_0\beta_1x_i)$$
 
-Ahora distribuyamos la suma y separemos aparte los términos que dependen de su índice:
+Ahora distribuyamos la suma y separemos aparte los términos que dependen
+de su índice:
 
 $$f(\beta_0,\beta_1) = \frac{1}{n}\left[\sum^{n}_{i=1}y_i²+\beta_0²\sum^{n}_{i=1}1+\beta_1²\sum^{n}_{i=1}x_i²-2\beta_0\sum^{n}_{i=1}y_i-2\beta_1\sum^{n}_{i=1}y_ix_i+2\beta_0\beta_1\sum^{n}_{i=1}x_i\right]$$
 Simplificando términos y distribuyendo la fracción:
@@ -996,58 +1035,72 @@ $$f(\beta_0,\beta_1) = \frac{1}{n}\sum^{n}_{i=1}y_i²+\frac{\beta_0²}{n}n+\frac
 Para finalmente obtener:
 
 $$f(\beta_0,\beta_1) = \beta_0² +\bar{x²}\beta_1² -2\bar{y}\beta_0-\left[\frac{2}{n}\sum^{n}_{i=1}x_iy_i\right]\beta_1+2\bar{x}\beta_0\beta_1+\bar{y²} $$
-En la expresión anterior, las cantidades $\bar{x²}$, $-2\bar{y}$, $-\frac{2}{n}\sum^{n}_{i=1}x_iy_i$, $2\bar{x}$, $\bar{y²}$ son todas constantes por depender sólo de los datos que alimentan al modelo, en ese sentido son coeficientes numéricos para los respectivos betas de la función.
+En la expresión anterior, las cantidades $\bar{x²}$, $-2\bar{y}$,
+$-\frac{2}{n}\sum^{n}_{i=1}x_iy_i$, $2\bar{x}$, $\bar{y²}$ son todas
+constantes por depender sólo de los datos que alimentan al modelo, en
+ese sentido son coeficientes numéricos para los respectivos betas de la
+función.
 
 LLegados a este punto, podemos sacar las siguientes conclusiones:
 
-- La función $f$ sólo depende de los betas, puesto que los demás valores son constantes, es decir los valores $(x_i, y_i)$ son números consignados en una base de datos, y $n$ es la cantidad de pares de números consignados. Todos los coeficientes dependerán de operaciones sobre estos números.
+-   La función $f$ sólo depende de los betas, puesto que los demás
+    valores son constantes, es decir los valores $(x_i, y_i)$ son
+    números consignados en una base de datos, y $n$ es la cantidad de
+    pares de números consignados. Todos los coeficientes dependerán de
+    operaciones sobre estos números.
 
-- De acuerdo con lo anterior la función $f$ es una función multivariada, pues depende de dos variables: $\beta_0$ y $\beta_1$.
+-   De acuerdo con lo anterior la función $f$ es una función
+    multivariada, pues depende de dos variables: $\beta_0$ y $\beta_1$.
 
-- Existen métodos muy sencillos para resolver un problema de optimización no restringido cuando la función a optimizar es convexa, entonces sólo nos resta demostrar que la función anterior lo es. 
+-   Existen métodos muy sencillos para resolver un problema de
+    optimización no restringido cuando la función a optimizar es
+    convexa, entonces sólo nos resta demostrar que la función anterior
+    lo es.
 
 **Definición de convexidad**
 
-Para demostrar que \(f(\beta_0, \beta_1)\) es convexa, debemos verificar que su matriz hessiana sea semidefinida positiva. La matriz hessiana es una matriz de segundas derivadas parciales de la función.
+Para demostrar que $f(\beta_0, \beta_1)$ es convexa, debemos verificar
+que su matriz hessiana sea semidefinida positiva. La matriz hessiana es
+una matriz de segundas derivadas parciales de la función.
 
-Primero, calculemos las derivadas parciales de \(f\) con respecto a \(\beta_0\) y \(\beta_1\):
+Primero, calculemos las derivadas parciales de $f$ con respecto a
+$\beta_0$ y $\beta_1$:
 
 $$\begin{equation} \label{eq:ec1}
   \frac{\partial f}{\partial \beta_0} = 2\beta_0-2\bar{y}+2\bar{x}\beta_1
 \end{equation}
-$$
-$$\begin{equation} \label{eq:ec2}
+$$ $$\begin{equation} \label{eq:ec2}
   \frac{\partial f}{\partial \beta_1} = 2\bar{x²}\beta_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}\beta_0
 \end{equation}
+$$ Luego, calculemos las segundas derivadas parciales de $f$ con
+respecto a $\beta_0$ y $\beta_1$:
+
+$$\frac{\partial^2 f}{\partial \beta_0^2} = 2 > 0$$
+$$\frac{\partial^2 f}{\partial \beta_1^2} = 2\bar{x^2} > 0$$
+$$\frac{\partial^2 f}{\partial \beta_0 \partial \beta_1} = 2\bar{x}$$
+
+La matriz hessiana de $f$ es:
+
 $$
-Luego, calculemos las segundas derivadas parciales de \(f\) con respecto a \(\beta_0\) y \(\beta_1\):
-
-\[\frac{\partial^2 f}{\partial \beta_0^2} = 2 > 0\]
-\[\frac{\partial^2 f}{\partial \beta_1^2} = 2\bar{x^2} > 0\]
-\[\frac{\partial^2 f}{\partial \beta_0 \partial \beta_1} = 2\bar{x}\]
-
-La matriz hessiana de \(f\) es:
-
-\[
 H(f) = \begin{bmatrix}
 \frac{\partial^2 f}{\partial \beta_0^2} & \frac{\partial^2 f}{\partial \beta_0 \partial \beta_1} \\
 \frac{\partial^2 f}{\partial \beta_0 \partial \beta_1} & \frac{\partial^2 f}{\partial \beta_1^2}
 \end{bmatrix}
-\]
+$$
 
 Por lo tanto:
 
-\[
+$$
 H(f) = \begin{bmatrix} 
 2 & 2\bar{x}\\
 2\bar{x} & 2\bar{x^2}
 \end{bmatrix}
-\]
-
-Para que \(f(\beta_0, \beta_1)\) sea convexa, la matriz hessiana debe ser semidefinida positiva, lo que significa que debe cumplir la propiedad:
-$$v^ \top Hv>=0 \text{ para }\forall v \in \mathbb{R}²
 $$
-Es decir, debemos verificar si:
+
+Para que $f(\beta_0, \beta_1)$ sea convexa, la matriz hessiana debe ser
+semidefinida positiva, lo que significa que debe cumplir la propiedad:
+$$v^ \top Hv>=0 \text{ para }\forall v \in \mathbb{R}²
+$$ Es decir, debemos verificar si:
 
 $$\begin{bmatrix} a & b
 \end{bmatrix}H\begin{bmatrix}
@@ -1105,44 +1158,60 @@ $$
 Luego:
 
 $$v^ \top Hv = 2(a+b\bar{x})²+2b²\sigma²_{x} \text{ con } \text{ }v=(a,b)$$
-Y como ambos sumandos son no negativos se tiene que $$v^ \top Hv >= 0 \text{ para }\forall v\in \mathbb{R}²$$
-Es decir, la matriz hessiana es semidefinida positiva y por lo tanto $f(\beta_0,\beta_1)$ es convexa en el espacio de parámetros \(\beta_0\) y \(\beta_1\). Esto implica que el problema de regresión lineal, que busca minimizar esta función de errores, tiene un mínimo global y puede ser resuelto de manera eficiente mediante métodos de optimización convexa.
+Y como ambos sumandos son no negativos se tiene que
+$$v^ \top Hv >= 0 \text{ para }\forall v\in \mathbb{R}²$$ Es decir, la
+matriz hessiana es semidefinida positiva y por lo tanto
+$f(\beta_0,\beta_1)$ es convexa en el espacio de parámetros $\beta_0$ y
+$\beta_1$. Esto implica que el problema de regresión lineal, que busca
+minimizar esta función de errores, tiene un mínimo global y puede ser
+resuelto de manera eficiente mediante métodos de optimización convexa.
 
-Una condición necesaria y suficiente para que $(\widetilde\beta_0,\widetilde\beta_1)$ sea un mínimo global es que $\nabla{} f(\widetilde\beta_0,\widetilde\beta_1)=0$
+Una condición necesaria y suficiente para que
+$(\widetilde\beta_0,\widetilde\beta_1)$ sea un mínimo global es que
+$\nabla{} f(\widetilde\beta_0,\widetilde\beta_1)=0$
 
-Por lo tanto retomando $\ref{eq:ec1}$ y $\ref{eq:ec2}$ el problema de minimización queda resuelto hallando la solución al sistema de ecuaciones:
+Por lo tanto retomando $\ref{eq:ec1}$ y $\ref{eq:ec2}$ el problema de
+minimización queda resuelto hallando la solución al sistema de
+ecuaciones:
 
 $$\begin{equation} \label{eq:ec3}
     2\widetilde\beta_0-2\bar{y}+2\bar{x}\widetilde\beta_1=0
   \end{equation}  
-$$
-$$\begin{equation} \label{eq:ec4}
+$$ $$\begin{equation} \label{eq:ec4}
     2\bar{x²}\widetilde\beta_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}\widetilde\beta_0=0
   \end{equation}
 $$
 
-De modo que despejando $\widetilde\beta_0$ en $\ref{eq:ec3}$ tenemos lo siguiente:
+De modo que despejando $\widetilde\beta_0$ en $\ref{eq:ec3}$ tenemos lo
+siguiente:
 
 $$\begin{equation} \label{eq:ec5}
   \widetilde\beta_0 = \bar{y} - \widetilde\beta_1\bar{x}
 \end{equation}
-$$
-Esto en concordancia con $\ref{eq:ec0}$, y además haciendo reemplazos en $\ref{eq:ec4}$ obtenemos:
+$$ Esto en concordancia con $\ref{eq:ec0}$, y además haciendo reemplazos
+en $\ref{eq:ec4}$ obtenemos:
 
 $$
   2\bar{x²}\widetilde\beta_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}(\bar{y}-\widetilde\beta_1\bar{x})=0\\
   2\bar{x²}\widetilde\beta_1-2\bar{x}²\widetilde\beta_1 = \frac{2}{n}\sum^{n}_{i=1}x_iy_i-2\bar{x}\bar{y}\\
   (\bar{x²} - \bar{x}²)\widetilde\beta_1 = \frac{1}{n}\sum^{n}_{i=1}x_iy_i-\bar{x}\bar{y}
-$$
-Ahora, usando el hecho de que el lado derecho de la ecuación anterior es por definición $cov(x,y)$, es decir, la covarianza entre la variable regresora $x$ y la variable respuesta $y$, así como la expresión dada en $\ref{eq:sigma_x}$ tenemos:
+$$ Ahora, usando el hecho de que el lado derecho de la ecuación anterior
+es por definición $cov(x,y)$, es decir, la covarianza entre la variable
+regresora $x$ y la variable respuesta $y$, así como la expresión dada en
+$\ref{eq:sigma_x}$ tenemos:
 
 $$\begin{equation} \label{eq:ec6}
     \widetilde\beta_1 = \frac{cov(x,y)}{\sigma_x²}
   \end{equation}
-$$
-Las ecuaciones $\ref{eq:ec5}$ y $\ref{eq:ec6}$ son muy informativas en su estructura, la primera indica que la recta regresora debe pasar por el centroide de la nube de puntos: $(\bar{x}, \bar{y})$ y la segunda indica que la pendiente de la recta es proporcional al grado de relación lineal que tenga la variable $x$ con la variable $y$ medida a través de la covarianza. 
+$$ Las ecuaciones $\ref{eq:ec5}$ y $\ref{eq:ec6}$ son muy informativas
+en su estructura, la primera indica que la recta regresora debe pasar
+por el centroide de la nube de puntos: $(\bar{x}, \bar{y})$ y la segunda
+indica que la pendiente de la recta es proporcional al grado de relación
+lineal que tenga la variable $x$ con la variable $y$ medida a través de
+la covarianza.
 
-Estos sencillos cálculos son realizados por R a través de la función "lm", así:
+Estos sencillos cálculos son realizados por R a través de la función
+"lm", así:
 
 ```{r}
 
@@ -1186,23 +1255,35 @@ parametros %>%
 # mod1 <- lm(promedio_aguacate_kg ~ promedio_dolar, hass_dolar)
 
 ```
-Podemos notar entonces que ambos métodos son consistentes entre si, algo que no es de extrañar pues internamente R implementa estos métodos en sus librerías. 
 
-## 1.13 Representación funcional del modelo y comprobación de supuestos.
+Podemos notar entonces que ambos métodos son consistentes entre si, algo
+que no es de extrañar pues internamente R implementa estos métodos en
+sus librerías.
 
-Hemos llegado al punto en que ya tenemos todos los elementos necesarios para definir formalmente el modelo estimado sobre nuestros datos. Podemos ahora concluir que el mejor modelo para describir la relación entre la variable precio del aguacate ($y$) y precio del dólar($x$), pensado desde la perspectiva de minimización de cuadrados del error y estando restringidos a la familia de modelos de regresión lineal con componente de error normal es:
+## 1.13 Representación funcional del modelo y comprobación de supuesto de normalidad.
+
+Hemos llegado al punto en que ya tenemos todos los elementos necesarios
+para definir formalmente el modelo estimado sobre nuestros datos.
+Podemos ahora concluir que el mejor modelo para describir la relación
+entre la variable precio del aguacate ($y$) y precio del dólar($x$),
+pensado desde la perspectiva de minimización de cuadrados del error y
+estando restringidos a la familia de modelos de regresión lineal con
+componente de error normal es:
 
 $y = `r round(b0,2)` + `r round(b1,2)`x + e \text{ con e~N(0,`r round(sigma_2,1)`)}$
 
-Pero, aunque nos hemos esforzado por encontrar las mejores estimaciones de los betas para minimizar la función de pérdida, esto no garantiza que nuestro modelo induzca errores normales, por tal motivo conviene revisar lo siguiente:
+Pero, aunque nos hemos esforzado por encontrar las mejores estimaciones
+de los betas para minimizar la función de pérdida, esto no garantiza que
+nuestro modelo induzca errores normales, por tal motivo conviene recordar lo siguiente:
 
+💭 Cuando planteamos el modelo, tuvimos que suponer
+algunas cosas, entre ellas, que la distribución de los errores sería
+*normal*. Por lo tanto, ahora que tenemos construído nuestro modelo, es
+necesario que validemos la suposición hecha.
 
-☁ Recordemos que:
-Cuando planteamos el modelo, tuvimos que suponer algunas cosas, entre ellas, que la distribución de los errores sería *normal*, es decir, que los errores seguirian una distribución *normal estándar*. Por lo tanto, ahora que tenemos construído nuestro modelo, es necesario que validemos la suposición hecha.
+🤔💭 ¿Cómo hacerlo ❔
 
-🤔 ¿Cómo hacerlo? ❔
-
-Tabla comparativa de las ventajas y desventajas de las tres pruebas de normalidad: Kolmogorov-Smirnov, Lilliefors y Shapiro-Wilk.
+Consideremos la siguiente tabla comparativa que informa sobre las ventajas y desventajas de las tres pruebas de normalidad (Kolmogorov-Smirnov, Lilliefors y Shapiro-Wilk) más usadas en estadística
 
 ```{r}
 
@@ -1223,103 +1304,85 @@ tabla_normalidad %>%
   ftable() %>% 
   align(i = NULL, j = c(2:3),
         align = "left", part = "all")
-
-
 ```
 
+Recordemos que la elección de la prueba depende de varios factores,
+incluyendo el tamaño de la muestra, el *conocimiento previo sobre la
+distribución de los datos* y los objetivos del análisis. Ninguna prueba
+es perfecta y es importante considerar el contexto y las características
+específicas de tus datos al seleccionar una prueba de normalidad.
 
-Recordemos que la elección de la prueba depende de varios factores, incluyendo el tamaño de la muestra, el conocimiento previo sobre la distribución de los datos y los objetivos del análisis. Ninguna prueba es perfecta y es importante considerar el contexto y las características específicas de tus datos al seleccionar una prueba de normalidad.
-
-🤔 Y si el texto anterior dice: "el conocimiento previo sobre la distribución de los datos" 🤔 
-¿Será necesario representar la distribución en un gráfico? 
-¿Cómo funciona la prueba Lilliefors?
-
+🤔💭 Y si el texto anterior dice: *"el conocimiento previo sobre la
+distribución de los datos"* 🤔💭 ¿Será necesario representar la
+distribución en un gráfico? ¿Cómo funciona la prueba Lilliefors? A continuación describiremos los cálculos implicados:
 
 ```{r}
-ajuste <- fitdist(mod1$residuals, "norm",method='mme')
 
-df_residuals <- data.frame(residuals = mod1$residuals )
-
+# Paso 1: Ordenamos los datos de menor a mayor
+n <- length(mod1$residuals)
+df_residuals <- data.frame(residuals = mod1$residuals)
 df_residuals <- df_residuals %>% 
                 arrange(residuals)
 
-#df_residuals <- df_residuals[order(df_residuals$residuals),]
+# Paso 2: Estimamos los parámetros para la distribución normal teórica a partir de los datos
 
+mean_residuals <- mean(df_residuals$residuals)
+sd_residuals <- sd(df_residuals$residuals)
 
+# Paso 3: Calculamos la función acumulada para cada valor de residual
 cdf_teorica <- pnorm(df_residuals$residuals,
-                      mean = ajuste$estimate[1],
-                      sd = ajuste$estimate[2])
+                      mean = mean_residuals,
+                      sd = sd_residuals)
 
+# Paso 4: Calculamos la máxima diferencia absoluta entre la densidad empírica y la teórica
 
-# Estoy grabando una función teorica existente en R
-# y asignandola a un nombre llamado funcion_teorica.
-funcion_teorica <- pnorm
-
-# Esta cálcula la función de distribución acumulada
-# con los datos de los residuales. 
-# Matematicamente esto es una función a Trozos.
-# Al ser una función está a la espera de un parámetro para poderse evaluar.
+# Método 1: Construir la función empírica usando fórmulas de R (ecdf) y luego tomar diferencias
+#           absolutas entre valor empírico y teórico (enfoque KS)
 cdf_empirica <- ecdf(df_residuals$residuals)
+diferencias_absolutas <- abs(cdf_empirica(df_residuals$residuals) - cdf_teorica)
+pos_estadistico_m1 <- which.max(diferencias_absolutas)
+estadistico_m1 <- diferencias_absolutas[pos_estadistico_m1]
 
-# Como deseo calcular la diferencia entre lo calculado entre ambas funciones. Voy a crear una función.
-funcion_diferencia <- function(x) {
-  cdf_empirica(x) - funcion_teorica(x, mean = ajuste$estimate[1], sd = ajuste$estimate[2])
-}
+print(paste0("Este es el valor del estadístico: ", estadistico_m1," y esta es la posición en ",
+             "la que ocurre la máxima diferencia ", pos_estadistico_m1))
 
-funcion_diferencia_der <- function(x) {
-   seq(1,length(x),1)/length(x) - funcion_teorica(x, mean = ajuste$estimate[1], sd = ajuste$estimate[2])
-}
+# Método 2: Construir manualmente los cálculos que permiten hallar la máxima diferencia
+#           entre la empírica y la teórica usando la definición de la empírica como
+#           función a trozos 📈
 
-funcion_diferencia_izq <- function(x) {
-  funcion_teorica(x, mean = ajuste$estimate[1], sd = ajuste$estimate[2]) - seq(0,length(x),1)/length(x)
-}
+e_plus <- seq(1:n)/n
+e_minus <- seq(0:(n-1))/n
 
+D_plus <- e_plus - cdf_teorica
+D_minus <- cdf_teorica - e_minus
 
-diferencia_resultados <- sapply(df_residuals$residuals, funcion_diferencia)
+pos_max_d_plus <- which.max(D_plus)
+pos_max_d_minus <- which.max(D_minus)
 
-diferencia_resultados_der <- sapply(df_residuals$residuals, funcion_diferencia_der)
+estadistico_m2 <- max(D_plus[pos_max_d_plus], D_minus[pos_max_d_minus])
+pos_estadistico_m2 <- function() {
+  if(max(D_plus)>=max(D_minus)) {
+    return(pos_max_d_plus)
+    }else{
+      return(pos_max_d_minus)
+    }
+  }
 
-diferencia_resultados_izq <- sapply(df_residuals$residuals, funcion_diferencia_izq)
+print(paste0("Este es el valor del estadístico: ", estadistico_m2," y esta es la posición en ",
+             "la que ocurre la máxima diferencia ", pos_estadistico_m2()))
 
-pos_estadistico_der <- which.max(abs(diferencia_resultados_der))
-pos_estadistico_izq <- which.max(abs(diferencia_resultados_izq))
+# Comprobamos los resultados invocando la función de R que realiza estos cálculos automáticos
 
-estadistico_der <- diferencia_resultados_der[pos_estadistico_der]
-estadistico_izq <- diferencia_resultados_izq[pos_estadistico_izq]
-
-estadistico <- max(estadistico_izq,estadistico_der)
-
-lillieforce_test <- lillie.test(df_residuals$residuals)
-lillieforce_test$statistic
-
+Lilliefors_test <- lillie.test(df_residuals$residuals)
+print(Lilliefors_test)
+estadistico_l <- Lilliefors_test$statistic
+print(paste0("Este es el estadístico de Lilliefors usando paquetería de R: ", estadistico_l))
 ```
 
-
+Hasta acá hemos verificado que los cálculos realizados manualmente coinciden con el código implementado por la librería nortest de R, y más específicamente en el código fuente de la función lillie.test. Ahora ilustremos algo de estos pasos usando una gráfica: 
 ```{r}
-
-w1 <-  which(diferencia_resultados_der == lillieforce_test$statistic)
-w2 <-  which(diferencia_resultados_izq == lillieforce_test$statistic)
-w3 <- which(abs(diferencia_resultados)== lillieforce_test$statistic)
-
-print(w1)
-print(w2)
-print(w3)
-
-estadistico_mod <- estadistico*(sqrt(nrow(df_residuals)) - 0.01 + (0.85/sqrt(nrow(df_residuals))))
-
-
-ks.test(df_residuals$residuals,"pnorm")
-
-
-estadistico
-estadistico_mod
-estadistico_izq
-estadistico_der
-
-
-
-x_seg <- df_residuals$residuals[pos_estadistico]
-y_sup_seg <- cdf_teorica[pos_estadistico]
+x_seg <- df_residuals$residuals[pos_estadistico_m1]
+y_sup_seg <- cdf_teorica[pos_estadistico_m1]
 y_inf_seg <- cdf_empirica(x_seg)
 
 cat("x_seg: ", format(x_seg, digits=5), 
@@ -1327,11 +1390,14 @@ cat("x_seg: ", format(x_seg, digits=5),
     " y_sup_seg: ", format(y_sup_seg, digits=5),
     sep='')
 
+datos_para_grafico <- data.frame(
+  residuales = df_residuals$residuals
+  )
 
-ggplot(data.frame(x = df_residuals$residuals), aes(x = residuals)) +
-  geom_density(color = "blue", fill = "lightblue", alpha = 0.5) +
-  stat_function(fun = pnorm, args = list(mean = ajuste$estimate[1],
-                                         sd = ajuste$estimate[2]),
+ggplot(datos_para_grafico, aes(x = residuales)) +
+#  geom_density(color = "blue", fill = "lightblue", alpha = 0.5) +
+  stat_function(fun = pnorm, args = list(mean = mean_residuals,
+                                         sd = sd_residuals),
                 color = "red", size = 1) +
   stat_ecdf(color = "green", size = 1) +
   geom_segment(aes(x = x_seg, y = y_inf_seg, xend = x_seg,
@@ -1343,73 +1409,94 @@ ggplot(data.frame(x = df_residuals$residuals), aes(x = residuals)) +
              color = "purple", size = 3) +
   annotate("text", x = x_seg , y = (y_inf_seg + y_sup_seg)/2, 
            label = paste0("Máxima Separación=",
-                          format(lillieforce_test$statistic,
-                                 digits=5), sep=''),
+                          format(estadistico_m1,
+                                 digits=5)," 🤔💭", sep=''),
            color = "purple", size = 3, hjust = -0.05, vjust = 0) +
-  coord_cartesian(xlim = c(min(datos_mod$ing1), max(datos_mod$ing1))) +
-  xlab("Ingresos") +
+  coord_cartesian(xlim = c(min(datos_para_grafico$residuales),
+                           max(datos_para_grafico$residuales))) +
+  xlab("Residuales del modelo") +
   ylab("Probabilidad acumulada") +
-  labs(title = "Esquema de funcionamiento de la prueba de Kolmogorov-Smirnov") +
+  labs(title = "Esquema de funcionamiento de la prueba de Lilliefors") +
   theme_minimal()
-
-
-print(resultado_ks)
-
-
-
 
 ```
 
+Nos queda la siguiente reflexión sobre la gráfica anterior, ¿Por qué elegir la máxima diferencia absoluta entre las dos curvas en lugar de un promedio de las diferencias a lo largo de todo el eje? ¿Por qué no usar una media ponderada de los residuales al cuadrado?
 
-
-
-
-Vamos probar la normalidad de los errores utilizando las pruebas de Kolmogórov-Smirnov y la de Shapiro–Wilk.
-
-
-En resumen, la elección entre la prueba de Lilliefors y la prueba KS estándar depende de tus objetivos y de las suposiciones sobre la distribución de tus datos. Si estás interesado específicamente en verificar la normalidad de tus datos, la prueba de Lilliefors puede ser apropiada, especialmente para muestras pequeñas. Sin embargo, si no tienes una distribución específica en mente o si deseas verificar otras distribuciones, la prueba KS estándar es una opción más versátil.
-En cualquier caso, es importante recordar que ninguna prueba es infalible, y es fundamental interpretar los resultados en el contexto de tus objetivos de análisis y la naturaleza de tus datos.
-
-
+Comparemos los resultados contra la prueba de Shapiro WIlk y Kolmogorov
 ```{r}
 # Probando normalidad del error. 
 
 shapiro.test(mod1$residuals)
-nortest::lillie.test(mod1$residuals)
 ks.test(mod1$residuals, "pnorm")
-ks.test(mod1$residuals, y = pnorm(mod1$residuals,mean = 0, sd = sqrt(sigma_2)))
-
-
 ```
+Hemos notado diferencias con la prueba de Kolmogorov, ¿Cuál es la razón?, podrás encontrar en el siguiente artículo en el que Lilliefors introduce por primera vez su prueba:
 
-En resumen, la elección entre la prueba de Lilliefors y la prueba KS estándar depende de tus objetivos y de las suposiciones sobre la distribución de tus datos. Si estás interesado específicamente en verificar la normalidad de tus datos, la prueba de Lilliefors puede ser apropiada, especialmente para muestras pequeñas. Sin embargo, si no tienes una distribución específica en mente o si deseas verificar otras distribuciones, la prueba KS estándar es una opción más versátil.
-En cualquier caso, es importante recordar que ninguna prueba es infalible, y es fundamental interpretar los resultados en el contexto de tus objetivos de análisis y la naturaleza de tus datos.
+Lilliefors, H. (June 1967), "On the Kolmogorov--Smirnov test
+for normality with mean and variance unknown", Journal of the American
+Statistical Association, Vol. 62. pp. 399--402.
 
+Una aclaración respecto a que esta prueba es menos potente ❗  en comparación con la prueba KS estándar, esto significa que es menos sensible para detectar desviaciones de la normalidad en muestras grandes, especialmente si los datos no siguen una distribución estrictamente normal. La prueba KS estándar es más robusta en este sentido, pero por lo mismo más conservador. En el contexto de modelos de regresión, no requerimos un cumplimiento estricto de la normalidad sino una semejanza razonable para habilitar el uso del modelo. En ese sentido es preferible usar Lilliefors.😀😎
 
-Restricción a distribución normal: La principal desventaja de la prueba de Lilliefors es que está restringida a la comprobación de la normalidad. No es adecuada para verificar si los datos se ajustan a otras distribuciones diferentes a la normal. En cambio, la prueba KS estándar es más versátil y se puede aplicar a cualquier distribución teórica.
-Lilliefors, H. (June 1967), "On the Kolmogorov–Smirnov test for normality with mean and variance unknown", Journal of the American Statistical Association, Vol. 62. pp. 399–402.
-
-❗ Menos potente: En comparación con la prueba KS estándar, la prueba de Lilliefors puede ser menos potente para detectar desviaciones de la normalidad en muestras grandes, especialmente si los datos no siguen una distribución estrictamente normal. La prueba KS estándar es más robusta en este sentido.
-
-🤔 ¿Y esto será conveniente?
-
-Supuestos: Al igual que con la prueba KS estándar, la prueba de Lilliefors asume independencia y continuidad de los datos, lo que puede no ser adecuado para todos los tipos de datos.
-
-
-
+🤔💭 Otras posibles preguntas son:
 
 - ¿Cuáles son los riesgos que implica asumir a priori un comportamiento específico para el error?
 - ¿Si el modelo no cumple con lo supuesto para el error, qué alternativas tengo?
-- ¿Si al plantear un modelo alternativo que captura mejor el comportamiento del error?
+- Al plantear un modelo alternativo que captura mejor el comportamiento del error usando
+una distribución distinta a la normal ¿Puedo seguir usando los métodos de inferencia tradicionales o qué modificaciones debo introducir?
+- ¿Por qué es importante para un magister en estadística conocer sobre métodos de simulación Montecarlo?
 
+# 2. EL SUPUESTO DE INDEPENDENCIA DEL ERROR
 
+Un supuesto que hemos perdido por un momento en los apartados anteriores es el supuesto de independencia del error. Su consideración es importante porque representa un punto de quiebre en el uso de modelos de regresión vs modelos alternativos como las series de tiempo. Pero ¿Qué significa exactamente la independencia?. Consideremos los siguientes escenarios:
 
+- Un modelo que presenta sistemáticamente más dificultades para predecir de forma exacta valores altos de la variable respuesta pero es bueno prediciendo valores bajos.
+
+- Un modelo que se construyó sobre datos de un experimento de durezas de metales, donde el mecanismo que sensa la dureza perdió calibración o exactitud después de tomar la medida de las 100 primeras muestras.
+
+- Un modelo que intento predecir un precio de activo financiero en función de un activo de referencia, pero conforme pasa el tiempo el modelo se va desajustando y haciendo menos preciso.
+
+- Un modelo que desconce la presencia de una variable oculta que controla la variación acoplada de mi variable respuesta vs mi variable predictora y las hace parecer más correlacionadas de lo que realmente son (regresiones espurias)
+
+Para cada uno de los casos anteriores el investigador tiene que decidir el tipo de recurso gráfico o estadístco que le permita inspeccionar si una situación de esa naturaleza está ocurriendo. Las alternativas son:
+
+[Gráficos de Residuales vs. Valores Ajustados:]{style="color: red;"} Graficar los residuales (diferencia entre los valores observados y los valores predichos) contra los valores ajustados (las predicciones del modelo) es una forma común de detectar patrones de no independencia. 
+
+🤔💭 ¿Qué comportamiento es deseable para este gráfico?
+
+Si no hay patrones evidentes en el gráfico y los residuales se distribuyen aleatoriamente alrededor de cero, es un indicio de independencia.
+
+[Gráfico de Residuales con índice temporal:]{style="color: red;"} Si tus datos están ordenados en el tiempo (series temporales), un gráfico de residuales en el tiempo puede revelar patrones de autocorrelación. Deben parecer ruido blanco, es decir, sin patrones visibles. También es conveniente usar gráficos de autocorrelación de residuales (ACF) y gráficos de autocorrelación parcial de residuales (PACF), ya que estos informan sobre una posible correlación entre el error actualmente observado y errores observados en otros momentos del pasado.
+
+[Prueba de Durbin-Watson:]{style="color: red;"} Esta prueba estadística evalúa si existe autocorrelación de primer orden en los residuales, mejora el análisis gráfico por ser una prueba formal. Un valor de Durbin-Watson cercano a 2 indica independencia, mientras que valores significativamente diferentes de 2 pueden indicar autocorrelación. De nuevo es necesario elegir una variable de ordenamiento para los errores encaminada a detectar el tipo de patrón de interés. 
+
+🤔💭 ¿Cómo hacer esto?
+
+- Ordene los errores según magnitud del valor predicho (ajustado)
+- Ordene los errores según el tiempo.
+- Ordene los errores según el orden de experimentación.
+- No ordene por la posición del registro en el data frame a menos qué entienda qué significa ese orden y qué aporte da al análisis.
+- Ordene por una variable de interés en la que quiera inspeccionar si los residuales se ven afectados por la magnitud de tal variable. 
+
+👦👴👧👨👨‍👵
+
+**Ejemplo:** Puede considera revisa si el consumo calórico puede explicar residuales de un modelo simplificado en el que el peso pretenda explicar la estatura. 🔎🕵️ Aunque este ejemplo parece obvio ilustra una idea muy importante, porque nos da un criterio para ingresar una nueva variable a un modelo de regresión: Ingrésela cuando dicha variable se relaciona bien con los residuales generados por la primera versión de mi modelo!!!
+
+[Prueba de Ljung-Box:]{style="color: red;"} Esta prueba se utiliza para evaluar la autocorrelación en los residuales en varios retardos. Si los residuales son independientes, las autocorrelaciones en los retardos deberían ser cercanas a cero. Por varios retardos entendemos inspeccionar relación no sólo con el valor del residual inmediatamente anterior, sino contra cualquier otro ubicado en un momento más anterior. 🔎 Es una mejora a la prueba de Durbin-Watson en la medida en que no limita la autocorrelación al retardo anterior.
+
+Estas son algunas de las formas comunes de comprobar la independencia de los errores en un modelo de regresión lineal. Si encuentras evidencia de autocorrelación o patrones en los residuales, puede ser necesario considerar modelos más avanzados, como 📉 🚪**modelos autorregresivos o modelos de series temporales**, para capturar adecuadamente la estructura de dependencia en los datos.
+
+**En conclusión**:
+
+En regresión lineal asumimos la no correlación de los errores. En nuestro caso el precio del aguacate y el precio del dólar son variables evolucionando en el tiempo, así que quisiéramos que tras el transcurrir del tiempo nuestro modelo no se deteriore. Una forma en que esto puede ocurrir es que alguna autocorrelación temporal provoque residuales que van variando en sus propiedades conforme el tiempo pasa. Por tal motivo necesitamos técnicas como las anteriores para probar independencia.
+
+Por ejemplo puede ocurrir que el error se vaya volviendo más grande en promedio con el paso del tiempo o vaya creciendo en dispersión, o cualquier otra anomalía que impida suponer que tenemos un modelo estable para todo momento del tiempo. Los gráficos de dispersión típicos ilustran la asociación entre la magnitud de la variable predictora y la variable respuesta, pero salvo que los errores se dibujen indexados por la fecha en la que tal error ocurrió, será imposible apreciar posibles patrones temporales. Haremos esas inspecciones a continuación 🔎 :
 
 ```{r}
 hass_dolar %>% 
   ggplot(aes(x= precio_dolar, y= precio_aguacate_kg )) +
   geom_point()+ theme_light()+
-  geom_smooth(method='lm', formula=y~x, se=FALSE, col='dodgerblue1')
+  geom_smooth(method='lm', formula=y~x, se=TRUE, col='dodgerblue1')
 ```
 
 # Varianza de los residuales del modelo
