@@ -44,6 +44,7 @@ library(tidyverse)
 library(janitor)
 library(openxlsx)
 library(flextable)
+# library(kableExtra)
 library(viridis)
 library(scales)
 library(DT)
@@ -55,6 +56,7 @@ library(animation)
 library(gifski)
 library(magick)
 library(nortest)
+library(fitdistrplus)
 
 ```
 
@@ -1186,15 +1188,188 @@ parametros %>%
 ```
 Podemos notar entonces que ambos métodos son consistentes entre si, algo que no es de extrañar pues internamente R implementa estos métodos en sus librerías. 
 
-[¿Cuál es la representación funcional del modelo?{style="color: red;"}
+## 1.13 Representación funcional del modelo y comprobación de supuestos.
 
 Hemos llegado al punto en que ya tenemos todos los elementos necesarios para definir formalmente el modelo estimado sobre nuestros datos. Podemos ahora concluir que el mejor modelo para describir la relación entre la variable precio del aguacate ($y$) y precio del dólar($x$), pensado desde la perspectiva de minimización de cuadrados del error y estando restringidos a la familia de modelos de regresión lineal con componente de error normal es:
 
 $y = `r round(b0,2)` + `r round(b1,2)`x + e \text{ con e~N(0,`r round(sigma_2,1)`)}$
 
-Pero, aunque nos hemos esforzado por encontrar las mejores estimaciones de los betas para minimizar la función de pérdida, esto no garantiza que nuestro modelo induzca errores normales, por tal motivo conviene revisar:
+Pero, aunque nos hemos esforzado por encontrar las mejores estimaciones de los betas para minimizar la función de pérdida, esto no garantiza que nuestro modelo induzca errores normales, por tal motivo conviene revisar lo siguiente:
 
-Vamos probar la normalidad de los errores utilizando las pruebas de Kolmogórov-Smirnov y la de Shapiro–Wilk
+
+☁ Recordemos que:
+Cuando planteamos el modelo, tuvimos que suponer algunas cosas, entre ellas, que la distribución de los errores sería *normal*, es decir, que los errores seguirian una distribución *normal estándar*. Por lo tanto, ahora que tenemos construído nuestro modelo, es necesario que validemos la suposición hecha.
+
+🤔 ¿Cómo hacerlo? ❔
+
+Tabla comparativa de las ventajas y desventajas de las tres pruebas de normalidad: Kolmogorov-Smirnov, Lilliefors y Shapiro-Wilk.
+
+```{r}
+
+tabla_normalidad <- data.frame(
+  "Prueba" = c("Kolmogorov-Smirnov (KS)", "Prueba de Lilliefors", "Prueba de Shapiro-Wilk (SW)"),
+  "Ventajas" = c(
+    "- Puede utilizarse para cualquier distribución teórica.\n- Es una prueba no paramétrica versátil.\n - Adecuada para muestras grandes.",
+    "- Es específica para evaluar la normalidad.\n- Puede ser más adecuada para muestras pequeñas.\n - Utiliza estadísticas de prueba que se ajustan a la distribución estándar.",
+    "- Es especialmente potente para muestras pequeñas.\n- Diseñada específicamente para evaluar la normalidad.\n- Sensible a desviaciones de la normalidad en cualquier parte de la distribución."
+  ),  "Desventajas" = c(
+    "- Puede ser menos poderosa en muestras pequeñas.\n - No es específica para la distribución normal.",
+    "- Restringida a la comprobación de normalidad. \n - Menos potente en muestras grandes.\n- No es tan versátil como KS para otras distribuciones.",
+    "- Más compleja de entender y aplicar.\n- No proporciona estimaciones de parámetros.\n- Puede ser menos adecuada para muestras muy grandes.\n- No es tan versátil como KS para otras distribuciones."))
+
+# Imprimir la tabla con formato
+
+tabla_normalidad %>% 
+  ftable() %>% 
+  align(i = NULL, j = c(2:3),
+        align = "left", part = "all")
+
+
+```
+
+
+Recordemos que la elección de la prueba depende de varios factores, incluyendo el tamaño de la muestra, el conocimiento previo sobre la distribución de los datos y los objetivos del análisis. Ninguna prueba es perfecta y es importante considerar el contexto y las características específicas de tus datos al seleccionar una prueba de normalidad.
+
+🤔 Y si el texto anterior dice: "el conocimiento previo sobre la distribución de los datos" 🤔 
+¿Será necesario representar la distribución en un gráfico? 
+¿Cómo funciona la prueba Lilliefors?
+
+
+```{r}
+ajuste <- fitdist(mod1$residuals, "norm",method='mme')
+
+df_residuals <- data.frame(residuals = mod1$residuals )
+
+df_residuals <- df_residuals %>% 
+                arrange(residuals)
+
+#df_residuals <- df_residuals[order(df_residuals$residuals),]
+
+
+cdf_teorica <- pnorm(df_residuals$residuals,
+                      mean = ajuste$estimate[1],
+                      sd = ajuste$estimate[2])
+
+
+# Estoy grabando una función teorica existente en R
+# y asignandola a un nombre llamado funcion_teorica.
+funcion_teorica <- pnorm
+
+# Esta cálcula la función de distribución acumulada
+# con los datos de los residuales. 
+# Matematicamente esto es una función a Trozos.
+# Al ser una función está a la espera de un parámetro para poderse evaluar.
+cdf_empirica <- ecdf(df_residuals$residuals)
+
+# Como deseo calcular la diferencia entre lo calculado entre ambas funciones. Voy a crear una función.
+funcion_diferencia <- function(x) {
+  cdf_empirica(x) - funcion_teorica(x, mean = ajuste$estimate[1], sd = ajuste$estimate[2])
+}
+
+funcion_diferencia_der <- function(x) {
+   seq(1,length(x),1)/length(x) - funcion_teorica(x, mean = ajuste$estimate[1], sd = ajuste$estimate[2])
+}
+
+funcion_diferencia_izq <- function(x) {
+  funcion_teorica(x, mean = ajuste$estimate[1], sd = ajuste$estimate[2]) - seq(0,length(x),1)/length(x)
+}
+
+
+diferencia_resultados <- sapply(df_residuals$residuals, funcion_diferencia)
+
+diferencia_resultados_der <- sapply(df_residuals$residuals, funcion_diferencia_der)
+
+diferencia_resultados_izq <- sapply(df_residuals$residuals, funcion_diferencia_izq)
+
+pos_estadistico_der <- which.max(abs(diferencia_resultados_der))
+pos_estadistico_izq <- which.max(abs(diferencia_resultados_izq))
+
+estadistico_der <- diferencia_resultados_der[pos_estadistico_der]
+estadistico_izq <- diferencia_resultados_izq[pos_estadistico_izq]
+
+estadistico <- max(estadistico_izq,estadistico_der)
+
+lillieforce_test <- lillie.test(df_residuals$residuals)
+lillieforce_test$statistic
+
+```
+
+
+```{r}
+
+w1 <-  which(diferencia_resultados_der == lillieforce_test$statistic)
+w2 <-  which(diferencia_resultados_izq == lillieforce_test$statistic)
+w3 <- which(abs(diferencia_resultados)== lillieforce_test$statistic)
+
+print(w1)
+print(w2)
+print(w3)
+
+estadistico_mod <- estadistico*(sqrt(nrow(df_residuals)) - 0.01 + (0.85/sqrt(nrow(df_residuals))))
+
+
+ks.test(df_residuals$residuals,"pnorm")
+
+
+estadistico
+estadistico_mod
+estadistico_izq
+estadistico_der
+
+
+
+x_seg <- df_residuals$residuals[pos_estadistico]
+y_sup_seg <- cdf_teorica[pos_estadistico]
+y_inf_seg <- cdf_empirica(x_seg)
+
+cat("x_seg: ", format(x_seg, digits=5), 
+    " y_inf_seg: ", format(y_inf_seg, digits=5),
+    " y_sup_seg: ", format(y_sup_seg, digits=5),
+    sep='')
+
+
+ggplot(data.frame(x = df_residuals$residuals), aes(x = residuals)) +
+  geom_density(color = "blue", fill = "lightblue", alpha = 0.5) +
+  stat_function(fun = pnorm, args = list(mean = ajuste$estimate[1],
+                                         sd = ajuste$estimate[2]),
+                color = "red", size = 1) +
+  stat_ecdf(color = "green", size = 1) +
+  geom_segment(aes(x = x_seg, y = y_inf_seg, xend = x_seg,
+                   yend = y_sup_seg),
+               color = "purple", size = 1, linetype = "solid") +
+  geom_point(aes(x = x_seg, y = y_inf_seg),
+             color = "purple",size = 3) +
+  geom_point(aes(x = x_seg, y = y_sup_seg),
+             color = "purple", size = 3) +
+  annotate("text", x = x_seg , y = (y_inf_seg + y_sup_seg)/2, 
+           label = paste0("Máxima Separación=",
+                          format(lillieforce_test$statistic,
+                                 digits=5), sep=''),
+           color = "purple", size = 3, hjust = -0.05, vjust = 0) +
+  coord_cartesian(xlim = c(min(datos_mod$ing1), max(datos_mod$ing1))) +
+  xlab("Ingresos") +
+  ylab("Probabilidad acumulada") +
+  labs(title = "Esquema de funcionamiento de la prueba de Kolmogorov-Smirnov") +
+  theme_minimal()
+
+
+print(resultado_ks)
+
+
+
+
+```
+
+
+
+
+
+Vamos probar la normalidad de los errores utilizando las pruebas de Kolmogórov-Smirnov y la de Shapiro–Wilk.
+
+
+En resumen, la elección entre la prueba de Lilliefors y la prueba KS estándar depende de tus objetivos y de las suposiciones sobre la distribución de tus datos. Si estás interesado específicamente en verificar la normalidad de tus datos, la prueba de Lilliefors puede ser apropiada, especialmente para muestras pequeñas. Sin embargo, si no tienes una distribución específica en mente o si deseas verificar otras distribuciones, la prueba KS estándar es una opción más versátil.
+En cualquier caso, es importante recordar que ninguna prueba es infalible, y es fundamental interpretar los resultados en el contexto de tus objetivos de análisis y la naturaleza de tus datos.
+
 
 ```{r}
 # Probando normalidad del error. 
@@ -1205,9 +1380,23 @@ ks.test(mod1$residuals, "pnorm")
 ks.test(mod1$residuals, y = pnorm(mod1$residuals,mean = 0, sd = sqrt(sigma_2)))
 
 
-
-
 ```
+
+En resumen, la elección entre la prueba de Lilliefors y la prueba KS estándar depende de tus objetivos y de las suposiciones sobre la distribución de tus datos. Si estás interesado específicamente en verificar la normalidad de tus datos, la prueba de Lilliefors puede ser apropiada, especialmente para muestras pequeñas. Sin embargo, si no tienes una distribución específica en mente o si deseas verificar otras distribuciones, la prueba KS estándar es una opción más versátil.
+En cualquier caso, es importante recordar que ninguna prueba es infalible, y es fundamental interpretar los resultados en el contexto de tus objetivos de análisis y la naturaleza de tus datos.
+
+
+Restricción a distribución normal: La principal desventaja de la prueba de Lilliefors es que está restringida a la comprobación de la normalidad. No es adecuada para verificar si los datos se ajustan a otras distribuciones diferentes a la normal. En cambio, la prueba KS estándar es más versátil y se puede aplicar a cualquier distribución teórica.
+Lilliefors, H. (June 1967), "On the Kolmogorov–Smirnov test for normality with mean and variance unknown", Journal of the American Statistical Association, Vol. 62. pp. 399–402.
+
+❗ Menos potente: En comparación con la prueba KS estándar, la prueba de Lilliefors puede ser menos potente para detectar desviaciones de la normalidad en muestras grandes, especialmente si los datos no siguen una distribución estrictamente normal. La prueba KS estándar es más robusta en este sentido.
+
+🤔 ¿Y esto será conveniente?
+
+Supuestos: Al igual que con la prueba KS estándar, la prueba de Lilliefors asume independencia y continuidad de los datos, lo que puede no ser adecuado para todos los tipos de datos.
+
+
+
 
 - ¿Cuáles son los riesgos que implica asumir a priori un comportamiento específico para el error?
 - ¿Si el modelo no cumple con lo supuesto para el error, qué alternativas tengo?
