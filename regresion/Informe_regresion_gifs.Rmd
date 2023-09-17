@@ -1317,9 +1317,9 @@ estadistico_izq
 estadistico_der
 
 
-
-x_seg <- df_residuals$residuals[pos_estadistico]
-y_sup_seg <- cdf_teorica[pos_estadistico]
+#🛑🛑🛑
+x_seg <- df_residuals$residuals[estadistico]
+y_sup_seg <- cdf_teorica[estadistico]
 y_inf_seg <- cdf_empirica(x_seg)
 
 cat("x_seg: ", format(x_seg, digits=5), 
@@ -1346,7 +1346,7 @@ ggplot(data.frame(x = df_residuals$residuals), aes(x = residuals)) +
                           format(lillieforce_test$statistic,
                                  digits=5), sep=''),
            color = "purple", size = 3, hjust = -0.05, vjust = 0) +
-  coord_cartesian(xlim = c(min(datos_mod$ing1), max(datos_mod$ing1))) +
+  coord_cartesian(xlim = c(min(df_residuals$residuals), max(df_residuals$residuals))) +
   xlab("Ingresos") +
   ylab("Probabilidad acumulada") +
   labs(title = "Esquema de funcionamiento de la prueba de Kolmogorov-Smirnov") +
