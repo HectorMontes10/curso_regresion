@@ -1,0 +1,100 @@
+---
+title: "SERIES DE TIEMPO"
+author: "Maestría en Investigación Operativa y Estadística"
+output: 
+  rmdformats::readthedown:
+    css: styles.css
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+date: "2023"
+editor_options: 
+  markdown: 
+    wrap: 72
+  chunk_output_type: inline
+---
+
+<div>
+
+<img src="https://media2.utp.edu.co/imagenes/Logo-UTP-Azul.png" alt="UPN" class="watermark"/>
+
+</div>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  echo = TRUE,
+  message = FALSE
+)
+
+# Librerías
+library(tidyverse)
+library(janitor)
+library(openxlsx)
+library(flextable)
+library(viridis)
+library(scales)
+library(DT)
+library(lubridate)
+library(gridExtra)
+
+
+```
+
+# INTRODUCCIÓN
+
+## DOCENTES
+
+### Héctor Hernán Montes García.
+
+### Julián Piedrahíta Monroy
+
+
+## Contenido del curso
+
+- T1. Regresión Lineal, suposiciones y requisitos. 
+- T2. Estimación de los parámetros e interpretación de los valores.
+- T3. Pruebas de hipótesis relacionadas con los parámetros. 
+- T4. Evaluación de modelos de acuerdo a las suposiciones de normalidad e independencia. 
+- T5. Transformaciones de las variables, y sus implicaciones en las pruebas de hipótesis. 
+- T6. Series de Tiempo. Estacionariedad y cómo obtener una serie estacionaria a partir de una que no lo es. Correlogramas.
+- T7. Modelos de Box y Cox.
+Estimación de parámetros. 
+- T8. Criterios de evaluación de un modelo de series de tiempo. Transformaciones.
+
+## Bibliografía.
+
+Regression Modeling and Data Analysis with Applications in R. Samprit
+Chatterjee, Jeffrey S. Simonoff\
+Montgomery, D. C., Peck, E. A., & Vining, G. G. (2002). Introducción al
+análisis de regresión lineal (3ª ed.). Limusa Wiley.\
+Time Series Analysis and Its Applications: With R Examples by Shumway
+and Stoffer.\
+Time Series Analysis: Forecasting and Control by Author(s): George E. P.
+Box, Gwilym M. Jenkins, Gregory C. Reinsel, Greta M. Ljung.\
+<https://fhernanb.github.io/libro_regresion/rls.html#modelo-estad%C3%ADstico>\
+<https://bookdown.org/victor_morales/SeriesdeTiempo/>
+
+## Motivación
+
+
+Partiendo del
+
+
+![Imagen 1](Imagen%20de%20regresión%20lineal%201.jpeg)
+
+
+[Modelado de Relaciones:]{style="color: red;"}
+
+
+```{r}
+
+
+
+
+```
+
+
