@@ -60,6 +60,8 @@ library(gifski)
 library(magick)
 library(nortest)
 library(fitdistrplus)
+library(tseries)
+library(lmtest)
 
 ```
 
@@ -1480,24 +1482,114 @@ Si no hay patrones evidentes en el gráfico y los residuales se distribuyen alea
 
 👦👴👧👨👨‍👵
 
-**Ejemplo:** Puede considera revisa si el consumo calórico puede explicar residuales de un modelo simplificado en el que el peso pretenda explicar la estatura. 🔎🕵️ Aunque este ejemplo parece obvio ilustra una idea muy importante, porque nos da un criterio para ingresar una nueva variable a un modelo de regresión: Ingrésela cuando dicha variable se relaciona bien con los residuales generados por la primera versión de mi modelo!!!
+**Ejemplo:** Puede considerar revisar si el consumo calórico puede explicar residuales de un modelo simplificado en el que la estatura pretenda explicar el peso. 🔎🕵️ Aunque este ejemplo parece obvio ilustra una idea muy importante, porque nos da un criterio para ingresar una nueva variable a un modelo de regresión: Ingrésela cuando dicha variable se relaciona bien con los residuales generados por la primera versión de mi modelo!!!. Es decir, la variable debe ingresar al modelo cuando pueda explicar la variabilidad restante no explicada por mi modelo anterior. 
 
 [Prueba de Ljung-Box:]{style="color: red;"} Esta prueba se utiliza para evaluar la autocorrelación en los residuales en varios retardos. Si los residuales son independientes, las autocorrelaciones en los retardos deberían ser cercanas a cero. Por varios retardos entendemos inspeccionar relación no sólo con el valor del residual inmediatamente anterior, sino contra cualquier otro ubicado en un momento más anterior. 🔎 Es una mejora a la prueba de Durbin-Watson en la medida en que no limita la autocorrelación al retardo anterior.
 
-Estas son algunas de las formas comunes de comprobar la independencia de los errores en un modelo de regresión lineal. Si encuentras evidencia de autocorrelación o patrones en los residuales, puede ser necesario considerar modelos más avanzados, como 📉 🚪**modelos autorregresivos o modelos de series temporales**, para capturar adecuadamente la estructura de dependencia en los datos.
+Estas son algunas de las formas comunes de comprobar la independencia de los errores en un modelo de regresión lineal. Si encuentras evidencia de autocorrelación o patrones en los residuales, puede ser necesario considerar modelos más avanzados, como 📉 🚪**modelos autorregresivos, o de media móvil, o en forma más general modelos de series temporales**, para capturar adecuadamente la estructura de dependencia en los datos.
 
 **En conclusión**:
 
 En regresión lineal asumimos la no correlación de los errores. En nuestro caso el precio del aguacate y el precio del dólar son variables evolucionando en el tiempo, así que quisiéramos que tras el transcurrir del tiempo nuestro modelo no se deteriore. Una forma en que esto puede ocurrir es que alguna autocorrelación temporal provoque residuales que van variando en sus propiedades conforme el tiempo pasa. Por tal motivo necesitamos técnicas como las anteriores para probar independencia.
 
-Por ejemplo puede ocurrir que el error se vaya volviendo más grande en promedio con el paso del tiempo o vaya creciendo en dispersión, o cualquier otra anomalía que impida suponer que tenemos un modelo estable para todo momento del tiempo. Los gráficos de dispersión típicos ilustran la asociación entre la magnitud de la variable predictora y la variable respuesta, pero salvo que los errores se dibujen indexados por la fecha en la que tal error ocurrió, será imposible apreciar posibles patrones temporales. Haremos esas inspecciones a continuación 🔎 :
+Por ejemplo puede ocurrir que el error se vaya volviendo más grande en promedio con el paso del tiempo o vaya creciendo en dispersión, o cualquier otra anomalía que impida suponer que tenemos un modelo estable para todo momento del tiempo. Los gráficos de dispersión típicos ilustran la asociación entre la magnitud de la variable predictora y la variable respuesta, pero para probar independencia es preferible que los errores se dibujen indexados por la fecha en la que tal error ocurrió, y así poder apreciar posibles patrones temporales. Haremos esas inspecciones a continuación 🔎 :
+
+```{r}
+# Primero inspeccionamos las variables individuales para observar su
+# comportamiento temporal en un mismo gráfico
+
+# library(lubridate)
+x <- hass_dolar$precio_dolar
+y <- hass_dolar$precio_aguacate_kg
+
+hass_dolar$fecha <-as.Date(paste0(hass_dolar$anio,"-",hass_dolar$mes,"-01"))
+hass_dolar$predicciones <- mod1$fitted.values
+hass_dolar$residuales <-mod1$residuals
+  
+# Gráfico de evolución de precios y predicciones
+
+ggplot(hass_dolar, aes(x = fecha)) +
+  geom_line(aes(y = precio_dolar, color = "Precio del dólar"), size = 1) +
+  geom_line(aes(y = precio_aguacate_kg, color = "Precio del aguacate"), size = 1) +
+  geom_line(aes(y = predicciones, color = "Predicciones precio aguacate"), size = 1) +
+  scale_color_manual(values = c("Precio del dólar" = "blue",
+                                "Precio del aguacate" = "green",
+                                "Predicciones precio aguacate" = "red")) +
+  labs(title = "Evolución temporal del precios y predicciones",
+       x = "Fecha",
+       y = "Valor") +
+  theme_minimal() +
+  scale_x_date(date_breaks = "1 year", date_labels = "%b %Y") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+De entrada, podemos observar en el gráfico anterior que hay zonas donde el precio del aguacate fue más volátil que el precio del dólar, razón por la cual el precio del dólar no pudo seguir eficientemente el patrón del precio del aguacate, veremos esto cómo afectó los residuales:
+
 
 ```{r}
 hass_dolar %>% 
-  ggplot(aes(x= precio_dolar, y= precio_aguacate_kg )) +
-  geom_point()+ theme_light()+
-  geom_smooth(method='lm', formula=y~x, se=TRUE, col='dodgerblue1')
+  ggplot(aes(x= fecha, y=residuales)) +
+  geom_point()+ 
+  geom_line(aes(y = residuales, color = "residuales"), size = 1)+
+  theme_light()
 ```
+
+¿Cuáles son las preguntas que nos tenemos qué hacer acá?
+
+- ¿Son estos errores independientes?
+- ¿Cómo se define la independencia en estadística?
+- ¿Con qué recursos contamos para evaluarla que no consistan sólo en este gráfico?
+
+Para comenzar a formalizar estas cuestiones es importante, introducir primero algunos conceptos básicos.
+
+[Variable aleatoria]{style="color: red;"}: Una variable aleatoria X es una función de \[
+f : \Omega \rightarrow \mathbb{R}\] con $\Omega$ el conjunto de resultados posibles de un experimento aleatorio. En otras palabras un mapeo desde el espacio de descripciones muestrales a los números reales con el fin de asociar a los resultados del experimento un valor numérico con el cual habilitar operaciones matemáticas. 
+
+[Proceso estocástico]{style = "color: red;"}: Sea $\mathcal{T}$ un conjunto arbitrario. Un proceso estocástico es una familia $\{X(t), \text{ t} \in \tau \}$, tal que, para cada $t \in \mathcal{T}, X(t)$ es una variable aleatoria.  Es decir, es una secuencia de variables aleatorias ordenadas por un índice, típicamente tomado del conjunto de los números enteros, o del conjunto de los números reales.
+
+[Proceso estocástico en tiempo discreto]{style = "color: red;}: Es un proceso estocástico con un índice temporal discreto. Significando que $\tau \in \mathbb{Z}$
+
+[Especificación de un proceso estocástico]{style = "color: red;"}: Sea $t_1, t_2, t_3,...,t_n$ elementos cualquiera de $\mathcal{T}$ y consideremos
+
+$$F(x_1, x_2, x_3, ..., x_n; t_1, t_2, t_3, ..., t_n)=P\{X(t_1)<=x_1, ..., X(t_n)<=x_n\}$$
+[Definición de un proceso estocástico estacionario]{style = "color: red;"}: Un proceso estocástico $\{X(t), \text{ t} \in \mathcal{T} \}$ se dice estrictamente estacionario si todas las distribuciones finito dimensionales tal como se definen en la ecuación anterior permanecen siendo las mismas sobre traslaciones en el tiempo, es decir:
+
+$$F(x_1, x_2, x_3, ..., x_n; t_1+\tau, t_2+\tau, t_3+\tau, ..., t_n+\tau)=F(x_1, x_2, x_3, ..., x_n; t_1, t_2, t_3, ..., t_n)$$
+Algunas consecuencias de lo anterior son:
+
+- $E\{X(t)\} = \mu(t) = \mu$
+- $Var\{X(t)\} = \sigma²(t) = \sigma²$
+- $\gamma(t_1, t_2) = \gamma(t_1-t_2, 0) = Cov\{X(t_1-t_2), X(0)\}$ o equivalentemente $\gamma{\tau} = Cov\{X(t), X(t+\tau)\} = Cov\{X(0), X(\tau)\}$ para t, $\tau \in \mathcal{T}$
+
+Reflexiones en lenguaje informal:
+
+- Un proceso estocástico quedará suficientemente definido si definimos la distribución de probabilidad n-dimensional conjunta para cada $n>=1$, es decir, tomando $n$ variables del proceso estocástico a la vez, sería necesario especificar la relación estadística de esas n variables a la vez para cada eleción de n. En nuestro contexto implica especificar cómo se espera que el precio de hoy se relacione con el precio de ayer, o cómo se espera que el precio de hoy se relacione con el de ayer y además con el de antier. Y así sucesivamente para cualquier grupo finito de precios que decida tomar a consideración.
+
+- Un proceso estocástico estacionario se puede interpretar como aquel cuyas propiedades estadísticas permanencen constantes a lo largo del tiempo y sólo cambiaran en función del grupo de $n$ variables que decida obervar conjuntamente, pero no de la posición de esas n variables en el tiempo. Por ejemplo, suponiendo que n=1, esto implicaría que las propiedades estadísticas de cada variable tomada individualmente no se van alteradas conforme el tiempo avance, en particular cada variable será estable en media y en varianza. Lo que significa que puedo reunir las observaciones individuales en cada momento en el tiempo para estimar la media constante y la varianza de toda la secuencia, en la media en que en cada punto temporal estoy asumiendo que la media y la varianza es igual. Esto siempre se cumplirá? Por supuesto que no, es una suposición que imponemos a los datos para poder hacer inferencia con un único set de valores históricos observados. 
+
+- Si la condición de estacionariedad estricta falla no hay nada que se pueda hacer en el estado actual del avance de la ciencia estadística.🤔 La única alternativa es relajar un poco las condiciones para exigencia de estacionariedad, cómo por ejemplo exigir estacionariedad débil consistente en pedir sólo homogeneidad en media, en varianza y en covarianza de segundo orden a la serie de tiempo bajo estudio.  Exigir estacionariedad estricta es algo muy complicado de garantizar en la naturaleza. 
+
+- Además es más fácil diseñar pruebas de estacionariedad débil.
+
+Apliquemos una para la serie de tiempo de residuales
+
+```{r}
+
+# Prueba de Dickey-FUller Aumentada
+resultado_adf <- adf.test(mod1$residuals)
+print(resultado_adf)
+
+# Prueba de White
+resultado_white <- bptest(mod1)
+# Muestra el resultado de la prueba
+print(resultado_white)
+
+```
+
+En este caso debemos interpretar valores p<0.05 de la prueba de Dickey como un apoyo a la hipótesis alternativa de estacionariedad. Es decir, podemos considerar los residuales del modelo como estacionarios, porque un modelo autoregresivo con 5 rezagos no logró encontrar evidencia estadística de autocorrelaciones del error conducentes a no estacionariedad. 
+
+Por otro lado, podemos interpretar valores p<0.05 de la prueba de White como un apoyo a la hipótesis de homocedasticidad, es decir, podemos considerar los residuales del modelo como constantes en varianza a lo largo del tiempo.
 
 # Varianza de los residuales del modelo
 
