@@ -47,7 +47,6 @@ library(tidyverse)
 library(janitor)
 library(openxlsx)
 library(flextable)
-# library(kableExtra)
 library(viridis)
 library(scales)
 library(DT)
@@ -62,7 +61,8 @@ library(nortest)
 library(fitdistrplus)
 library(tseries)
 library(lmtest)
-
+library(stats)
+library(sandwich)
 ```
 
 # INTRODUCCIÓN
@@ -1450,7 +1450,7 @@ una distribución distinta a la normal ¿Puedo seguir usando los métodos de inf
 
 # 2. EL SUPUESTO DE INDEPENDENCIA DEL ERROR
 
-Un supuesto que hemos perdido por un momento en los apartados anteriores es el supuesto de independencia del error. Su consideración es importante porque representa un punto de quiebre en el uso de modelos de regresión vs modelos alternativos como las series de tiempo. Pero ¿Qué significa exactamente la independencia?. Consideremos los siguientes escenarios:
+Un supuesto que hemos perdido de vista por un momento en los apartados anteriores es el supuesto de independencia del error. Su consideración es importante porque representa un punto de quiebre en el uso de modelos de regresión vs modelos alternativos como los de series de tiempo. Pero ¿Qué significa exactamente la independencia?. Consideremos los siguientes escenarios:
 
 - Un modelo que presenta sistemáticamente más dificultades para predecir de forma exacta valores altos de la variable respuesta pero es bueno prediciendo valores bajos.
 
@@ -1462,13 +1462,13 @@ Un supuesto que hemos perdido por un momento en los apartados anteriores es el s
 
 Para cada uno de los casos anteriores el investigador tiene que decidir el tipo de recurso gráfico o estadístco que le permita inspeccionar si una situación de esa naturaleza está ocurriendo. Las alternativas son:
 
-[Gráficos de Residuales vs. Valores Ajustados:]{style="color: red;"} Graficar los residuales (diferencia entre los valores observados y los valores predichos) contra los valores ajustados (las predicciones del modelo) es una forma común de detectar patrones de no independencia. 
+[Gráficos de residuales vs. valores ajustados:]{style="color: red;"} Graficar los residuales (diferencia entre los valores observados y los valores predichos) contra los valores ajustados (las predicciones del modelo) es una forma común de detectar patrones de no independencia. 
 
 🤔💭 ¿Qué comportamiento es deseable para este gráfico?
 
 Si no hay patrones evidentes en el gráfico y los residuales se distribuyen aleatoriamente alrededor de cero, es un indicio de independencia.
 
-[Gráfico de Residuales con índice temporal:]{style="color: red;"} Si tus datos están ordenados en el tiempo (series temporales), un gráfico de residuales en el tiempo puede revelar patrones de autocorrelación. Deben parecer ruido blanco, es decir, sin patrones visibles. También es conveniente usar gráficos de autocorrelación de residuales (ACF) y gráficos de autocorrelación parcial de residuales (PACF), ya que estos informan sobre una posible correlación entre el error actualmente observado y errores observados en otros momentos del pasado.
+[Gráfico de residuales con índice temporal:]{style="color: red;"} Si tus datos están ordenados en el tiempo (series temporales), un gráfico de residuales en el tiempo puede revelar patrones de autocorrelación. Deben parecer ruido blanco, es decir, sin patrones visibles. También es conveniente usar gráficos de autocorrelación de residuales (ACF) y gráficos de autocorrelación parcial de residuales (PACF), ya que estos informan sobre una posible correlación entre el error actualmente observado y errores observados en otros momentos del pasado.
 
 [Prueba de Durbin-Watson:]{style="color: red;"} Esta prueba estadística evalúa si existe autocorrelación de primer orden en los residuales, mejora el análisis gráfico por ser una prueba formal. Un valor de Durbin-Watson cercano a 2 indica independencia, mientras que valores significativamente diferentes de 2 pueden indicar autocorrelación. De nuevo es necesario elegir una variable de ordenamiento para los errores encaminada a detectar el tipo de patrón de interés. 
 
@@ -1477,7 +1477,7 @@ Si no hay patrones evidentes en el gráfico y los residuales se distribuyen alea
 - Ordene los errores según magnitud del valor predicho (ajustado)
 - Ordene los errores según el tiempo.
 - Ordene los errores según el orden de experimentación.
-- No ordene por la posición del registro en el data frame a menos qué entienda qué significa ese orden y qué aporte da al análisis.
+- No ordene por la posición del registro en el data frame a menos qué entienda qué significa ese orden y qué aporta al análisis.
 - Ordene por una variable de interés en la que quiera inspeccionar si los residuales se ven afectados por la magnitud de tal variable. 
 
 👦👴👧👨👨‍👵
@@ -1528,20 +1528,102 @@ De entrada, podemos observar en el gráfico anterior que hay zonas donde el prec
 
 
 ```{r}
+# Gráfico de residuales vs valores ajustados
+hass_dolar %>% 
+  ggplot(aes(x= predicciones, y=residuales)) +
+  geom_point()+ 
+  theme_light()+
+  ylab("Residuales") +
+  xlab("Valor predicho")
+
+# Gráfico de residuales con índice temporal
 hass_dolar %>% 
   ggplot(aes(x= fecha, y=residuales)) +
   geom_point()+ 
   geom_line(aes(y = residuales, color = "residuales"), size = 1)+
-  theme_light()
+  theme_light()+
+  xlab("Fecha")+
+  ylab("Residuales")
+
+# Prueba de Durbin-Watson tomando el mismo orden en el que venían los
+# datos en el dataframe puesto que este orden se corresponde con el 
+# orden temporal.
+
+resultado_dw <- dwtest(mod1)
+print(resultado_dw)
+
+# Prueba de Ljung-Box
+# Como esperamos cierta estacionalidad intra año en los datos podría tener sentido esperarla ttambién para los residuales. Por lo tanto eligiremos lag = 1,2,3,...,12
+
+p_values <- vector()
+for (i in 1:12) {
+  resultado_ljung_box <- Box.test(mod1$residuals, lag = i,
+                                  type = "Ljung-Box")
+  p_values[i] <-resultado_ljung_box$p.value
+}
+
+resultados_lb <- data.frame(
+  lag = seq(1,12),
+  p_value = p_values
+)
+
+print(resultado_ljung_box)
+print(resultados_lb)
 ```
 
-¿Cuáles son las preguntas que nos tenemos qué hacer acá?
+[Conclusiones:]{style="color: red;"}
 
-- ¿Son estos errores independientes?
-- ¿Cómo se define la independencia en estadística?
-- ¿Con qué recursos contamos para evaluarla que no consistan sólo en este gráfico?
+- Los errores no presentan un patrón claro al momento de compararse contra los valores ajustados, es decir que el modelo tiene una calidad similar prediciendo valores pequeños, intermedios y grandes en el precio del aguacate.
 
-Para comenzar a formalizar estas cuestiones es importante, introducir primero algunos conceptos básicos.
+- El gráfico de residuales indexados por el tiempo parece tener ciertas oscilaciones predecibles pero es difícil de establecer por simple inspección visual.
+
+- La prueba de Durbin Watson nos ayuda a revisar si hay autocorrelación del error de hoy con el error de hace un mes (recuerde que la serie es mensual). De hecho la prueba arroja un estadístico de prueba $DW < 2$ indicando con ello autocorrelación positiva de los errores. 
+
+- En consistencia con lo anterior la prueba de Ljung-Box arroja valores p sistemáticamente menores que 0.05 para todos los rezagos considerados: 1 mes, 2 meses, 3 meses, ..., 1 año. Y decimos que en consistencia con la prueba de Durbin Watson porque la prueba de Ljung box será indicativa de autocorrelación en máximo n rezagos si ya lo es para máximo n=1 rezagos como lo indica la prueba DW.
+
+- La no independencia del error invalida completamente mi modelo, porque en estos escenarios la varianza del error del modelo se encuentra subestimada, pues ante la presencia de autocorrelación de los residuales no podemos afirmar que $\sigma_e² = var(error)$ ya que esto asume implícitamente independencia. En procesos autocorrelacionados la varianza es realmente mayor que esto. Usar un error subestimado puede llevarme a conclusiones falsamente significativas, como por ejemplo puede declarar la variable predictora como significativa, al estimar inadecuadamente el error para $\beta_1$ ya que $\widetilde{V}(\beta_1)$ depende de $\widetilde{\sigma_e²}$
+
+Dejaremos el estudio de las cuestiones relativas al tratamiento de errores autocorrelacionados para el capítulo de series de tiempo. 
+
+# 2. EL SUPUESTO DE HOMOCEDASTICIDAD
+
+De manera informal este supuesto busca verificar que la varianza de los errores es estable, bien sea respecto al tiempo, respecto a una variable predictora, o respecto a la magnitud de los valores predichos. Las inspecciones de estas cuestiones usualmente se basan en el estudio de los patrones de los gráficos de residuales, en específico estudiamos:
+
+- Si un gráfico de residuales estandarizados (divididos por su desviación estándar) vs valor predicho arroja dispersiones diferentes conforme el valor predicho crece. En un gráfico como éste si observamos que la dispersión de los puntos cambia a lo largo de los valores ajustados (por ejemplo, los puntos se abren o se estrechan a medida que aumentan los valores ajustados), eso podría indicar la presencia de heterocedasticidad.
+
+- Si el modelo posee una variable categórica predictiva (no es nuestro caso), respecto a la cual podamos validar si la dispersión del error es mayor en los grupos definidos por esa variable predictiva. Ampliaremos estas cuestiones en el apartado de modelo de regresión lineal múltiple.
+
+- Si un gráfico de residuos vs variables independientes revela que la dispersión de los residuos cambia con respecto a cada variable independiente. Por ejemplo, podemos patrones de abanico o embudo que puedan indicar problemas de heterocedasticidad.
+
+- Si alguna pruebas estadísticas formales como la prueba de Breusch-Pagan o la prueba de White proporcionan evidencia de heterocedasticidad al comprobarse que los cuadrados de los residuales se relación sistemáticamente con el conjunto de variables predictoras, esto es, si es posible construir un modelo no ingenuo que haga depender el cuadrado del error de los valores de las variables predictoras. Si tal cosa existe significa que los errores son heterocedasticos en la medida en que su varianza depende o cambia según los valores de las variables predictoras. 
+Apliquemos estos análisis a continuación:
+
+```{r}
+# Residuales estandarizados vs valores predichos
+hass_dolar %>% 
+  ggplot(aes(x= predicciones, y=residuales/sd(residuales))) +
+  geom_point()+ 
+  theme_light()+
+  ylab("Residuales estandarizados") +
+  xlab("Valor predicho")
+
+# Residuales estandarizados vs precio del dólar
+hass_dolar %>% 
+  ggplot(aes(x= precio_dolar, y=residuales/sd(residuales))) +
+  geom_point()+ 
+  theme_light()+
+  ylab("Residuales estandarizados") +
+  ylab("Precio del dólar")
+
+# Pruebas estadísticas formales
+resultado_breusch_pagan <- bptest(mod1)
+print(resultado_breusch_pagan)
+resultado_white <- bptest(mod1,
+                          varformula = ~ I(precio_dolar^2),
+                          data=hass_dolar)
+print(resultado_white)
+
+```
 
 [Variable aleatoria]{style="color: red;"}: Una variable aleatoria X es una función de \[
 f : \Omega \rightarrow \mathbb{R}\] con $\Omega$ el conjunto de resultados posibles de un experimento aleatorio. En otras palabras un mapeo desde el espacio de descripciones muestrales a los números reales con el fin de asociar a los resultados del experimento un valor numérico con el cual habilitar operaciones matemáticas. 
