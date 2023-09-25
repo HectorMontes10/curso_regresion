@@ -1614,16 +1614,190 @@ hass_dolar %>%
   theme_light()+
   ylab("Residuales estandarizados") +
   ylab("Precio del dólar")
+```
 
+Como se puede apreciar, el gráfico de errores estandarizados vs valores predichos será muy parecido al gráfico de errores vs variable predictora en un modelo de regresión lineal simple, puesto que en este contexto las predicciones dependen de la variable de pronóstico en forma tal que la primera no es más que un rescalado y desplazamiento de la segunda. Tendría más sentido en un modelo de regresión lineal múltiple generar ambos gráficos, acá uno sólo de los anteriores bastaría. 
+
+Por otro lado, ambos gráficos revelan que no existe un patrón específico que haga sospechar de la presencia de heterocedasticidad, hagamos un inspección más cuidadosa usando pruebas formales:
+
+```{r}
 # Pruebas estadísticas formales
 resultado_breusch_pagan <- bptest(mod1)
 print(resultado_breusch_pagan)
+```
+
+La prueba de Breusch-Pagan propuesta en (1979) consiste en ajustar un modelo de regresión lineal con variable respuesta dada por residuales del modelo original al cuadrado $e_i²$ y como covariables las variables del modelo original. Por ejemplo, si se tienen $k=2$ covariables para explicar a $Y$ entonces el modelo de regresión para estudiar la homocedasticidad es:
+
+$$e_i² = \delta_0 + \delta_1*x_1 + \delta_2*x_2 + u$$
+
+Si se concluye que $\delta_1 = \delta_2 = 0$, significa que los residuales no son función de las covariables del modelo. El estadístico en esta prueba está dado por $n*R²$ y bajo la hipótesis nula verdadera, el estadístico tiene distribución $\chi²_k$ 
+
+Lo que el resultado nos está indicando es que $\chi²_1 = 1.741$, y $df = 1$, con $\text{p value} = 0.187$, y debido a que p>0.05, no hay evidencia estadística suficiente para el rechazo de la hipótesis de homocedasticidad. Todo esto en concordancia con lo revelado por el análisis gráfico. 
+
+Sin embargo, el test de Breusch-Pagan sólo detecta formas lineales de heterocedasticidad, esto significa que sólo relaciona los cuadrados del error con términos que dependen linealmente de las covariables. Para resolver esta limitación, el test de White propuesto por White (1980), permite contrastar no linealidades utilizando los cuadrados y los productos cruzados de todos los regresores. Sea que se use Breusch-Pagan o White, note que sólo se están explorando dos formas de heterocedasticidad en un universo infinitamente amplio de formas en que ésta se puede presentar, esto es, sólo se explora heterocedasticidad con forma parabólica y con forma lineal. Se podrían explorar otras pero conforme la complejidad del modelo crece se pierde su utilidad en la práctica. 
+
+En el caso del test de White, si $k=2$ el modelo que relaciona $e_i²$ con las covariables queda así:
+
+
+$$e_i² = \delta_0 + \delta_1x_1 + \delta_2x_2 + \delta_3x_1x_2 + \delta_4 x_1² + \delta_5x_2² + u$$
+Podemos pensar el modelo de White como una extensión del modelo de Breusch-Pagan, por eso no es de extrañar que en la siguiente celda usemos la misma función en R, pero agregando un término al cuadrado para la única covariable implicada en nuestro ejemplo. No habrán términos cruzados porque sólo tenemos una variable predictora.
+
+```{r}
 resultado_white <- bptest(mod1,
-                          varformula = ~ I(precio_dolar^2),
+                          varformula = ~ (precio_dolar +
+                                            I(precio_dolar^2)),
                           data=hass_dolar)
 print(resultado_white)
-
 ```
+
+Para ilustrar como trabajan estas pruebas por debajo, considere la siguiente implementación manual:
+
+```{r}
+
+# Implementación manual del test de White
+
+#1. Construir el dataframe que relaciona el cuadrado del error con
+#los términos lineales de la predictora y el término cuadrático
+#(por ser modelo lineal simple no hay productos cruzados)
+
+df_squared_error <- data.frame(
+  squared_error = mod1$residuals ^ 2,
+  precio_dolar = hass_dolar$precio_dolar,
+  precio_dolar_2 = hass_dolar$precio_dolar^2
+)
+
+#2. Calcule un modelo lineal ajustado sobre el cuadrado del error regresado por el termino lineal y cuadrático del precio del dolar
+
+modelo_white <- lm(data = df_squared_error,
+                   squared_error ~ precio_dolar + precio_dolar_2)
+
+#3. Calcule el estadístico de prueba como n*R^2 (con n=datos del dataframe de errores)
+R2 <- summary(modelo_white)$`r.squared`
+w_estadistico = nrow(df_squared_error)*R2
+#4. Como el estadístico se distribuye ji-cuadrado con 2 grados de libertad (2 variables regresoras) se tiene que el p valor es:
+p_valor = 1-pchisq(as.numeric(w_estadistico),2)
+paste("BP = ",round(w_estadistico,4)," y p_valor=",round(p_valor,5))
+```
+
+En la salida impresa puede notar que los resultados son consistentes con lo generado por la prueba de heterocedasticidad arrojada con la función bptest.
+
+Además, cuando se estudia heterocedasticidad en segundo grado se aprecia que el modelo tiene varianzas del error no constantes porque estas dependen del cuadrado del precio del dólar. Veamos un poco esto:
+
+```{r}
+
+estimated_squared_error <- modelo_white$coefficients[1] + modelo_white$coefficients[2]*df_squared_error$precio_dolar +modelo_white$coefficients[3]*df_squared_error$precio_dolar_2
+
+p<- ggplot(data = df_squared_error, aes(x=precio_dolar,
+                                        y=squared_error))+
+  geom_point()+
+  geom_line(aes(y=estimated_squared_error, color="red"))+
+  labs(title="Modelo white sobre cuadrados del error",
+         subtitle = paste("R²=",round(R2,4),
+                          "W-Estadístico=",round(w_estadistico,4),
+                          "p_valor=",round(p_valor,5)))+
+  scale_color_manual(values=c("red"="blue"),
+                     labels=c("Error cuadrado estimado"),
+                     name="Modelo de White")
+
+print(p)
+```
+
+En este caso $W = nR² = 7.8925$ es el estadístico de la prueba con $k=2$ grados de libertad asociados a el número de covariables. Ahora bien $\text{p valor} = 0.01933$, obtenido a través de calcular $p(\chi^2_2>=7.8925)$, indicando esta vez que hay evidencia estadística para asumir heterocedasticidad de orden cuadrático. Podrá notar que un patrón parabólico no muy fuerte se observa cuando dibujamos el modelo sobre la nube de puntos del error cuadrado vs el precio del dólar. 
+
+Vamos a intentar resolver el problema de heterocedasticidad con una transformación de la variable respuesta que tienda a aplanar la curva de errores cuadrados responsable de la falla del supuesto. Dos posibles transformaciones son: 
+
+- 1. Extraer raíz cuadrada de la respuesta.
+- 2. Extraer logaritmo natural de la respuesta. 
+
+La segunda transformación es mucho más severa. Probaremos con esta. 
+
+```{r}
+
+# Datos para nuevo modelo con y modificada a través de logaritmo natural
+data_mod <- data.frame(
+  y_mod = log(hass_dolar$precio_aguacate_kg),
+  precio_dolar = hass_dolar$precio_dolar,
+  precio_dolar_2 = hass_dolar$precio_dolar^2
+)
+
+# Nuevo modelo lineal
+mod2<-lm(y_mod~precio_dolar, data=data_mod)
+residuales_mod<-mod2$residuals
+
+#Guardamos los cuadrados del nuevo error
+data_mod$squared_error <- residuales_mod^2
+
+#Aplicamos prueba de white sobre el modelo con la y modificada
+white_test_mod<-bptest(mod2,
+                       varformula = ~ (precio_dolar + I(precio_dolar^2)),
+                       data=data_mod)
+print(white_test_mod)
+w_estadistico_mod <- white_test_mod$statistic
+p_value_mod <- white_test_mod$p.value
+
+#Obtenemos los coeficientes para dibujar curva de errores cuadrados
+#estimados
+
+manual_white_test_mod <-lm(data = data_mod,
+                           squared_error ~ precio_dolar + precio_dolar_2)
+
+coefs_mod <- manual_white_test_mod$coefficients
+R2_mod <- summary(manual_white_test_mod)$`r.squared`
+
+#Obtenemos los nuevos errores cuadrados estimados
+data_mod$estimated_squared_error <- (coefs_mod[1] +
+                                    coefs_mod[2]*data_mod$precio_dolar +
+                                    coefs_mod[3]*data_mod$precio_dolar^2)
+
+#Comprobamos que no se nos deteriore la normalidad
+Lilliefors_test_mod <- lillie.test(mod2$residuals)
+print(Lilliefors_test_mod)
+
+#Comprobamos si milagrosamente resolvimos la no independencia del modelo
+#original
+resultado_ljung_box_mod <- Box.test(mod2$residuals, lag = i,
+                                    type = "Ljung-Box")
+print(resultado_ljung_box_mod)
+
+#Graficamos de nuevo el modelo de white sobre los cuadrados del error
+#para el modelo con y modificada
+p<- ggplot(data = data_mod, aes(x=precio_dolar,
+                                  y=squared_error))+
+  geom_point()+
+  geom_line(aes(y=estimated_squared_error, color="red"))+
+  labs(title="Modelo white sobre cuadrados del error",
+         subtitle = paste("R²=",round(R2_mod,4),
+                          "W-Estadístico=",round(w_estadistico_mod,4),
+                          "p_valor=",round(p_value_mod,5)))+
+  scale_color_manual(values=c("red"="blue"),
+                     labels=c("Error cuadrado estimado"),
+                     name="Modelo de White")
+
+print(p)
+```
+
+Las conclusiones de todo esto son:
+
+- Nuestro modelo es inservible, porque la independencia sigue sin cumplirse, supuesto fundamental para poder usar el modelo con la confianza de no estar subestimando la varianza del error.
+- La prueba de homocedasticidad pasa por un estrecho margen pese a las severas transformaciones.
+- No tenemos problemas con normalidad.
+
+Hasta acá las discusiones del modelo lineal simple con este dataset de ejemplo. Para nuestro capítulo siguiente relacionado con pruebas de hipótesis para los betas del modelo, tendremos que usar un modelo que cumpla con todos los supuestos. Para este efecto aprovecharemos para simular datos bajo un modelo teórico perfecto. Esta herramienta de simulación permitirá tomar control del cumplimiento de los supuestos para investigar tranquilamente el comportamiento estadístico de los betas estimados de un modelo cuando todos las condiciones para su uso están garantizadas. 
+
+## Ejercicios propuestos:
+
+1. Calcular un modelo de regresión para los cambios porcentuales del precio del aguacate de un mes a otro vs los cambios porcentuales del precio del dólar de un mes a otro. ¿En qué difiere este enfoque del originalmente seguido? ¿Cuál cree que sea la ventaja de generar un modelo de esta naturaleza?
+
+2. Evalue la normalidad del error para este modelo usando la prueba de Lilliefors
+
+3. Evalúe en un gráfico la consistencia de la prueba de Lilieforse (Pista: Use el código ya suministrado para calcular la máxima distancia entre la curva normal teórica y la curva empírica)
+
+4. Pruebe la homocedasticidad del nuevo modelo usando tanto gráficos como pruebas formales, y dibuje la curva de errores cuadrados estimados basada en el modelo de Breusch-Pagan, es decir, sin incluir el término cuadrático. ¿Es esta prueba suficientemente concluyente?
+
+5. Pruebe la independencia de los errores del modelo, comparéla contra los resultados obtenidos con el modelo que usaba los precios en valores absolutos, es decir, el modelo discutido en este documento. 
+
+6. Extraiga conclusiones generales de la adecuación del nuevo modelo a todos los supuestos, ¿Cuál de los dos modelos sería más útil para hacer predicciones, el modelo elaborado por los profesores o el que ustedes elaboraron? Felicítese mucho si el suyo es mejor. :)
+
 
 [Variable aleatoria]{style="color: red;"}: Una variable aleatoria X es una función de \[
 f : \Omega \rightarrow \mathbb{R}\] con $\Omega$ el conjunto de resultados posibles de un experimento aleatorio. En otras palabras un mapeo desde el espacio de descripciones muestrales a los números reales con el fin de asociar a los resultados del experimento un valor numérico con el cual habilitar operaciones matemáticas. 
