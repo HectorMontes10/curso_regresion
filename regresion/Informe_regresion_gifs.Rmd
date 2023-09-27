@@ -1804,9 +1804,9 @@ Hasta acá las discusiones del modelo lineal simple con este dataset de ejemplo.
 
 # 6. PRUEBAS DE HIPÓTESIS SOBRE LOS BETAS DEL MODELO
 
-Para poder entender muy bien lo que significa probar hipótesis sobre los betas de un modelo de regresión, lo primero que hay que tener en claro es que un modelo teórico se puede pensar como una máquina generadora de datos. Como en toda máquina habrá una ajuste inicial que requiere ser definido antes de producir algo con la máquina, pero el problema radica en que usualmente no estamos presentes en el momento en que tal máquina se ajusta, sino que debemos **inferir** el ajuste de acuerdo con los datos que la máquina ya nos está ya arrojando. 
+Para poder entender muy bien lo que significa probar hipótesis sobre los betas de un modelo de regresión, lo primero que hay que tener en claro es que un modelo teórico se puede pensar como una máquina generadora de datos 🧮. Como en toda máquina habrá una ajuste inicial que requiere ser definido antes de producir algo con la máquina, pero el problema radica en que usualmente no estamos presentes en el momento en que tal máquina se ajusta, sino que debemos **inferir** 🕵️‍♂️el ajuste de acuerdo con los datos que la máquina ya nos está ya arrojando. 
 
-Es decir, debemos reconocer la incertidumbre que tenemos frente al conocimiento del ajuste inicial e intentar minimizarla con base en los datos ya generados. Otra cuestión es que no podemos quedarnos infinitamente observando los datos que la máquina genera, sino que usualmente tenemos una muestra limitada de los mismos. Las preguntas centrales que el estadístico debe responder son:
+Es decir, debemos reconocer la incertidumbre que tenemos frente al conocimiento del ajuste inicial e intentar minimizarla con base en los datos ya generados. Otra cuestión es que no podemos quedarnos infinitamente observando los datos que la máquina genera, sino que usualmente tenemos una muestra limitada de los mismos. Las preguntas centrales que el estadístico debe responder son: 🤔
 
 - ¿Cuáles son estas configuraciones iniciales en el caso de un modelo de regresión?
 - ¿Cómo podemos aprovechar al máximo la muestra de datos observados para intentar **inferir** la configuración inicial de la máquina (de ahora en adelante llamada más formalmente proceso generador de datos)?
@@ -1821,7 +1821,7 @@ En capítulos anteriores dejamos claro que un método posible para estimar los p
 
 - ¿Generar una recta que se ajuste lo mejor posible a la muestra garantiza obtener estimaciones que realmente se parezcan a los parámetros de mi proceso generador de datos?
 
-Lo que queremos indicar con esta pregunta es que un buen ajuste no tiene que ser sinónimo de buena estimación de parámetros, y si lo es deberíamos poderlo demostrar, porque el ajuste habla de la calidad del modelo para explicar los datos observados, y no necesariamente para explicar todo el universo de los datos que mi proceso generador de datos podría generar. Si nos ajustamos bien a la muestra, esto no implica a-priori ajustarnos bien a la población. No obstante algo nos hace sospechar que no es tan mala idea usar una estrategia como esta porque después de todo no conocemos más datos que los que la muestra pueda revelarnos. 
+Lo que queremos indicar con esta pregunta es que: un buen ajuste no tiene que ser sinónimo de buena estimación de parámetros, y si lo es deberíamos poderlo demostrar, porque el ajuste habla de la calidad del modelo para explicar los datos observados, y no necesariamente para explicar todo el universo de los datos que mi proceso generador de datos podría generar. Si nos ajustamos bien a la muestra, esto no implica a-priori ajustarnos bien a la población. No obstante algo nos hace sospechar que no es tan mala idea usar una estrategia como esta porque después de todo no conocemos más datos que los que la muestra pueda revelarnos. 
 
 - ¿Cómo garantizamos que dentro de todas las posibles operaciones matemáticas que podemos ejecutar con los valores de la muestra, las operaciones:
 
@@ -1846,14 +1846,76 @@ Y exploramemos como se comportan los valores de $\widetilde\beta_0$ y $\widetild
 
 
 ```{r}
-
 # Generemos un modelo teórico, y extraigamos una muestra de él
 
-n <- 1000
+n <- 50
 vector_x <- c(1:n) 
-sigma <- 4  
+sigma <- 2
 beta_0 <- 2
 beta_1 <- 0.5
+
+
+generador_muestra <-  function(n,vector_x,sigma, beta_0,beta_1){
+  
+  error <- rnorm(n,mean = 0, sd = sigma)
+  y_observada <- beta_0 + beta_1 * vector_x + error
+  
+  return( list(x = vector_x, y = y_observada) )
+  
+  
+}
+
+
+# Corroborando que la función quedó bien 👍
+generador_muestra(10,c(1:10),sigma, beta_0,beta_1)
+
+```
+
+```{r}
+estimador_betas <- function(x,y){
+
+    coeficientes <- lm(y~x)$coefficients
+  
+    return(list(beta_0 = coeficientes[1],
+                beta_1 = coeficientes[2]))  
+}
+```
+
+
+```{r}
+
+df_rectas <- data.frame(x=numeric(), y=numeric(), numero_muestra = numeric())
+
+
+
+for (i in 1:10) {
+  
+    muestra <-  generador_muestra(n,vector_x,sigma, beta_0,beta_1)
+    betas_estimados <-  estimador_betas(muestra$x, muestra$y)
+  df <- data.frame(x = vector_x,
+                   y = betas_estimados$beta_0 + betas_estimados$beta_1 * vector_x,
+                   numero_muestra = rep(i,n))
+  
+  df_rectas <- rbind(df_rectas,df)
+}
+
+
+ggplot(data = df_rectas, aes(x=x, y=y, group = numero_muestra))+
+    geom_line(aes(color = numero_muestra))
+
+
+
+```
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
 
 # Esperada de y dado x
 E_y_x <- beta_0 + (beta_1 * vector_x )
