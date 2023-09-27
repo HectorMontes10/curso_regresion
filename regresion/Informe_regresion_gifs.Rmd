@@ -431,17 +431,20 @@ variable precio del dólar en la predicción, es decir, es un modelo que
 no explota la relación (sea esta débil o sea esta fuerte) entre el
 precio del aguacate y su variable explicativa precio del dólar.
 
-```{r}
-hass_dolar %>% 
-  ggplot(aes(x= precio_dolar, y= precio_aguacate_kg )) +
-  geom_point()+ 
-  geom_hline(yintercept = mean(hass_dolar$precio_aguacate_kg), color = "red")+
-  geom_text(aes(x= 5700, y = mean(hass_dolar$precio_aguacate_kg),
-                label = paste("Precio promedio histórico: $",
-                              round(mean(hass_dolar$precio_aguacate_kg), 2))),
-            hjust = 1.2, vjust = -0.2, color = "red"
-  ) +
-  theme_light()
+```{r, warning=FALSE}
+
+ggplot(data = hass_dolar,
+       aes(x= precio_dolar, y= precio_aguacate_kg )) +
+geom_point()+ 
+geom_hline(yintercept = mean(hass_dolar$precio_aguacate_kg),
+           color = "red")+
+geom_text(data=hass_dolar,
+          aes(x= 5700, y = mean(hass_dolar$precio_aguacate_kg),
+              label = paste("Precio promedio histórico: $",
+                            round(mean(hass_dolar$precio_aguacate_kg), 2))),
+          hjust = 1.2, vjust = -0.2, color = "red"
+) +
+theme_light()
 ```
 
 Observe que el modelo ingenuo no sería tan inadecuado en dos
@@ -1262,7 +1265,7 @@ Podemos notar entonces que ambos métodos son consistentes entre si, algo
 que no es de extrañar pues internamente R implementa estos métodos en
 sus librerías.
 
-## 1.13 Representación funcional del modelo y comprobación de supuesto de normalidad.
+# 2. COMPROBACIÓN DEL SUPUESTO DE NORMALIDAD.
 
 Hemos llegado al punto en que ya tenemos todos los elementos necesarios
 para definir formalmente el modelo estimado sobre nuestros datos.
@@ -1448,7 +1451,7 @@ Una aclaración respecto a que esta prueba es menos potente ❗  en comparación
 una distribución distinta a la normal ¿Puedo seguir usando los métodos de inferencia tradicionales o qué modificaciones debo introducir?
 - ¿Por qué es importante para un magister en estadística conocer sobre métodos de simulación Montecarlo?
 
-# 2. EL SUPUESTO DE INDEPENDENCIA DEL ERROR
+# 3. EL SUPUESTO DE INDEPENDENCIA DEL ERROR
 
 Un supuesto que hemos perdido de vista por un momento en los apartados anteriores es el supuesto de independencia del error. Su consideración es importante porque representa un punto de quiebre en el uso de modelos de regresión vs modelos alternativos como los de series de tiempo. Pero ¿Qué significa exactamente la independencia?. Consideremos los siguientes escenarios:
 
@@ -1585,7 +1588,7 @@ print(resultados_lb)
 
 Dejaremos el estudio de las cuestiones relativas al tratamiento de errores autocorrelacionados para el capítulo de series de tiempo. 
 
-# 2. EL SUPUESTO DE HOMOCEDASTICIDAD
+# 4. EL SUPUESTO DE HOMOCEDASTICIDAD
 
 De manera informal este supuesto busca verificar que la varianza de los errores es estable, bien sea respecto al tiempo, respecto a una variable predictora, o respecto a la magnitud de los valores predichos. Las inspecciones de estas cuestiones usualmente se basan en el estudio de los patrones de los gráficos de residuales, en específico estudiamos:
 
@@ -1784,19 +1787,86 @@ Las conclusiones de todo esto son:
 
 Hasta acá las discusiones del modelo lineal simple con este dataset de ejemplo. Para nuestro capítulo siguiente relacionado con pruebas de hipótesis para los betas del modelo, tendremos que usar un modelo que cumpla con todos los supuestos. Para este efecto aprovecharemos para simular datos bajo un modelo teórico perfecto. Esta herramienta de simulación permitirá tomar control del cumplimiento de los supuestos para investigar tranquilamente el comportamiento estadístico de los betas estimados de un modelo cuando todos las condiciones para su uso están garantizadas. 
 
-## Ejercicios propuestos:
+# 5. PRIMER TALLER:
 
 1. Calcular un modelo de regresión para los cambios porcentuales del precio del aguacate de un mes a otro vs los cambios porcentuales del precio del dólar de un mes a otro. ¿En qué difiere este enfoque del originalmente seguido? ¿Cuál cree que sea la ventaja de generar un modelo de esta naturaleza?
 
 2. Evalue la normalidad del error para este modelo usando la prueba de Lilliefors
 
-3. Evalúe en un gráfico la consistencia de la prueba de Lilieforse (Pista: Use el código ya suministrado para calcular la máxima distancia entre la curva normal teórica y la curva empírica)
+3. Evalúe en un gráfico la consistencia de la prueba de Lilliefors (Pista: Use el código ya suministrado para calcular la máxima distancia entre la curva normal teórica y la curva empírica)
 
 4. Pruebe la homocedasticidad del nuevo modelo usando tanto gráficos como pruebas formales, y dibuje la curva de errores cuadrados estimados basada en el modelo de Breusch-Pagan, es decir, sin incluir el término cuadrático. ¿Es esta prueba suficientemente concluyente?
 
 5. Pruebe la independencia de los errores del modelo, comparéla contra los resultados obtenidos con el modelo que usaba los precios en valores absolutos, es decir, el modelo discutido en este documento. 
 
 6. Extraiga conclusiones generales de la adecuación del nuevo modelo a todos los supuestos, ¿Cuál de los dos modelos sería más útil para hacer predicciones, el modelo elaborado por los profesores o el que ustedes elaboraron? Felicítese mucho si el suyo es mejor. :)
+
+
+# 6. PRUEBAS DE HIPÓTESIS SOBRE LOS BETAS DEL MODELO
+
+Para poder entender muy bien lo que significa probar hipótesis sobre los betas de un modelo de regresión, lo primero que hay que tener en claro es que un modelo teórico se puede pensar como una máquina generadora de datos. Como en toda máquina habrá una ajuste inicial que requiere ser definido antes de producir algo con la máquina, pero el problema radica en que usualmente no estamos presentes en el momento en que tal máquina se ajusta, sino que debemos **inferir** el ajuste de acuerdo con los datos que la máquina ya nos está ya arrojando. 
+
+Es decir, debemos reconocer la incertidumbre que tenemos frente al conocimiento del ajuste inicial e intentar minimizarla con base en los datos ya generados. Otra cuestión es que no podemos quedarnos infinitamente observando los datos que la máquina genera, sino que usualmente tenemos una muestra limitada de los mismos. Las preguntas centrales que el estadístico debe responder son:
+
+- ¿Cuáles son estas configuraciones iniciales en el caso de un modelo de regresión?
+- ¿Cómo podemos aprovechar al máximo la muestra de datos observados para intentar **inferir** la configuración inicial de la máquina (de ahora en adelante llamada más formalmente proceso generador de datos)?
+- ¿Qué propiedades deseables debería tener la técnica que usemos para aprovechar la información limitada de la muestra con la que contamos para **inferir** la configuración inicial(de ahora en adelante más formalmente llamada parámetros)?
+
+Retomemos entonces nuestros modelo, para aterrizar mejor estas cuestiones:
+
+$$Y = \beta_0 + \beta_1 * X + e$$
+Nuestro proceso generador de datos consiste así en una función lineal que hace depender a $Y$ del valor de $X$ y de un componente aleatorio $e$ que indica la parte del valor de Y que no logra ser capturada por la relación lineal que la X tiene con la Y. Nosotros no conocemos $\beta_0$ y $\beta_1$, así como tampoco $\sigma$ (recordemos que $e\text{~}N(0,\sigma²)$). Así que debemos usar la información de la muestra de datos observados $(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)$ para intentar deducir los valores de estos tres parámetros. Sin embargo tales valores son sólo un estimado de los verdaderos parámetros del proceso generador de datos. 
+
+En capítulos anteriores dejamos claro que un método posible para estimar los parámetros $\beta_1$ y $\beta_2$ es usar minimización del MSE(Mean Squared Error), es un esfuerzo por generar la mejor recta ajustada a los datos, pero cabe preguntarse:
+
+- ¿Generar una recta que se ajuste lo mejor posible a la muestra garantiza obtener estimaciones que realmente se parezcan a los parámetros de mi proceso generador de datos?
+
+Lo que queremos indicar con esta pregunta es que un buen ajuste no tiene que ser sinónimo de buena estimación de parámetros, y si lo es deberíamos poderlo demostrar, porque el ajuste habla de la calidad del modelo para explicar los datos observados, y no necesariamente para explicar todo el universo de los datos que mi proceso generador de datos podría generar. Si nos ajustamos bien a la muestra, esto no implica a-priori ajustarnos bien a la población. No obstante algo nos hace sospechar que no es tan mala idea usar una estrategia como esta porque después de todo no conocemos más datos que los que la muestra pueda revelarnos. 
+
+- ¿Cómo garantizamos que dentro de todas las posibles operaciones matemáticas que podemos ejecutar con los valores de la muestra, las operaciones:
+
+$$\widetilde\beta_1 = \frac{cov(x,y)}{\sigma_x²}$$
+y 
+
+$$\widetilde\beta_0 = \bar{y} - \widetilde\beta_1\bar{x}$$
+Son las operaciones que conducen a valores próximos a $\beta_1$ y $\beta_0$ respectivamente, aun si la muestra de datos cambia.
+
+No podemos demostrar esto con el rigor necesario porque escapa un poco del alcance del presente curso, pero podemos al menos ilustrar lo que queremos indicar por cercanía a los betas del modelo usando un enfoque de simulación. Para ello partiremos del siguiente modelo
+
+$Y = 2 + 0.5*X + e$ con $e\text{~}N(0,2²)$
+
+Y exploramemos como se comportan los valores de $\widetilde\beta_0$ y $\widetilde\beta_1$ a lo largo de diversas muestras de tamaño $n$ obtenidas con el modelo teórico. El pseudo código es:
+
+- Generar una función para extraer muestras de tamaño $n$ bajo el modelo teórico.
+- Generar una función para ajustar una recta a la muestra anterior usando los estimadores $\widetilde\beta_0$ y $\widetilde\beta_1$  dados en las ecuaciones anteriores.
+- Dibujar algunas rectas ajustadas para un conjunto de 10 muestras obtenidas del modelo teórico e ilustrar con ello la incertidumbre asociada a la estimación.
+- Estudiar el comportamiento de los estimadores en un gran número de muestras, variando el tamaño de la muestra.
+- Deducir las propiedades estadísticas de estos estimadores mediante gráficos de histogramas y pruebas de bondad de ajuste.
+- Concluir según los resultados.
+
+
+```{r}
+
+# Generemos un modelo teórico, y extraigamos una muestra de él
+
+n <- 1000
+vector_x <- c(1:n) 
+sigma <- 4  
+beta_0 <- 2
+beta_1 <- 0.5
+
+# Esperada de y dado x
+E_y_x <- beta_0 + (beta_1 * vector_x )
+
+print(E_y_x)
+
+plot(vector_x,E_y_x)
+
+
+
+
+```
+
 
 
 [Variable aleatoria]{style="color: red;"}: Una variable aleatoria X es una función de \[
@@ -2063,7 +2133,6 @@ datos_simulados_2 <- data.frame(
 modelo1a <-  lm(y_obs_3 ~ poly(x, 2))
 modelo1b <-  lm(y_obs_3 ~ poly(x, 2, raw = TRUE))
 modelo2 <-  lm(y_obs_3 ~ x_auxiliar )
-
 ```
 
 Notese que los coeficientes arrojados por el modelo1a al invocar la
@@ -2150,19 +2219,6 @@ E_y_5
 ```{r}
 
 
-n <- 1000
-
-vector_x <- c(1: n ) 
-sigma <- 4 
-beta_0 <- 2
-beta_1 <- 0.5
-
-# Esperada de y dado x
-E_y_x <- beta_0 + (beta_1 * vector_x )
-
-print(E_y_x)
-
-plot(vector_x,E_y_x)
 
 
 
