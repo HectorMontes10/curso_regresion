@@ -801,7 +801,7 @@ información muestral serían $\bar{x}$ y $\bar{y}$. Es decir, no podremos
 saber con precisión los valores $\beta_0$ y $\beta_1$, pero nos podemos
 conformar con buenas estimaciones que cumplan la condición:
 
-$$\bar{y} = \color{red}{\widetilde\beta_0} + \color{red}{\widetilde\beta_1}\bar{x}$$
+$$\bar{y} = \color{red}{\widetilde{\beta}_0} + \color{red}{\widetilde{\beta}_1}\bar{x}$$
 
 El coloreado y la tilde ancha para los betas pretenden enfatizar que
 estos valores son estimados de los correspondientes $\beta_0$ Y
@@ -810,10 +810,10 @@ estimada deberá pasar por $(\bar{x}, \bar{y})$, y por lo tanto hay una
 relación atando a los betas estimados:
 
 $$\begin{equation} \label{eq:ec0}
-  \color{red}{\widetilde\beta_0} = \bar{y} - \color{red}{\widetilde\beta_1}\bar{x}
+  \color{red}{\widetilde{\beta}_0} = \bar{y} - \color{red}{\widetilde{\beta}_1}\bar{x}
 \end{equation}
-$$ Es decir que dando valores a $\color{red}{\widetilde\beta_1}$
-podremos obtener valores para $\color{red}{\widetilde\beta_0}$ y en
+$$ Es decir que dando valores a $\color{red}{\widetilde{\beta}_1}$
+podremos obtener valores para $\color{red}{\widetilde{\beta}_0}$ y en
 últimas dibujar diversas rectas en el plano, con el fin de establecer
 cuál de ellas minimiza el $MSE_{\text{NO ingenuo}}$.
 
@@ -881,16 +881,16 @@ ftable(mse_df[(pos_min - 8):(pos_min + 8), ])
 
 -   Demostrar que el valor de $MSE_{\text{NO ingenuo}}$ depende de los
     betas elegidos para el modelo.
--   Demostrar cómo el valor de $\color{red}{\widetilde\beta_0}$ está
-    atado con el de $\color{red}{\widetilde\beta_1}$ si de verdad
+-   Demostrar cómo el valor de $\color{red}{\widetilde{\beta}_0}$ está
+    atado con el de $\color{red}{\widetilde{\beta}_1}$ si de verdad
     queremos que la recta estimada respete la condición de que
     $e \text{~}N(0, \sigma^2)$ y por lo tanto de que $E(e)=0$.
 -   Generar un dataframe que calcula los valores de
     $MSE_{\text{NO ingenuo}}$ para cada par de valores elegidos para
-    $\color{red}{\widetilde\beta_0}$ y $\color{red}{\widetilde\beta_1}$,
-    dando valores a $\color{red}{\widetilde\beta_1}$
--   Estimamos que el $\color{red}{\widetilde\beta_1}$ óptimo está cerca
-    del valor 0.94, y que el $\color{red}{\widetilde\beta_0}$ óptimo
+    $\color{red}{\widetilde{\beta}_0}$ y $\color{red}{\widetilde{\beta}_1}$,
+    dando valores a $\color{red}{\widetilde{\beta}_1}$
+-   Estimamos que el $\color{red}{\widetilde{\beta}_1}$ óptimo está cerca
+    del valor 0.94, y que el $\color{red}{\widetilde{\beta}_0}$ óptimo
     está cerca del valor 1452.
 
 Ahora graficaremos una curva que muestre esta relación:
@@ -1019,7 +1019,7 @@ para estimar parámetros del modelo de regresión lineal. Esto se hará
 bajo el enfoque de optimización, para ello conviene darle una mirada al
 siguiente problema:
 
-Estime un par de valores $(\widetilde\beta_0,\widetilde\beta_1)$ tal que
+Estime un par de valores $(\widetilde{\beta}_0,\widetilde{\beta}_1)$ tal que
 minimice la expresión $MSE = f(\beta_0,\beta_1)$, donde:
 
 $$f(\beta_0,\beta_1) = \frac{1}{n}\sum^{n}_{i=1}(y_i - \beta_0 - \beta_1*x_i)²$$
@@ -1151,19 +1151,21 @@ $$\bar{x²}-(\bar{x})²=\frac{1}{n}\left[\sum^{n}_{i=1}x_i²\right]-\bar{x}\bar{
 =\frac{1}{n}\left[\sum^{n}_{i=1}\left((x_i²-2\bar{x}x_i+\bar{x}²)+(\bar{x}x_i-\bar{x}²)\right)\right]\\
 =\frac{1}{n}\left[\sum^{n}_{i=1}\left((x_i-\bar{x})²+\bar{x}(x_i-\bar{x})\right)\right]
 =\frac{1}{n}\sum^{n}_{i=1}(x_i-\bar{x})²+\bar{x}\left[\sum^{n}_{i=1}\frac{x_i}{n}-\sum^{n}_{i=1}\frac{\bar{x}}{n}\right]\\
-=\sigma²_{x}+\bar{x}\left(\bar{x}-\bar{x}\sum^{n}_{i=1}\frac{1}{n}\right)\\
-=S_{xx}+\bar{x}(\bar{x}-\bar{x}*1)=S_{xx}$$
+=\frac{S_{xx}}{n}+\bar{x}\left(\bar{x}-\bar{x}\sum^{n}_{i=1}\frac{1}{n}\right)\\
+=\frac{S_{xx}}{n}+\bar{x}(\bar{x}-\bar{x}*1)=\frac{S_{xx}}{n}$$
 
 Obteniendo finalmente
 
 $$\begin{equation} \label{eq:sigma_x}
-  \bar{x²}-(\bar{x})² = S_{xx}
+  \bar{x²}-(\bar{x})² = \frac{S_{xx}}{n}
 \end{equation}
 $$
+Note que aquí hemos usado la siguiente definición:
 
+$$S_{xx}=\sum^{n}_{i=1}(x_i-\bar{x})*(x_i-\bar{x})=\sum^{n}_{i=1}(x_i-\bar{x})^2$$
 Luego:
 
-$$v^ \top Hv = 2(a+b\bar{x})²+2b²S_{xx} \text{ con } \text{ }v=(a,b)$$
+$$v^ \top Hv = 2(a+b\bar{x})²+2b²\frac{S_{xx}}{n} \text{ con } \text{ }v=(a,b)$$
 Y como ambos sumandos son no negativos se tiene que
 $$v^ \top Hv >= 0 \text{ para }\forall v\in \mathbb{R}²$$ Es decir, la
 matriz hessiana es semidefinida positiva y por lo tanto
@@ -1173,48 +1175,57 @@ minimizar esta función de errores, tiene un mínimo global y puede ser
 resuelto de manera eficiente mediante métodos de optimización convexa.
 
 Una condición necesaria y suficiente para que
-$(\widetilde\beta_0,\widetilde\beta_1)$ sea un mínimo global es que
-$\nabla{} f(\widetilde\beta_0,\widetilde\beta_1)=0$
+$(\widetilde{\beta}_0,\widetilde{\beta}_1)$ sea un mínimo global es que
+$\nabla{} f(\widetilde{\beta}_0,\widetilde{\beta}_1)=0$
 
 Por lo tanto retomando $\ref{eq:ec1}$ y $\ref{eq:ec2}$ el problema de
 minimización queda resuelto hallando la solución al sistema de
 ecuaciones:
 
 $$\begin{equation} \label{eq:ec3}
-    2\widetilde\beta_0-2\bar{y}+2\bar{x}\widetilde\beta_1=0
+    2\widetilde{\beta}_0-2\bar{y}+2\bar{x}\widetilde{\beta}_1=0
   \end{equation}  
 $$ $$\begin{equation} \label{eq:ec4}
-    2\bar{x²}\widetilde\beta_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}\widetilde\beta_0=0
+    2\bar{x²}\widetilde{\beta}_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}\widetilde{\beta}_0=0
   \end{equation}
 $$
 
-De modo que despejando $\widetilde\beta_0$ en $\ref{eq:ec3}$ tenemos lo
+De modo que despejando $\widetilde{\beta}_0$ en $\ref{eq:ec3}$ tenemos lo
 siguiente:
 
 $$\begin{equation} \label{eq:ec5}
-  \widetilde\beta_0 = \bar{y} - \widetilde\beta_1\bar{x}
+  \widetilde{\beta}_0 = \bar{y} - \widetilde{\beta}_1\bar{x}
 \end{equation}
 $$ Esto en concordancia con $\ref{eq:ec0}$, y además haciendo reemplazos
 en $\ref{eq:ec4}$ obtenemos:
 
 $$
-  2\bar{x²}\widetilde\beta_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}(\bar{y}-\widetilde\beta_1\bar{x})=0\\
-  2\bar{x²}\widetilde\beta_1-2\bar{x}²\widetilde\beta_1 = \frac{2}{n}\sum^{n}_{i=1}x_iy_i-2\bar{x}\bar{y}\\
-  (\bar{x²} - \bar{x}²)\widetilde\beta_1 = \frac{1}{n}\sum^{n}_{i=1}x_iy_i-\bar{x}\bar{y}
-$$ Ahora, usando el hecho de que el lado derecho de la ecuación anterior
-es por definición $cov(x,y)$, es decir, la covarianza entre la variable
-regresora $x$ y la variable respuesta $y$, así como la expresión dada en
-$\ref{eq:sigma_x}$ tenemos:
+  2\bar{x²}\widetilde{\beta}_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}(\bar{y}-\widetilde{\beta}_1\bar{x})=0\\
+  2\bar{x²}\widetilde{\beta}_1-2\bar{x}²\widetilde{\beta}_1 = \frac{2}{n}\sum^{n}_{i=1}x_iy_i-2\bar{x}\bar{y}\\
+  (\bar{x²} - \bar{x}²)\widetilde{\beta}_1 = \frac{1}{n}\sum^{n}_{i=1}x_iy_i-\bar{x}\bar{y}\\$$
+
+Y usando la expresión dada en $\ref{eq:sigma_x}$ tenemos:
+  
+$$\frac{S_{xx}}{n}\widetilde{\beta}_1=\frac{1}{n}\left(\sum^{n}_{i=1}x_iy_i-\frac{\bar{x}\bar{y}}{n}\right)\\S_{xx}\widetilde{\beta}_1 = \sum^{n}_{i=1}x_iy_i-\frac{\bar{x}\bar{y}}{n}
+$$ 
+
+Ahora, usando el hecho de que el lado derecho de la ecuación anterior
+cumple la siguiente equivalencia:
+
+$$\sum^{n}_{i=1}x_iy_i-\frac{\bar{x}\bar{y}}{n}= \sum^{n}_{i=1}(x_i-\bar{x})*(y_i-\bar{y}) = S_{xy}$$
+Es decir, se convierte en la suma de productos cruzados de $x$ y la variable respuesta $y$, una vez estos han sido centrados respecto a la media, así como :
 
 $$\begin{equation} \label{eq:ec6}
-    \widetilde\beta_1 = \frac{cov(x,y)}{S_{xx}}
+    \widetilde{\beta}_1 = \frac{S_{xy}}{S_{xx}}
   \end{equation}
-$$ Las ecuaciones $\ref{eq:ec5}$ y $\ref{eq:ec6}$ son muy informativas
+$$ 
+
+Las ecuaciones $\ref{eq:ec5}$ y $\ref{eq:ec6}$ son muy informativas
 en su estructura, la primera indica que la recta regresora debe pasar
 por el centroide de la nube de puntos: $(\bar{x}, \bar{y})$ y la segunda
 indica que la pendiente de la recta es proporcional al grado de relación
 lineal que tenga la variable $x$ con la variable $y$ medida a través de
-la covarianza.
+la suma de productos cruzados $S_{xy}$, la cual a su vez se relaciona con la covarianza entre las variables $x$ y $y$.
 
 Estos sencillos cálculos son realizados por R a través de la función
 "lm", así:
@@ -1585,7 +1596,7 @@ print(resultados_lb)
 
 - En consistencia con lo anterior la prueba de Ljung-Box arroja valores p sistemáticamente menores que 0.05 para todos los rezagos considerados: 1 mes, 2 meses, 3 meses, ..., 1 año. Y decimos que en consistencia con la prueba de Durbin Watson porque la prueba de Ljung box será indicativa de autocorrelación en máximo n rezagos si ya lo es para máximo n=1 rezagos como lo indica la prueba DW.
 
-- La no independencia del error invalida completamente mi modelo, porque en estos escenarios la varianza del error del modelo se encuentra subestimada, pues ante la presencia de autocorrelación de los residuales no podemos afirmar que $\sigma_e² = var(error)$ ya que esto asume implícitamente independencia. En procesos autocorrelacionados la varianza es realmente mayor que esto. Usar un error subestimado puede llevarme a conclusiones falsamente significativas, como por ejemplo puede declarar la variable predictora como significativa, al estimar inadecuadamente el error para $\beta_1$ ya que $\widetilde{V}(\beta_1)$ depende de $\widetilde{\sigma_e²}$
+- La no independencia del error invalida completamente mi modelo, porque en estos escenarios la varianza del error del modelo se encuentra subestimada, pues ante la presencia de autocorrelación de los residuales no podemos afirmar que $\sigma_e² = var(error)$ ya que esto asume implícitamente independencia. En procesos autocorrelacionados la varianza es realmente mayor que esto. Usar un error subestimado puede llevarme a conclusiones falsamente significativas, como por ejemplo puede declarar la variable predictora como significativa, al estimar inadecuadamente el error para $\beta_1$ ya que $\widetilde{V}(\widetilde{\beta}_1)$ depende de $\widetilde{\sigma}²_e$
 
 Dejaremos el estudio de las cuestiones relativas al tratamiento de errores autocorrelacionados para el capítulo de series de tiempo. 
 
@@ -1788,7 +1799,7 @@ Las conclusiones de todo esto son:
 
 Hasta acá las discusiones del modelo lineal simple con este dataset de ejemplo. Para nuestro capítulo siguiente relacionado con pruebas de hipótesis para los betas del modelo, tendremos que usar un modelo que cumpla con todos los supuestos. Para este efecto aprovecharemos para simular datos bajo un modelo teórico perfecto. Esta herramienta de simulación permitirá tomar control del cumplimiento de los supuestos para investigar tranquilamente el comportamiento estadístico de los betas estimados de un modelo cuando todos las condiciones para su uso están garantizadas. 
 
-# 5. PRIMER TALLER:
+# 5. PRIMER TALLER
 
 1. Calcular un modelo de regresión para los cambios porcentuales del precio del aguacate de un mes a otro vs los cambios porcentuales del precio del dólar de un mes a otro. ¿En qué difiere este enfoque del originalmente seguido? ¿Cuál cree que sea la ventaja de generar un modelo de esta naturaleza?
 
@@ -1815,47 +1826,97 @@ Es decir, debemos reconocer la incertidumbre que tenemos frente al conocimiento 
 
 Retomemos entonces nuestros modelo, para aterrizar mejor estas cuestiones:
 
-$$Y = \beta_0 + \beta_1 * X + e$$
+$$Y = \beta_0 + \beta_1X + e$$
 Nuestro proceso generador de datos consiste así en una función lineal que hace depender a $Y$ del valor de $X$ y de un componente aleatorio $e$ que indica la parte del valor de Y que no logra ser capturada por la relación lineal que la X tiene con la Y. Nosotros no conocemos $\beta_0$ y $\beta_1$, así como tampoco $\sigma$ (recordemos que $e\text{~}N(0,\sigma²)$). Así que debemos usar la información de la muestra de datos observados $(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)$ para intentar deducir los valores de estos tres parámetros. Sin embargo tales valores son sólo un estimado de los verdaderos parámetros del proceso generador de datos. 
 
 En capítulos anteriores dejamos claro que un método posible para estimar los parámetros $\beta_1$ y $\beta_2$ es usar minimización del MSE(Mean Squared Error), es un esfuerzo por generar la mejor recta ajustada a los datos, pero cabe preguntarse:
 
 - ¿Generar una recta que se ajuste lo mejor posible a la muestra garantiza obtener estimaciones que realmente se parezcan a los parámetros de mi proceso generador de datos?
 
-Lo que queremos indicar con esta pregunta es que: un buen ajuste no tiene que ser sinónimo de buena estimación de parámetros, y si lo es deberíamos poderlo demostrar, porque el ajuste habla de la calidad del modelo para explicar los datos observados, y no necesariamente para explicar todo el universo de los datos que mi proceso generador de datos podría generar. Si nos ajustamos bien a la muestra, esto no implica a-priori ajustarnos bien a la población. No obstante algo nos hace sospechar que no es tan mala idea usar una estrategia como esta porque después de todo no conocemos más datos que los que la muestra pueda revelarnos. 
+Lo que queremos indicar con esta pregunta es que: un buen ajuste no tiene que ser sinónimo de buena estimación de parámetros, y si lo es deberíamos poderlo demostrar, porque el ajuste habla de la calidad del modelo para explicar los datos observados, y no necesariamente para explicar todo el universo de los datos que mi proceso generador de datos podría generar. Si nos ajustamos bien a la muestra, esto no implica a-priori ajustarnos bien a la población. No obstante algo nos hace sospechar que no es tan mala idea usar una estrategia como esta porque después de todo no conocemos más datos que los que la muestra pueda revelarnos.
 
-- ¿Cómo garantizamos que dentro de todas las posibles operaciones matemáticas que podemos ejecutar con los valores de la muestra, las operaciones:
+# 6.1 Estudiando el comportamiento estadístico de los estimadores
 
-$$\widetilde\beta_1 = \frac{cov(x,y)}{S_{xx}}$$
-y 
+¿Cómo garantizamos que dentro de todas las posibles operaciones matemáticas que podemos ejecutar con los valores de la muestra, las operaciones:
 
-$$\widetilde\beta_0 = \bar{y} - \widetilde\beta_1\bar{x}$$
-Son las operaciones que conducen a valores próximos a $\beta_1$ y $\beta_0$ respectivamente, aun si la muestra de datos cambia.
+$$\widetilde{\beta}_1 = \frac{S_{xy}}{S_{xx}}$$
+$$\widetilde{\beta}_0 = \bar{y} - \widetilde{\beta}_1\bar{x}$$
+Sean las operaciones que conducen a valores más próximos a $\beta_1$ y $\beta_0$ respectivamente, aun si la muestra de datos cambia?.
 
-No podemos demostrar esto con el rigor necesario porque escapa un poco del alcance del presente curso, pero podemos al menos ilustrar lo que queremos indicar por cercanía a los betas del modelo usando un enfoque de simulación. Para ello partiremos del siguiente modelo
+No podemos demostrar esto con el rigor necesario porque escapa un poco del alcance del presente curso, pero podemos al menos ilustrar lo que queremos indicar por cercanía a los betas del modelo usando el siguiente enfoque analítico.
 
-$Y = 2 + 0.5*X + e$ con $e\text{~}N(0,2²)$
+Detengamonos un instante a analizar la estructura de $\widetilde{\beta}_1$, notemos que este estimador puede pensarse como una combinación lineal de las $y_i$, veamos por que:
 
-Y exploramemos como se comportan los valores de $\widetilde\beta_0$ y $\widetilde\beta_1$ a lo largo de diversas muestras de tamaño $n$ obtenidas con el modelo teórico. El pseudo código es:
+$$\widetilde{\beta}_1 = \frac{S_{xy}}{S_{xx}}=\frac{\sum_{i=1}^{n}(x_i-\bar{x})*(y_i-\bar{y})}{S_{xx}}=\sum_{i=1}^{n}\frac{y_i(x_i-\bar{x})-\bar{y}(x_i-\bar{x})}{S_{xx}}\\=\sum_{i=1}^{n}\frac{y_i(x_i-\bar{x})}{S_{xx}}-\sum_{i=1}^{n}\frac{\bar{y}(x_i-\bar{x})}{S_{xx}}\\=\sum_{i=1}^{n}\frac{y_i(x_i-\bar{x})}{S_{xx}}-\frac{\bar{y}}{S_{xx}}\sum_{i=1}^{n}(x_i-\bar{x})\\=\sum_{i=1}^{n}\frac{y_i(x_i-\bar{x})}{S_{xx}}-\frac{\bar{y}}{S_{xx}}\left(\sum_{i=1}^{n}x_i-\sum_{i=1}^{n}\bar{x}\right)\\=\sum_{i=1}^{n}\frac{y_i(x_i-\bar{x})}{S_{xx}}-\frac{\bar{y}}{S_{xx}}\left(n\bar{x}-n\bar{x}\right)=\sum_{i=1}^{n}\frac{y_i(x_i-\bar{x})}{S_{xx}}$$
+Ahora sea $c_i= \frac{x_i-\bar{x}}{S_{xx}}$ entonces concluimos que:
 
-- Generar una función para extraer muestras de tamaño $n$ bajo el modelo teórico.
-- Generar una función para ajustar una recta a la muestra anterior usando los estimadores $\widetilde\beta_0$ y $\widetilde\beta_1$  dados en las ecuaciones anteriores.
-- Dibujar algunas rectas ajustadas para un conjunto de 10 muestras obtenidas del modelo teórico e ilustrar con ello la incertidumbre asociada a la estimación.
-- Estudiar el comportamiento de los estimadores en un gran número de muestras, variando el tamaño de la muestra.
-- Deducir las propiedades estadísticas de estos estimadores mediante gráficos de histogramas y pruebas de bondad de ajuste.
-- Concluir según los resultados.
+$$\widetilde{\beta}_1=\sum_{i=1}^{n}c_i*y_i$$
+Es decir $\widetilde{\beta}_1$ es en efecto una combinación lineal de los $y_i$ con coeficientes $c_i$, por lo tanto, retomando a nuestro proceso generador de datos, y tomando un $y_i$ particular generado por dicho proceso, tenemos que $y_i = \beta_0 + \beta_1x_i + e_i$ donde los $e_i$ se asumen normales e independientes, lo cual implica que:
+
+$$E(y_i|x_i) = E((\beta_0 + \beta_1x_i + e_i)|x_i)=\beta_0+\beta_1x_i + E(e_i) = \beta_0 + \beta_1x_i$$
+
+Ya que $E(e_i)=0$ desde los supuestos. Y por otro lado que:
+
+$$Var(y_i|x_i) = Var((\beta_0 + \beta_1x_i + e_i)|x_i) = 0+0+Var(e_i)= \sigma^2$$
+
+Ya que $Var(e_i) = \sigma^2$ también desde los supuestos.
+
+Así que como conclusión tenemos que, cuando el $x_i$ está ya dado:
+
+$$y_i\text{~}N(\beta_0 + \beta_1x_i,\sigma^2)$$
+
+Todo esto por propiedad de linealidad de la normalidad, es decir, debido a que una transformación afín de la variable normal $e_i$ dada por un desplazmiento $\beta_0$ y un factor de escala $\beta_1$ es también una variable aleatoria normal. 
+
+Lo anterior, tácitamente nos está diciendo que nuestro estimador $\widetilde{\beta}_1$ es entonces una combinación lineal de variables aleatorias normales, razón por la cual, partiendo de la propiedad reproductiva de la normal podremos afirmar que, cuando todos los $x_i$ están dados $\widetilde{\beta}_1$ es también una variable aleatoria normal. 
+
+Investiguemos su media:
+
+$$E(\widetilde{\beta}_1)=E\left(\sum_{i=1}^{n}c_iy_i\right)=\sum_{i=1}^{n}E(c_iy_i)=\sum_{i=1}^{n}c_iE(y_i)=\sum_{i=1}^{n}c_i(\beta_0 + \beta_1x_i)\\=\beta_0\sum_{i=1}^{n}c_i + \beta_1\sum_{i=1}^{n}c_ix_i$$
+Pero es fácil ver que $\sum_{i=1}^{n}c_i=0$ y que $\sum_{i=1}^{n}c_ix_i=1$ (por favor demuéstrelo), y entonces:
+
+$$E(\widetilde{\beta}_1)=\beta_1$$
+
+Lo que indicaría que $\widetilde{\beta}_1$ es un estimador insesgado para $\beta_1$!!!
+
+Y ahora investiguemos su varianza:
+
+$$Var(\widetilde{\beta}_1)=Var\left(\sum_{i=1}^{n}c_iy_i\right)=\sum_{i=1}^{n}{c_i}²Var(y_i)=\sum_{i=1}^{n}{c_i}²{\sigma}²={\sigma}²\sum_{i=1}^{n}{c_i}²$$
+Ya que de nuevo por asunciones sobre el proceso generador de datos las $y_i$ son no correlacionadas y habíamos demostrado previamente que $Var(y_i) = {\sigma}²$, sin importar el $y_i$ considerado, es decir, estos son homocedásticos como consecuencia de la definición del modelo. Por lo tanto:
+
+$$Var(\widetilde{\beta}_1)={\sigma}²\sum_{i=1}^{n}{\left(\frac{x_i-\bar{x}}{S_{xx}}\right)}^2=\frac{\sigma²}{{S²}_{xx}}\sum_{i=1}^{n}(x_i-\bar{x})²=\frac{\sigma²}{{S²}_{xx}}*S_{xx}=\frac{\sigma²}{{S}_{xx}}$$
+Finalmente, ya que hemos investigado ampliamente el comportamiento del estimador $\widetilde{\beta}_1$ usemos este conocimiento para investigar el comportamiento de $\widetilde{\beta}_0$. Para ello, considere que $\widetilde{\beta}_0 = \bar{y} - \widetilde{\beta}_1\bar{x}$, por lo tanto:
+
+$$E(\widetilde{\beta}_0)=E(\bar{y} - \widetilde{\beta}_1\bar{x})=E(\bar{y})-\bar{x}E(\widetilde{\beta}_1)=E(\sum_{i=1}^{n}\frac{y_i}{n})-\bar{x}\beta_1=\frac{1}{n}\sum_{i=1}^{n}E(y_i)-\bar{x}\beta_1\\=\frac{1}{n}\sum_{i=1}^{n}(\beta_0 + \beta_1x_i)-\bar{x}\beta_1=\frac{1}{n}\left(\sum_{i=1}^{n}\beta_0+\beta_1\sum_{i=1}^{n}x_i\right)-\bar{x}\beta_1\\=\frac{1}{n}(n\beta_0 + \beta_1n\bar{x})-\bar{x}\beta_1=\beta_0$$
+
+De nuevo $\widetilde{\beta}_0$ es un estimador insesgado de $\beta_0$!!!
+
+Para la varianza tenemos:
+
+$$Var(\widetilde{\beta}_0)=Var(\bar{y} - \widetilde{\beta}_1\bar{x})=Var(\bar{y})+{\bar{x}}^2Var(\widetilde{\beta}_1)=\frac{\sigma²}{n} + {\bar{x}}^2\frac{\sigma²}{S_{xx}}=\sigma²\left(\frac{1}{n}+\frac{{\bar{x}}^2}{S_{xx}}\right)$$
+
+Una última anotación a realizar es que según el **teorema de Gauss-Markov**, para el modelo de regresión lineal con los supuestos $E(e)=0$ y $Var(e)=\sigma²$ y por supuesto con errores no correlacionados, los estimadores por mínimos cuadrados son insesgados (tal como acabamos de demostrar), pero más importante que eso, tienen la varianza más pequeña que se pueda esperar dentro del universo de estimadores insesgados que se construyen como combinaciones lineales de los $y_i$. Es por esta razón que con frecuencia se dice que los estimadores por mínimos cuadrados son los **estimadores lineales insesgados óptimos**, donde __óptimos__ implica que son de varianza mínima. 
+
+
+# 6.2 Simulando el comportamiento estadístico de los estimadores
+
+Y exploramemos como se comportan los valores de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ a lo largo de diversas muestras de tamaño $n$ obtenidas con el modelo teórico. El pseudo código es:
+
+1. Generar una función para extraer muestras de tamaño $n$ bajo un modelo teórico dado.
+2. Generar una función para ajustar una recta a la muestra anterior usando los estimadores $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$  dados en las ecuaciones anteriores.
+3. Dibujar algunas rectas ajustadas para un conjunto de 5 muestras obtenidas del modelo teórico con $\sigma=4$.
+4. Dibujar algunas rectas ajustadas para un conjunto de 5 muestras obtenidas del modelo teórico con $\sigma=10$.
+5. Concluir según los resultados.
 
 
 ```{r}
-# Generemos un modelo teórico, y extraigamos una muestra de él
-
+# Definimos un modelo teórico
 n <- 50
 vector_x <- c(1:n) * 30/50
 sigma <- 4
 beta_0 <- 2
 beta_1 <- 0.5
 
-
+# Creamos la función generadora de muestras
 generador_muestra <-  function(n,vector_x,sigma, beta_0,beta_1){
   error <- rnorm(n,mean = 0, sd = sigma)
   y_observada <- beta_0 + beta_1 * vector_x + error
@@ -1864,9 +1925,8 @@ generador_muestra <-  function(n,vector_x,sigma, beta_0,beta_1){
 
 # Corroborando que la función quedó bien 👍
 generador_muestra(10,c(1:10),sigma, beta_0,beta_1)
-```
 
-```{r}
+# Creamos la función que estima una recta sobre una muestra dada
 estimador_betas <- function(x,y){
     model <- lm(y~x)
     coeficientes <- model$coefficients
@@ -1874,10 +1934,9 @@ estimador_betas <- function(x,y){
                 beta_1 = coeficientes[2],
                 sigma = sigma(model)))  
 }
-```
 
-
-```{r}
+# Ajustamos semilla para reproducibilidad y una función que genera un
+# gráfico con 5 rectas estimadas
 
 set.seed(123)
 
@@ -1915,6 +1974,10 @@ p <- ggplot() +
   theme(legend.position=position_legend)
   return(p)
 }
+
+# Invocamos la función con valores de sigma distintos (4 y 10) y
+# presentamos un gráfico comparativo.
+
 grid.arrange(generar_grafico(x=vector_x,n=50,sigma=4,beta_0,beta_1,
                              position_legend='right'),
              generar_grafico(x=vector_x,n=50,sigma=10,beta_0,beta_1,
@@ -1932,18 +1995,18 @@ grid.arrange(generar_grafico(x=vector_x,n=50,sigma=4,beta_0,beta_1,
 
 Hasta ahora no contamos con un estimado para sigma, pero es muy importante tenerlo porque del sigma del proceso generador de datos, está dependiendo la varianza de cada uno de los betas estimados, tal como se aprecia en el gráfico, en el que las rectas se distancian más de la teórica conforme el $\sigma$ desconocido del proceso crece. 
 
-$\widetilde{\sigma^2}=\sum_{i=1}^{n}\frac{(y_i-\tilde{y_i})²}{n-p}$
+$\widetilde{\sigma}²_e=\sum_{i=1}^{n}\frac{(y_i-\tilde{y_i})²}{n-p}$
 
-Acá $p$ representa la cantidad de parámetros en mi modelo,es decir que el denominador debe ser los grados de libertad de la suma de cuadrados de los residuales para garantizar la insesgadez del estimador $\widetilde{\sigma^2}$, entendiendo por esto la propiedad que tiene de que su promedio sobre todas las posibles muestras extraídas del proceso generador de datos sea igual a $\sigma²$, esto es $E(\widetilde{\sigma^2})=\sigma²$
+Acá $p$ representa la cantidad de parámetros en mi modelo,es decir que el denominador debe ser los grados de libertad de la suma de cuadrados de los residuales para garantizar la insesgadez del estimador $\widetilde{\sigma}²_e$, entendiendo por esto la propiedad que tiene de que su promedio sobre todas las posibles muestras extraídas del proceso generador de datos sea igual a $\sigma²$, esto es $E(\widetilde{\sigma}²_e)=\sigma²$
 
-Ahora estamos en condiciones de investigar el comportamiento estadístico de $\widetilde\beta_0$ y $\widetilde\beta_1$, para ello procederemos bajo el siguiente pseudo-código.
+Ahora estamos en condiciones de investigar el comportamiento estadístico de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$, para ello procederemos bajo el siguiente pseudo-código.
 
 - Fijar un tamaño de muestra y fijar un proceso generador de datos (puede usar el proceso del modelo anterior con $\sigma = 4$)
 - Invocar 10000 veces el generador de la muestra
 - Sobre cada muestra invocar el estimador de los betas
-- Graficar el valor de $\widetilde\beta_0$ en un histograma guardando el vector de betas estimados.
+- Graficar el valor de $\widetilde{\beta}_0$ en un histograma guardando el vector de betas estimados.
 - Repetir los pasos anteriores para tamaños de muestra cada vez más grandes.
-- Repetir los pasos anteriores para $\widetilde\beta_1$
+- Repetir los pasos anteriores para $\widetilde{\beta}_1$
 - Concluir sobre cómo el tamaño de muestra afecta la magnitud del error de estimación de los betas.
 
 
@@ -2025,22 +2088,37 @@ plot(p3)
 
 [Conclusiones:](style="color=red;") 
 
-- Los histogramas para $\widetilde\beta_0$ y $\widetilde\beta_1$ tienen forma acampanada lo que sugiere una relación con la distribución normal (no estamos diciendo que se conduzcan como una normal)
+- Los histogramas para $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ tienen forma acampanada lo que sugiere una relación con la distribución normal (no estamos diciendo que se conduzcan como una normal)
 
-- Las varianzas de $\widetilde\beta_0$ y $\widetilde\beta_1$ dependen de los tamaños de muestra (y del sigma del proceso generador de datos aunque esta parte queda para inspección por parte del alumno)
+- Las varianzas de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ dependen de los tamaños de muestra (y del sigma del proceso generador de datos aunque esta parte queda para inspección por parte del alumno)
 
-- Los histogramas para $\widetilde{\sigma²}$ no se dibujaron, en su lugar
+- Los histogramas para $\widetilde{\sigma}²_e$ no se dibujaron, en su lugar
 se dibujó un histograma para una transformación (o escalamiento) dada por: 
 
-$$\chi² = \frac{(n-2)*\widetilde{\sigma^2}}{\sigma^2}=\frac{SSE}{\sigma^2}= \frac{1}{\sigma^2}\sum_{i=1}^{n}(y_i - \widetilde{y})²$$
+$$\chi² = \frac{(n-2)*\widetilde{\sigma}²_e}{\sigma^2}=\frac{SSE}{\sigma^2}= \frac{1}{\sigma^2}\sum_{i=1}^{n}(y_i - \widetilde{y})²$$
 
-Es decir, en lugar de dibujar los valores originales de $\widetilde{\sigma²}$, dibujamos la suma escalada de los cuadrados de los residuales, donde el factor de escalamiento es precisamente la varianza de los errores del proceso generador de datos. ¿Por qué hacemos esto? Porque esta suma de cuadrados, es una suma de cuadrados de variables aleatorias normales, es decir que ésta será una distribución chi cuadrado. Para determinar sus grados de libertad tomaremos en cuenta la cantidad de cuadrados independientes en la suma, entendiendo por independientes los cuadrados que pueden variar libremente sin violar las ecuaciones que dieron lugar a $\widetilde{\beta_0}$ y   $\widetilde{\beta_1}$
+Es decir, en lugar de dibujar los valores originales de $\widetilde{\sigma}²_e$, dibujamos la suma escalada de los cuadrados de los residuales, donde el factor de escalamiento es precisamente la varianza de los errores del proceso generador de datos. 
 
-- Será necesario derivar expresiones para la varianza de $\widetilde\beta_1$ y $\widetilde\beta_2$, pero dado que las ecuaciones que lo definen son combinaciones lineales de las $y_i$ y las $y_i$ se asumen independientes (puesto que los $e_i$ se están asumiendo independientes y normales), podemos anticipar que:
+¿Por qué hicimos esto? Porque esta suma de cuadrados, es una suma de cuadrados de variables aleatorias normales (le queda al estudiante demostrar por qué), es decir que ésta será una distribución chi cuadrado. Para determinar sus grados de libertad tomaremos en cuenta la cantidad de cuadrados independientes en la suma, entendiendo por independientes los cuadrados que pueden variar libremente sin violar las ecuaciones que dieron lugar a $\widetilde{\beta_0}$ y $\widetilde{\beta_1}$
 
-$t_0 = \frac{\widetilde\beta_0 - \beta_0}{se(\widetilde\beta_0)}$ y
-$t_1 = \frac{\widetilde\beta_1 - \beta_1}{se(\widetilde\beta_1)}$ se
-distribuyen como variables t-student con $n-2$ grados de libertad.
+- Será necesario derivar expresiones para la varianza de $\widetilde\beta_1$ y $\widetilde\beta_2$. Para ello tome en cuenta que las ecuaciones que los definen son combinaciones lineales de las $y_i$. Además las $y_i$ se asumen independientes (puesto que los $e_i$ lo son por suposición previa). También recuerde que las $y_i$ son variables aleatorias normales ya que dependen de los errores $e_i$ los cuales son variables aleatorias normales (de nuevo por suposición previa). 
+
+Acá es donde notamos la importancia del supuesto de normalidad de los errores, y el supuesto de independencia, pues estos son la garantía para proponer los test de hipótesis que vamos a ver a continuación.
+
+# 6.2 Prueba de hipótesis para $\beta_1$
+
+Considere el siguiente estadístico de prueba:
+
+$$t_0 = \frac{\widetilde\beta_0 - \beta_0}{\sqrt{Var(\widetilde\beta_0)}}$$
+Dada la normalidad de $\widetilde{\beta_0}$ y el hecho de que $\widetilde{\beta_0}$ es un estimador insesgado de $\beta_0$ podemos decir que $\t_0$ se distribuye como una variable normal estándar. Pero como obviamente tampoco conocemos el verdadero valor de la varianza de $\beta_0$, en su lugar tendremos que usar un estimado del mismo $\widetilde{Var}(\widetilde{\beta_0})$ dado por:
+
+
+
+
+
+
+
+con $n-2$ grados de libertad.
 
 Entonces, podemos finalmente decir que tenemos instrumentos analíticos para proponer prueba de hipótesis para $\beta_0$, $\beta_1$, y $\sigma$
 
@@ -2053,6 +2131,12 @@ con $se(\widetilde\beta_0)=\sqrt{(MSE*\left(\frac{1}{n}+\frac{\bar{x}²}{S_{xx}}
 Así que proponemos la prueba para $\beta_0$:
 
 $H_0: \beta_0 = \beta_{00}$ vs $H_a: \beta_0\ne\beta_{00}$ donde se rechaza $H_0$ si $|t_0|>t_{\frac{\alpha}{2}, n-2}$
+
+
+
+
+$t_1 = \frac{\widetilde\beta_1 - \beta_1}{se(\widetilde\beta_1)}$
+
 
 Para $\beta_1$ podemos usar el estadístico de prueba dado por:
 
