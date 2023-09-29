@@ -42,6 +42,7 @@ knitr::opts_chunk$set(
   options(scipen=999)
 )
 
+setwd("/home/hectormontes/Escritorio/Maestria/pronosticos/regresion")
 # Librerías
 library(tidyverse)
 library(janitor)
@@ -1151,18 +1152,18 @@ $$\bar{x²}-(\bar{x})²=\frac{1}{n}\left[\sum^{n}_{i=1}x_i²\right]-\bar{x}\bar{
 =\frac{1}{n}\left[\sum^{n}_{i=1}\left((x_i-\bar{x})²+\bar{x}(x_i-\bar{x})\right)\right]
 =\frac{1}{n}\sum^{n}_{i=1}(x_i-\bar{x})²+\bar{x}\left[\sum^{n}_{i=1}\frac{x_i}{n}-\sum^{n}_{i=1}\frac{\bar{x}}{n}\right]\\
 =\sigma²_{x}+\bar{x}\left(\bar{x}-\bar{x}\sum^{n}_{i=1}\frac{1}{n}\right)\\
-=\sigma²_{x}+\bar{x}(\bar{x}-\bar{x}*1)=\sigma²_{x}$$
+=S_{xx}+\bar{x}(\bar{x}-\bar{x}*1)=S_{xx}$$
 
 Obteniendo finalmente
 
 $$\begin{equation} \label{eq:sigma_x}
-  \bar{x²}-(\bar{x})² = \sigma²_{x}
+  \bar{x²}-(\bar{x})² = S_{xx}
 \end{equation}
 $$
 
 Luego:
 
-$$v^ \top Hv = 2(a+b\bar{x})²+2b²\sigma²_{x} \text{ con } \text{ }v=(a,b)$$
+$$v^ \top Hv = 2(a+b\bar{x})²+2b²S_{xx} \text{ con } \text{ }v=(a,b)$$
 Y como ambos sumandos son no negativos se tiene que
 $$v^ \top Hv >= 0 \text{ para }\forall v\in \mathbb{R}²$$ Es decir, la
 matriz hessiana es semidefinida positiva y por lo tanto
@@ -1206,7 +1207,7 @@ regresora $x$ y la variable respuesta $y$, así como la expresión dada en
 $\ref{eq:sigma_x}$ tenemos:
 
 $$\begin{equation} \label{eq:ec6}
-    \widetilde\beta_1 = \frac{cov(x,y)}{\sigma_x²}
+    \widetilde\beta_1 = \frac{cov(x,y)}{S_{xx}}
   \end{equation}
 $$ Las ecuaciones $\ref{eq:ec5}$ y $\ref{eq:ec6}$ son muy informativas
 en su estructura, la primera indica que la recta regresora debe pasar
@@ -1825,7 +1826,7 @@ Lo que queremos indicar con esta pregunta es que: un buen ajuste no tiene que se
 
 - ¿Cómo garantizamos que dentro de todas las posibles operaciones matemáticas que podemos ejecutar con los valores de la muestra, las operaciones:
 
-$$\widetilde\beta_1 = \frac{cov(x,y)}{\sigma_x²}$$
+$$\widetilde\beta_1 = \frac{cov(x,y)}{S_{xx}}$$
 y 
 
 $$\widetilde\beta_0 = \bar{y} - \widetilde\beta_1\bar{x}$$
@@ -1849,86 +1850,221 @@ Y exploramemos como se comportan los valores de $\widetilde\beta_0$ y $\widetild
 # Generemos un modelo teórico, y extraigamos una muestra de él
 
 n <- 50
-vector_x <- c(1:n) 
-sigma <- 2
+vector_x <- c(1:n) * 30/50
+sigma <- 4
 beta_0 <- 2
 beta_1 <- 0.5
 
 
 generador_muestra <-  function(n,vector_x,sigma, beta_0,beta_1){
-  
   error <- rnorm(n,mean = 0, sd = sigma)
   y_observada <- beta_0 + beta_1 * vector_x + error
-  
   return( list(x = vector_x, y = y_observada) )
-  
-  
 }
-
 
 # Corroborando que la función quedó bien 👍
 generador_muestra(10,c(1:10),sigma, beta_0,beta_1)
-
 ```
 
 ```{r}
 estimador_betas <- function(x,y){
-
-    coeficientes <- lm(y~x)$coefficients
-  
+    model <- lm(y~x)
+    coeficientes <- model$coefficients
     return(list(beta_0 = coeficientes[1],
-                beta_1 = coeficientes[2]))  
+                beta_1 = coeficientes[2],
+                sigma = sigma(model)))  
 }
 ```
 
 
 ```{r}
 
-df_rectas <- data.frame(x=numeric(), y=numeric(), numero_muestra = numeric())
+set.seed(123)
 
-
-
-for (i in 1:10) {
-  
-    muestra <-  generador_muestra(n,vector_x,sigma, beta_0,beta_1)
-    betas_estimados <-  estimador_betas(muestra$x, muestra$y)
-  df <- data.frame(x = vector_x,
-                   y = betas_estimados$beta_0 + betas_estimados$beta_1 * vector_x,
+generar_grafico <- function(x,n,sigma,beta_0,beta_1,position_legend){
+df_rectas <- data.frame(x=numeric(),
+                        y_pred=numeric(),
+                        numero_muestra = numeric())
+df_true <- data.frame(x=x,
+                      y_true = (beta_0 + beta_1 * x))
+for (i in 1:5) {
+  muestra <- generador_muestra(n,x,sigma, beta_0,beta_1)
+  betas_estimados <-  estimador_betas(muestra$x, muestra$y)
+  df <- data.frame(x = x,
+                   y_pred = (betas_estimados$beta_0 + 
+                          betas_estimados$beta_1 * x),
                    numero_muestra = rep(i,n))
-  
   df_rectas <- rbind(df_rectas,df)
 }
 
-
-ggplot(data = df_rectas, aes(x=x, y=y, group = numero_muestra))+
-    geom_line(aes(color = numero_muestra))
-
-
-
+p <- ggplot() +
+  geom_line(data = df_rectas, aes(x=x, y=y_pred,
+                                  color = factor(numero_muestra)))+
+  scale_color_manual(values = c("1" = "blue", "2" = "black",
+                                "3" = "green", "4" = "violet",
+                                "5" = "orange",
+                                "y real" = "red"),
+                     name = "Rectas estimadas",
+                     labels = c(paste("Muestra_",seq(1,5)),
+                                "Recta real"))+
+  labs(x="Valor x",
+       y="y predicho",
+       title = "Rectas estimadas sobre muestras distintas",
+       subtitle = paste0("Sigma=",sigma, " n=",n))+
+  geom_point(data = df_true, aes(x=x, y=y_true, color="y real"))+
+  theme(legend.position=position_legend)
+  return(p)
+}
+grid.arrange(generar_grafico(x=vector_x,n=50,sigma=4,beta_0,beta_1,
+                             position_legend='right'),
+             generar_grafico(x=vector_x,n=50,sigma=10,beta_0,beta_1,
+                             position_legend='right'),
+             nrow=2)
 ```
+
+[Conclusiones:](style="color=red;") 
+
+- Las rectas estimadas se aproximan a la recta real, pero dicha cercanía dependerá del sigma (variabilidad inherente del proceso generador de datos)
+- Como las rectas se estan distanciando de la recta teórica conviene investigar qué lo provoca, esto es, cuánto se distancian los betas estimados de los betas teóricos. 
+- Conviene también estudiar el comportamiento estadístico de los betas estimados, no sólo la distancia a la que quedan de los betas teóricos.
+
+[Observación:](style="color=red;") 
+
+Hasta ahora no contamos con un estimado para sigma, pero es muy importante tenerlo porque del sigma del proceso generador de datos, está dependiendo la varianza de cada uno de los betas estimados, tal como se aprecia en el gráfico, en el que las rectas se distancian más de la teórica conforme el $\sigma$ desconocido del proceso crece. 
+
+$\widetilde{\sigma^2}=\sum_{i=1}^{n}\frac{(y_i-\tilde{y_i})²}{n-p}$
+
+Acá $p$ representa la cantidad de parámetros en mi modelo,es decir que el denominador debe ser los grados de libertad de la suma de cuadrados de los residuales para garantizar la insesgadez del estimador $\widetilde{\sigma^2}$, entendiendo por esto la propiedad que tiene de que su promedio sobre todas las posibles muestras extraídas del proceso generador de datos sea igual a $\sigma²$, esto es $E(\widetilde{\sigma^2})=\sigma²$
+
+Ahora estamos en condiciones de investigar el comportamiento estadístico de $\widetilde\beta_0$ y $\widetilde\beta_1$, para ello procederemos bajo el siguiente pseudo-código.
+
+- Fijar un tamaño de muestra y fijar un proceso generador de datos (puede usar el proceso del modelo anterior con $\sigma = 4$)
+- Invocar 10000 veces el generador de la muestra
+- Sobre cada muestra invocar el estimador de los betas
+- Graficar el valor de $\widetilde\beta_0$ en un histograma guardando el vector de betas estimados.
+- Repetir los pasos anteriores para tamaños de muestra cada vez más grandes.
+- Repetir los pasos anteriores para $\widetilde\beta_1$
+- Concluir sobre cómo el tamaño de muestra afecta la magnitud del error de estimación de los betas.
 
 
 ```{r}
 
+# Parámetros para fijar el proceso generador de datos
+sigma <- 4
+beta_0 <- 2
+beta_1 <- 0.5
+
+# vectores donde guardaremos los resultados de los betas estimados para
+# cada tamaño de muestra
+vector_beta_0_est <- vector()
+vector_beta_1_est <- vector()
+vector_sigma_est <- vector()
+tamanos <- vector()
+
+# Ciclo de alimentación de los vectores
+
+if(!file.exists("df_estimaciones.csv")){
+j<-1
+for (n in c(5,10,15,20,50,100,500,1000)){
+  for (i in 1:10000){
+    muestra <-generador_muestra(n=n,vector_x=seq(1,n),sigma=sigma,
+                                beta_0=beta_0,beta_1=beta_1)
+    betas_estimados <- estimador_betas(muestra$x, muestra$y)
+    vector_beta_0_est[j] <- betas_estimados$beta_0
+    vector_beta_1_est[j] <- betas_estimados$beta_1
+    vector_sigma_est[j] <- betas_estimados$sigma
+    tamanos[j] <- n
+    j <- j+1
+  }
+}
+
+# Construyo el dataframe de estimaciones y en el caso de sigma estimado
+# cálculo el estadístico de prueba que se usa para pruebas de hipótesis
+# sobre sigma.
+
+df_estimaciones <- data.frame(
+  beta_0_est = vector_beta_0_est,
+  beta_1_est = vector_beta_1_est,
+  sigma_est = vector_sigma_est,
+  chi_2 = (tamanos -2)*(vector_sigma_est^2)/sigma^2,
+  tamano = tamanos
+)
+
+write.csv(df_estimaciones,file="df_estimaciones.csv",
+          row.names = FALSE, sep=",")
+}else{
+  df_estimaciones <- read.csv("df_estimaciones.csv", sep=",")
+}
+
+df_estimaciones %>% 
+  head(10) %>% 
+  ftable()
+
+
+p1 <- ggplot(data=df_estimaciones, aes(x=beta_0_est))+
+  geom_histogram()+
+  labs(y = "Frecuencia", x="Beta 0 estimado")+
+  facet_wrap(vars(tamano), scales="free")
+
+plot(p1)
+
+p2 <- ggplot(data=df_estimaciones, aes(x=beta_1_est))+
+  geom_histogram()+
+  labs(y = "Frecuencia", x="Beta 1 estimado")+
+  facet_wrap(vars(tamano), scales="free")
+
+plot(p2)
+
+p3 <- ggplot(data=df_estimaciones, aes(x=chi_2))+
+  geom_histogram()+
+  labs(y = "Frecuencia", x="(n-2)^MSE/Sigma^2")+
+  facet_wrap(vars(tamano), scales="free")
+
+plot(p3)
 ```
 
+[Conclusiones:](style="color=red;") 
 
+- Los histogramas para $\widetilde\beta_0$ y $\widetilde\beta_1$ tienen forma acampanada lo que sugiere una relación con la distribución normal (no estamos diciendo que se conduzcan como una normal)
 
-```{r}
+- Las varianzas de $\widetilde\beta_0$ y $\widetilde\beta_1$ dependen de los tamaños de muestra (y del sigma del proceso generador de datos aunque esta parte queda para inspección por parte del alumno)
 
+- Los histogramas para $\widetilde{\sigma²}$ no se dibujaron, en su lugar
+se dibujó un histograma para una transformación (o escalamiento) dada por: 
 
-# Esperada de y dado x
-E_y_x <- beta_0 + (beta_1 * vector_x )
+$$\chi² = \frac{(n-2)*\widetilde{\sigma^2}}{\sigma^2}=\frac{SSE}{\sigma^2}= \frac{1}{\sigma^2}\sum_{i=1}^{n}(y_i - \widetilde{y})²$$
 
-print(E_y_x)
+Es decir, en lugar de dibujar los valores originales de $\widetilde{\sigma²}$, dibujamos la suma escalada de los cuadrados de los residuales, donde el factor de escalamiento es precisamente la varianza de los errores del proceso generador de datos. ¿Por qué hacemos esto? Porque esta suma de cuadrados, es una suma de cuadrados de variables aleatorias normales, es decir que ésta será una distribución chi cuadrado. Para determinar sus grados de libertad tomaremos en cuenta la cantidad de cuadrados independientes en la suma, entendiendo por independientes los cuadrados que pueden variar libremente sin violar las ecuaciones que dieron lugar a $\widetilde{\beta_0}$ y   $\widetilde{\beta_1}$
 
-plot(vector_x,E_y_x)
+- Será necesario derivar expresiones para la varianza de $\widetilde\beta_1$ y $\widetilde\beta_2$, pero dado que las ecuaciones que lo definen son combinaciones lineales de las $y_i$ y las $y_i$ se asumen independientes (puesto que los $e_i$ se están asumiendo independientes y normales), podemos anticipar que:
 
+$t_0 = \frac{\widetilde\beta_0 - \beta_0}{se(\widetilde\beta_0)}$ y
+$t_1 = \frac{\widetilde\beta_1 - \beta_1}{se(\widetilde\beta_1)}$ se
+distribuyen como variables t-student con $n-2$ grados de libertad.
 
+Entonces, podemos finalmente decir que tenemos instrumentos analíticos para proponer prueba de hipótesis para $\beta_0$, $\beta_1$, y $\sigma$
 
+Para $\beta_0$ podemos usar el estadístico de prueba dado por:
 
-```
+$t_0 = \frac{\widetilde\beta_0 - \beta_{00}}{se(\widetilde\beta_0)}$
 
+con $se(\widetilde\beta_0)=\sqrt{(MSE*\left(\frac{1}{n}+\frac{\bar{x}²}{S_{xx}}\right)}$
+
+Así que proponemos la prueba para $\beta_0$:
+
+$H_0: \beta_0 = \beta_{00}$ vs $H_a: \beta_0\ne\beta_{00}$ donde se rechaza $H_0$ si $|t_0|>t_{\frac{\alpha}{2}, n-2}$
+
+Para $\beta_1$ podemos usar el estadístico de prueba dado por:
+
+$t_0 = \frac{\widetilde\beta_1 - \beta_{10}}{se(\widetilde\beta_1)}$
+
+con $se(\widetilde\beta_1)=\sqrt{\frac{MSE}{S_{xx}}}$
+
+Así que proponemos la prueba para $\beta_1$:
+
+$H_0: \beta_1 = \beta_{10}$ vs $H_a: \beta_0\ne\beta_{10}$ donde se rechaza $H_0$ si $|t_0|>t_{\frac{\alpha}{2}, n-2}$
+
+Para $\sigma²$ podemos usar el estadístico de prueba dado por:
 
 
 [Variable aleatoria]{style="color: red;"}: Una variable aleatoria X es una función de \[
@@ -2083,7 +2219,7 @@ Aunque en el modelo anterior hemos elegido una estructura lineal para
 representar E(y\|x) en realidad podemos elegir cualquier otra estructura
 alternativa, siempre que respetemos la linealidad en los betas.
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 bo = 2
 b1_1 = 3
@@ -2122,7 +2258,7 @@ datos_simulados <- data.frame(
 
 # Dibujamos un gráfico de dispersión
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 datos_simulados %>% 
   ggplot(aes(x = x, y = y_obs_1)) +
   geom_smooth(method = "lm", formula = y~x, se = FALSE, color="lightblue") +
@@ -2170,7 +2306,7 @@ Esto corresponde a crear una nueva variable con los cálculos mencionados
 $\tilde{x} = x + x^2$. Sin embargo, para graficar es conveniente usar la
 variable original.
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 # Se define una semilla para generar los aleatorios.
 set.seed(77)
@@ -2195,41 +2331,45 @@ datos_simulados_2 <- data.frame(
 modelo1a <-  lm(y_obs_3 ~ poly(x, 2))
 modelo1b <-  lm(y_obs_3 ~ poly(x, 2, raw = TRUE))
 modelo2 <-  lm(y_obs_3 ~ x_auxiliar )
+
+
+# Notese que los coeficientes arrojados por el modelo 1a al invocar la
+# función poly sin parámetro de raw=TRUE, no son atribuibles o no están
+# asociados a los términos $1,x,x^2$, es decir, **No es válido escribir**:
+# 
+# <!-- $$E(y|x)= `r round(modelo1a$coefficients[1], 2)` * 1 + `r round(modelo1a$coefficients[2], 2)` * x + `r round(modelo1a$coefficients[3], 2)` * x^2$$ -->
+# 
+# Esta ecuación no sería válida porque al remplazar para $x=5$ se obtiene
+# <!-- $E(y|5)=$ -->
+# <!-- `r round(modelo1a$coefficients[1] * 1 + modelo1a$coefficients[2] * 5 + modelo1a$coefficients[3] * 5^2, 2)`, -->
+# mientras que al remplazar en el modelo con el parámetro raw = TRUE, se
+# <!-- obtendría: $E(y|5)=$ -->
+# <!-- `r round(modelo1b$coefficients[1] * 1 + modelo1b$coefficients[2] * 5 + modelo1b$coefficients[3] * 5^2, 2)`. -->
+# 
+# Observe que para el valor $x=5$ los valores observados de $y$ están
+# cercanos a 24 por lo que una predicción arrojando un valor cercano a
+# 836, está claramente desfasada. Observe el gráfico más abajo para
+# comprender lo explicado.
+# 
+# Esto se debe a que los coeficientes anclados al modelo_1a están
+# diseñados para ser usados sobre la siguiente base de polinomios
+# ortogonales:
+# 
+# -   $P_1(x)= a$
+# -   $P_2(x)=m*x - c$
+# -   $P_3(x)= k_1 + k_2 *x + k_3 * x ^2$
+# 
+# Donde $a,m,c,k_1,k_2,k_3$ son parámetros estimados que lamentablemente
+# no están siendo arrojados por el modelo.
+# 
+# A continuación se muestra el resumen de cada uno de los modelos,
+# utilizando la función summary().
+
 ```
 
-Notese que los coeficientes arrojados por el modelo1a al invocar la
-función poly sin parámetro de raw=TRUE, no son atribuibles o no están
-asociados a los términos $1,x,x^2$, es decir, **No es válido escribir**:
 
-$$E(y|x)= `r round(modelo1a$coefficients[1], 2)` * 1 + `r round(modelo1a$coefficients[2], 2)` * x + `r round(modelo1a$coefficients[3], 2)` * x^2$$
 
-Esta ecuación no sería válida porque al remplazar para $x=5$ se obtiene
-$E(y|5)=$
-`r round(modelo1a$coefficients[1] * 1 + modelo1a$coefficients[2] * 5 + modelo1a$coefficients[3] * 5^2, 2)`,
-mientras que al remplazar en el modelo con el parámetro raw = TRUE, se
-obtendría: $E(y|5)=$
-`r round(modelo1b$coefficients[1] * 1 + modelo1b$coefficients[2] * 5 + modelo1b$coefficients[3] * 5^2, 2)`.
-
-Observe que para el valor $x=5$ los valores observados de $y$ están
-cercanos a 24 por lo que una predicción arrojando un valor cercano a
-836, está claramente desfasada. Observe el gráfico más abajo para
-comprender lo explicado.
-
-Esto se debe a que los coeficientes anclados al modelo_1a están
-diseñados para ser usados sobre la siguiente base de polinomios
-ortogonales:
-
--   $P_1(x)= a$
--   $P_2(x)=m*x - c$
--   $P_3(x)= k_1 + k_2 *x + k_3 * x ^2$
-
-Donde $a,m,c,k_1,k_2,k_3$ son parámetros estimados que lamentablemente
-no están siendo arrojados por el modelo.
-
-A continuación se muestra el resumen de cada uno de los modelos,
-utilizando la función summary().
-
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 
 summary(modelo1a)
@@ -2241,7 +2381,7 @@ summary(modelo2)
 
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 datos_simulados_2 %>% 
   ggplot(aes(x = x , y = y_obs_3))+
@@ -2286,7 +2426,7 @@ E_y_5
 
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 
 error <- rnorm(n = n, mean = 0, sd = sigma)
@@ -2302,7 +2442,7 @@ plot(vector_x,y_observado)
 
 # Modelo lineal
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 modelo_y_predicho <- lm(y_observado ~ vector_x)
 
@@ -2315,7 +2455,7 @@ print(y_predicho)
 
 # Unión en un dataframe
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 datos_modelo <- as.data.frame(vector_x) %>% 
   mutate(E_y_x = E_y_x,
@@ -2326,7 +2466,7 @@ datos_modelo <- as.data.frame(vector_x) %>%
 
 # Gráficando los valores
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 datos_modelo %>% 
   ggplot(  )+
@@ -2340,7 +2480,7 @@ datos_modelo %>%
 
 # Diferencia entre esperado y el predicho (Error)
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 
 modelo_y_predicho$coefficients
@@ -2359,7 +2499,7 @@ datos_modelo <- datos_modelo %>%
 
 # Construir función
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 
 estimar_betas <-  function(n,b0,b1,sigma,distribucion){
@@ -2399,7 +2539,7 @@ estimar_betas <-  function(n,b0,b1,sigma,distribucion){
 
 # Usando la función
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 resultados1 <- estimar_betas(40,beta_0,beta_1,sigma,"normal")
 # resultados2 <- estimar_betas(40,beta_0,beta_1,sigma)
@@ -2414,7 +2554,7 @@ print(resultados1)
 
 # Creando vector BETAS
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 vector_betas <- function(n,beta_0,beta_1,sigma, n_sim, distribucion) {
   
@@ -2443,7 +2583,7 @@ vector_betas <- function(n,beta_0,beta_1,sigma, n_sim, distribucion) {
 
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 
 df_resultados1 <- vector_betas(40,2,2,4,1000,"normal")
@@ -2454,7 +2594,7 @@ df_resultados2 <- vector_betas(40,2,2,4,1000,"runif")
 
 # Histograma comparando distribuciones.
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 histo_b0_normal <- df_resultados1 %>% 
   ggplot()+
@@ -2473,7 +2613,7 @@ grid.arrange(histo_b0_normal,
 
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 histo_b0_normal <- df_resultados1 %>% 
   ggplot()+
@@ -2492,7 +2632,7 @@ grid.arrange(histo_b0_normal,
 
 ```
 
-```{r include=FALSE}
+```{r eval=FALSE, include=FALSE}
 
 # Este chunk se configuró para no imprimirse
 
