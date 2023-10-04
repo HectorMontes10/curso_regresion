@@ -563,7 +563,7 @@ muy sencillas. Veamos:
 Sea $Y$ el precio del aguacate y sea $X$ el precio del dólar.
 Investiguemos si este modelo sencillo nos funciona:
 
-$$y = \beta_{0} + \beta_{1} * x + e \text{ con } e \text{~}N(0, \sigma^2)$$
+$$y = \beta_{0} + \beta_{1} * x + e \text{ con } e \text{~}N(0, {\sigma_e}^2)$$
 
 ## 1.8 Algunas observaciones sobre las fortalezas y limitaciones del modelo
 
@@ -602,7 +602,7 @@ al contrario vamos a exigir que sea un valor aleatorio, precisamente
 porque está modelando incertidumbre. Pero esto no implica que no podamos
 poner ciertas condiciones sobre el **tipo de aleatoriedad deseada para**
 $e$. En este caso supondremos que $e$ se distribuye como una variable
-aleatoria normal con media $\mu=0$ y desviación estándar $\sigma$.
+aleatoria normal con media $\mu=0$ y desviación estándar $\sigma_e$.
 Conviene aclarar que esto es una suposición, no implica que
 efectivamente los errores vayan a cumplir tal supuesto.
 
@@ -775,7 +775,7 @@ regresión.
 
 Retomando nuestro modelo original
 
-$$y = \beta_{0} + \beta_{1} * x + e \text{ con } e \text{~}N(0, \sigma^2)$$
+$$y = \beta_{0} + \beta_{1} * x + e \text{ con } e \text{~}N(0, {\sigma_e}^2)$$
 
 Tomando valor esperado en ambos lados de la ecuación tenemos que:
 
@@ -884,7 +884,7 @@ ftable(mse_df[(pos_min - 8):(pos_min + 8), ])
 -   Demostrar cómo el valor de $\color{red}{\widetilde{\beta}_0}$ está
     atado con el de $\color{red}{\widetilde{\beta}_1}$ si de verdad
     queremos que la recta estimada respete la condición de que
-    $e \text{~}N(0, \sigma^2)$ y por lo tanto de que $E(e)=0$.
+    $e \text{~}N(0, {\sigma_e}^2)$ y por lo tanto de que $E(e)=0$.
 -   Generar un dataframe que calcula los valores de
     $MSE_{\text{NO ingenuo}}$ para cada par de valores elegidos para
     $\color{red}{\widetilde{\beta}_0}$ y $\color{red}{\widetilde{\beta}_1}$,
@@ -1717,7 +1717,7 @@ p<- ggplot(data = df_squared_error, aes(x=precio_dolar,
 print(p)
 ```
 
-En este caso $W = nR² = 7.8925$ es el estadístico de la prueba con $k=2$ grados de libertad asociados a el número de covariables. Ahora bien $\text{p valor} = 0.01933$, obtenido a través de calcular $p(\chi^2_2>=7.8925)$, indicando esta vez que hay evidencia estadística para asumir heterocedasticidad de orden cuadrático. Podrá notar que un patrón parabólico no muy fuerte se observa cuando dibujamos el modelo sobre la nube de puntos del error cuadrado vs el precio del dólar. 
+En este caso $W = nR² = 7.8925$ es el estadístico de la prueba con $k=2$ grados de libertad asociados al número de covariables. Ahora bien $\text{p valor} = 0.01933$, obtenido a través de calcular $p(\chi^2_2>=7.8925)$, indicando esta vez que hay evidencia estadística para asumir heterocedasticidad de orden cuadrático. Podrá notar que un patrón parabólico no muy fuerte se observa cuando dibujamos el modelo sobre la nube de puntos del error cuadrado vs el precio del dólar. 
 
 Vamos a intentar resolver el problema de heterocedasticidad con una transformación de la variable respuesta que tienda a aplanar la curva de errores cuadrados responsable de la falla del supuesto. Dos posibles transformaciones son: 
 
@@ -1827,7 +1827,7 @@ Es decir, debemos reconocer la incertidumbre que tenemos frente al conocimiento 
 Retomemos entonces nuestros modelo, para aterrizar mejor estas cuestiones:
 
 $$Y = \beta_0 + \beta_1X + e$$
-Nuestro proceso generador de datos consiste así en una función lineal que hace depender a $Y$ del valor de $X$ y de un componente aleatorio $e$ que indica la parte del valor de Y que no logra ser capturada por la relación lineal que la X tiene con la Y. Nosotros no conocemos $\beta_0$ y $\beta_1$, así como tampoco $\sigma$ (recordemos que $e\text{~}N(0,\sigma²)$). Así que debemos usar la información de la muestra de datos observados $(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)$ para intentar deducir los valores de estos tres parámetros. Sin embargo tales valores son sólo un estimado de los verdaderos parámetros del proceso generador de datos. 
+Nuestro proceso generador de datos consiste así en una función lineal que hace depender a $Y$ del valor de $X$ y de un componente aleatorio $e$ que indica la parte del valor de Y que no logra ser capturada por la relación lineal que la X tiene con la Y. Nosotros no conocemos $\beta_0$ y $\beta_1$, así como tampoco $\sigma_e$ (recordemos que $e\text{~}N(0,{\sigma_e}²)$). Así que debemos usar la información de la muestra de datos observados $(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)$ para intentar deducir los valores de estos tres parámetros. Sin embargo tales valores son sólo un estimado de los verdaderos parámetros del proceso generador de datos. 
 
 En capítulos anteriores dejamos claro que un método posible para estimar los parámetros $\beta_1$ y $\beta_2$ es usar minimización del MSE(Mean Squared Error), es un esfuerzo por generar la mejor recta ajustada a los datos, pero cabe preguntarse:
 
@@ -1835,7 +1835,7 @@ En capítulos anteriores dejamos claro que un método posible para estimar los p
 
 Lo que queremos indicar con esta pregunta es que: un buen ajuste no tiene que ser sinónimo de buena estimación de parámetros, y si lo es deberíamos poderlo demostrar, porque el ajuste habla de la calidad del modelo para explicar los datos observados, y no necesariamente para explicar todo el universo de los datos que mi proceso generador de datos podría generar. Si nos ajustamos bien a la muestra, esto no implica a-priori ajustarnos bien a la población. No obstante algo nos hace sospechar que no es tan mala idea usar una estrategia como esta porque después de todo no conocemos más datos que los que la muestra pueda revelarnos.
 
-# 6.1 Estudiando el comportamiento estadístico de los estimadores
+## 6.1 Estudiando el comportamiento estadístico de los estimadores
 
 ¿Cómo garantizamos que dentro de todas las posibles operaciones matemáticas que podemos ejecutar con los valores de la muestra, las operaciones:
 
@@ -1857,13 +1857,13 @@ $$E(y_i|x_i) = E((\beta_0 + \beta_1x_i + e_i)|x_i)=\beta_0+\beta_1x_i + E(e_i) =
 
 Ya que $E(e_i)=0$ desde los supuestos. Y por otro lado que:
 
-$$Var(y_i|x_i) = Var((\beta_0 + \beta_1x_i + e_i)|x_i) = 0+0+Var(e_i)= \sigma^2$$
+$$Var(y_i|x_i) = Var((\beta_0 + \beta_1x_i + e_i)|x_i) = 0+0+Var(e_i)= {\sigma_e}^2$$
 
-Ya que $Var(e_i) = \sigma^2$ también desde los supuestos.
+Ya que $Var(e_i) = {\sigma_e}^2$ también desde los supuestos.
 
 Así que como conclusión tenemos que, cuando el $x_i$ está ya dado:
 
-$$y_i\text{~}N(\beta_0 + \beta_1x_i,\sigma^2)$$
+$$y_i\text{~}N(\beta_0 + \beta_1x_i,{\sigma_e}^2)$$
 
 Todo esto por propiedad de linealidad de la normalidad, es decir, debido a que una transformación afín de la variable normal $e_i$ dada por un desplazmiento $\beta_0$ y un factor de escala $\beta_1$ es también una variable aleatoria normal. 
 
@@ -1880,10 +1880,10 @@ Lo que indicaría que $\widetilde{\beta}_1$ es un estimador insesgado para $\bet
 
 Y ahora investiguemos su varianza:
 
-$$Var(\widetilde{\beta}_1)=Var\left(\sum_{i=1}^{n}c_iy_i\right)=\sum_{i=1}^{n}{c_i}²Var(y_i)=\sum_{i=1}^{n}{c_i}²{\sigma}²={\sigma}²\sum_{i=1}^{n}{c_i}²$$
-Ya que de nuevo por asunciones sobre el proceso generador de datos las $y_i$ son no correlacionadas y habíamos demostrado previamente que $Var(y_i) = {\sigma}²$, sin importar el $y_i$ considerado, es decir, estos son homocedásticos como consecuencia de la definición del modelo. Por lo tanto:
+$$Var(\widetilde{\beta}_1)=Var\left(\sum_{i=1}^{n}c_iy_i\right)=\sum_{i=1}^{n}{c_i}²Var(y_i)=\sum_{i=1}^{n}{c_i}²{\sigma_e}²={\sigma_e}²\sum_{i=1}^{n}{c_i}²$$
+Ya que de nuevo por asunciones sobre el proceso generador de datos las $y_i$ son no correlacionadas y habíamos demostrado previamente que $Var(y_i) = {\sigma_e}²$, sin importar el $y_i$ considerado, es decir, estos son homocedásticos como consecuencia de la definición del modelo. Por lo tanto:
 
-$$Var(\widetilde{\beta}_1)={\sigma}²\sum_{i=1}^{n}{\left(\frac{x_i-\bar{x}}{S_{xx}}\right)}^2=\frac{\sigma²}{{S²}_{xx}}\sum_{i=1}^{n}(x_i-\bar{x})²=\frac{\sigma²}{{S²}_{xx}}*S_{xx}=\frac{\sigma²}{{S}_{xx}}$$
+$$Var(\widetilde{\beta}_1)={\sigma_e}²\sum_{i=1}^{n}{\left(\frac{x_i-\bar{x}}{S_{xx}}\right)}^2=\frac{\sigma_e²}{{S²}_{xx}}\sum_{i=1}^{n}(x_i-\bar{x})²=\frac{\sigma_e²}{{S²}_{xx}}*S_{xx}=\frac{\sigma_e²}{{S}_{xx}}$$
 Finalmente, ya que hemos investigado ampliamente el comportamiento del estimador $\widetilde{\beta}_1$ usemos este conocimiento para investigar el comportamiento de $\widetilde{\beta}_0$. Para ello, considere que $\widetilde{\beta}_0 = \bar{y} - \widetilde{\beta}_1\bar{x}$, por lo tanto:
 
 $$E(\widetilde{\beta}_0)=E(\bar{y} - \widetilde{\beta}_1\bar{x})=E(\bar{y})-\bar{x}E(\widetilde{\beta}_1)=E(\sum_{i=1}^{n}\frac{y_i}{n})-\bar{x}\beta_1=\frac{1}{n}\sum_{i=1}^{n}E(y_i)-\bar{x}\beta_1\\=\frac{1}{n}\sum_{i=1}^{n}(\beta_0 + \beta_1x_i)-\bar{x}\beta_1=\frac{1}{n}\left(\sum_{i=1}^{n}\beta_0+\beta_1\sum_{i=1}^{n}x_i\right)-\bar{x}\beta_1\\=\frac{1}{n}(n\beta_0 + \beta_1n\bar{x})-\bar{x}\beta_1=\beta_0$$
@@ -1892,14 +1892,65 @@ De nuevo $\widetilde{\beta}_0$ es un estimador insesgado de $\beta_0$!!!
 
 Para la varianza tenemos:
 
-$$Var(\widetilde{\beta}_0)=Var(\bar{y} - \widetilde{\beta}_1\bar{x})=Var(\bar{y})+{\bar{x}}^2Var(\widetilde{\beta}_1)=\frac{\sigma²}{n} + {\bar{x}}^2\frac{\sigma²}{S_{xx}}=\sigma²\left(\frac{1}{n}+\frac{{\bar{x}}^2}{S_{xx}}\right)$$
+$$Var(\widetilde{\beta}_0)=Var(\bar{y} - \widetilde{\beta}_1\bar{x})=Var(\bar{y})+{\bar{x}}^2Var(\widetilde{\beta}_1)=\frac{{\sigma_e}²}{n} + {\bar{x}}^2\frac{{\sigma_e}²}{S_{xx}}={\sigma_e}²\left(\frac{1}{n}+\frac{{\bar{x}}^2}{S_{xx}}\right)$$
 
-Una última anotación a realizar es que según el **teorema de Gauss-Markov**, para el modelo de regresión lineal con los supuestos $E(e)=0$ y $Var(e)=\sigma²$ y por supuesto con errores no correlacionados, los estimadores por mínimos cuadrados son insesgados (tal como acabamos de demostrar), pero más importante que eso, tienen la varianza más pequeña que se pueda esperar dentro del universo de estimadores insesgados que se construyen como combinaciones lineales de los $y_i$. Es por esta razón que con frecuencia se dice que los estimadores por mínimos cuadrados son los **estimadores lineales insesgados óptimos**, donde __óptimos__ implica que son de varianza mínima. 
+También es importante hacer ver que también $\widetilde{\beta}_0$ puede pensarse como combinación lineal de las $y_i$ ya que en su fórmula están involucradas las cantidades $\bar{y}$ y $\widetilde{\beta}_1$ a través de una combinación lineal. Por lo tanto, como una combinación lineal de combinaciones lineales de las $y_i$ es también una combinación lineal de $y_i$ podemos afirmar que por propiedad reproductiva de la normal $\widetilde{\beta}_0$ también se distribuye normal. 
 
+Una última anotación a realizar es que según el **teorema de Gauss-Markov**, para el modelo de regresión lineal con los supuestos $E(e)=0$ y $Var(e)={\sigma_e}²$ y por supuesto con errores no correlacionados, los estimadores por mínimos cuadrados son insesgados (tal como acabamos de demostrar), pero más importante que eso, tienen la varianza más pequeña que se pueda esperar dentro del universo de estimadores insesgados que se construyen como combinaciones lineales de los $y_i$. Es por esta razón que con frecuencia se dice que los estimadores por mínimos cuadrados son los **estimadores lineales insesgados óptimos**, donde __óptimos__ implica que son de varianza mínima. 
 
-# 6.2 Simulando el comportamiento estadístico de los estimadores
+## 6.2 Construyendo estadísticos de prueba para hipótesis sobre los beta
 
-Y exploramemos como se comportan los valores de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ a lo largo de diversas muestras de tamaño $n$ obtenidas con el modelo teórico. El pseudo código es:
+Tanto para $\widetilde{\beta}_0$ como para $\widetilde{\beta}_1$ hemos deducido expresiones para su varianza y su media, y además hemos demostrado analíticamente que ambos estimadores son variables aleatorias normales. La única limitación que tenemos hasta ahora para realizar pruebas de hipótesis sobre sus valores es el hecho de que la fórmula de la varianza de los betas está involucrando la varianza ${\sigma^2}_e$ la cual es desconocida. 
+
+Sin embargo, si inspeccionamos la estructura de la suma de cuadrados de los residuales, tenemos que:
+
+$$SS_{Res} =\sum^{n}_{i=1}(y_i - \hat{y_i})² =\sum^{n}_{i=1}(y_i - \widetilde{\beta}_0 -\widetilde{\beta}_1x_i)²$$                                                                    
+Y como esta suma de cuadrados tiene $n-2$ grados de libertad, porque dos grados de libertad se asocian con $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$, es posible demostrar que $E(SS_{Res})=(n-2)*{{\sigma_e}^2}$, de modo que la cantidad:
+
+$$\widetilde{\sigma}²_e = MS_{Res} = \frac{SS_{Res}}{n-2}$$
+Sería un estimador insesgado para ${\sigma^2}_e$. 
+
+También es posible demostrar que la cantidad:
+
+$$\chi²=\frac{SS_{Res}}{{\sigma²}_e}=\frac{(n-2)\widetilde{\sigma}²_e}{{\sigma^2}_e}$$
+
+se distribuye como una variable aleatoria chi-cudrada con $n-2$ grados de libertad, pues precisamente es la suma de $n-2$ cuadrados de variables aleatorias normales independientes e idénticamente distribuidas divididas entre su varianza común. También note que este comportamiento teórico esperado para el estimador de ${\sigma²}_e$ depende fuertemente de los residuales del modelo, es decir, puede verse afectado seriamente si el comportamiento de los residuales no se cumple, esto es: independencia, homocedasticidad y normalidad.
+
+[Prueba de hipótesis para beta_0:](style="color=red;")
+
+Considere la siguiente cantidad:
+
+$$z_0 = \frac{\widetilde\beta_0 - \beta_{00}}{\sqrt{Var(\widetilde\beta_0)}}=\frac{\widetilde\beta_0 - \beta_{00}}{\sqrt{{\sigma_e}²\left(\frac{1}{n}+\frac{{\bar{x}}^2}{S_{xx}}\right)}}$$
+Dada la normalidad de $\widetilde{\beta_0}$ y el hecho de que $\widetilde{\beta_0}$ es un estimador insesgado de $\beta_0$ podemos decir que $\z_0$ se distribuye como una variable normal estándar. Pero como obviamente tampoco conocemos el verdadero valor de la varianza de $\widetilde{\beta}_0$, pues está dependiendo de ${\sigma_e}²$ en su lugar tendremos que proponer un estadístico de prueba alternativo dado por: 
+
+$$t_0 = \frac{\widetilde\beta_0 - \beta_{00}}{\sqrt{\frac{SS_{Res}}{n-2}\left(\frac{1}{n}+\frac{{\bar{x}}^2}{S_{xx}}\right)}}$$
+Note como ${\sigma_e}²$ ha sido sustituido por su estimador insesgado deducido previamente. Esta nueva cantidad se distribuirá, según la teoría estadística, como una variable aleatoria t-student con $n-2$ grados de libertad!!!
+
+Entonces podemos proponer el test de hipótesis:
+
+$H_0: \beta_0 = \beta_{00}$
+$H_1: \beta_0 \ne \beta_{00}$
+
+Donde la hipótesis nula se rechaza si $|t_0|=t_{\frac{\alpha}{2},n-2}$
+
+[Prueba de hipótesis para beta_1:](style="color=red;")
+
+Similar a como se procedió para $\beta_0$, para $\beta_1$ podemos usar el estadístico de prueba dado por:
+
+$$t_0 = \frac{\widetilde\beta_1 - \beta_{10}}{\sqrt{\frac{SS_{Res}}{(n-2){S}_{xx}}}}$$
+
+Y entonces podemos proponer el test de hipótesis:
+
+$H_0: \beta_1 = \beta_{10}$
+$H_1: \beta_1 \ne \beta_{10}$
+
+Donde la hipótesis nula se rechaza si $|t_0|=t_{\frac{\alpha}{2},n-2}$
+
+Valga aclarar que, como en el caso del estimador $\widetilde{\sigma}²_e$, el comportanmiento distribucional esperado para los estadísticos de prueba de $\beta_0$ y $\beta_1$ puede resultar seriamente comprometido si los residuales no cumplen los supuestos del modelo. 
+
+## 6.3 Simulando el comportamiento estadístico de los estimadores
+
+Ahora podemos comprobar cómo se comportan los valores de $\widetilde{\beta}_0$, $\widetilde{\beta}_1$ y $MS_{Res}$ a lo largo de diversas muestras de tamaño $n$ obtenidas con el modelo teórico. El pseudo código es:
 
 1. Generar una función para extraer muestras de tamaño $n$ bajo un modelo teórico dado.
 2. Generar una función para ajustar una recta a la muestra anterior usando los estimadores $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$  dados en las ecuaciones anteriores.
@@ -1923,6 +1974,17 @@ generador_muestra <-  function(n,vector_x,sigma, beta_0,beta_1){
   return( list(x = vector_x, y = y_observada) )
 }
 
+# Creamos la función que estima el error estándar de b0 y b1
+se_betas <- function(vector_x, residuales, n){
+  SS_res <-sum(residuales^2)
+  MS_res <- SS_res / (n-2)
+  x_barra <- mean(vector_x)
+  SS_x <- sum((vector_x-x_barra)^2)
+  se_b0 <- sqrt(MS_res*((1/n) + (x_barra^2)/SS_x))
+  se_b1 <- sqrt(MS_res/SS_x)
+  return(list(se_b0 = se_b0, se_b1 = se_b1))
+}
+
 # Corroborando que la función quedó bien 👍
 generador_muestra(10,c(1:10),sigma, beta_0,beta_1)
 
@@ -1930,9 +1992,13 @@ generador_muestra(10,c(1:10),sigma, beta_0,beta_1)
 estimador_betas <- function(x,y){
     model <- lm(y~x)
     coeficientes <- model$coefficients
+    errores_betas <- se_betas(x, model$residuals, length(x))
     return(list(beta_0 = coeficientes[1],
                 beta_1 = coeficientes[2],
-                sigma = sigma(model)))  
+                se_b0 = errores_betas$se_b0,
+                se_b1 = errores_betas$se_b1,
+                sigma = sigma(model)
+                ))  
 }
 
 # Ajustamos semilla para reproducibilidad y una función que genera un
@@ -1993,22 +2059,24 @@ grid.arrange(generar_grafico(x=vector_x,n=50,sigma=4,beta_0,beta_1,
 
 [Observación:](style="color=red;") 
 
-Hasta ahora no contamos con un estimado para sigma, pero es muy importante tenerlo porque del sigma del proceso generador de datos, está dependiendo la varianza de cada uno de los betas estimados, tal como se aprecia en el gráfico, en el que las rectas se distancian más de la teórica conforme el $\sigma$ desconocido del proceso crece. 
+Tal como se aprecia en el gráfico, las rectas se distancian más de la teórica conforme el $\sigma$ desconocido del proceso crece. Y cómo vimos en el apartado anterior: 
 
-$\widetilde{\sigma}²_e=\sum_{i=1}^{n}\frac{(y_i-\tilde{y_i})²}{n-p}$
+$$\widetilde{\sigma}²_e=MS_{Res} = \sum_{i=1}^{n}\frac{(y_i-\tilde{y_i})²}{n-2}$$
 
-Acá $p$ representa la cantidad de parámetros en mi modelo,es decir que el denominador debe ser los grados de libertad de la suma de cuadrados de los residuales para garantizar la insesgadez del estimador $\widetilde{\sigma}²_e$, entendiendo por esto la propiedad que tiene de que su promedio sobre todas las posibles muestras extraídas del proceso generador de datos sea igual a $\sigma²$, esto es $E(\widetilde{\sigma}²_e)=\sigma²$
+Acá el número 2 que se resta en el denominador representa la cantidad de parámetros en mi modelo,es decir que el denominador debe ser los grados de libertad de la suma de cuadrados de los residuales para garantizar la insesgadez del estimador $\widetilde{\sigma}²_e$, entendiendo por esto la propiedad que tiene de que su promedio sobre todas las posibles muestras extraídas del proceso generador de datos sea igual a $\sigma²$, esto es $E(\widetilde{\sigma}²_e)={\sigma_e}²$
 
-Ahora estamos en condiciones de investigar el comportamiento estadístico de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$, para ello procederemos bajo el siguiente pseudo-código.
+Ahora estamos en condiciones de investigar el comportamiento estadístico de $\widetilde{\beta}_0$, $\widetilde{\beta}_1$, y $\widetilde{\sigma}²_e$ para ello procederemos bajo el siguiente pseudo-código.
 
-- Fijar un tamaño de muestra y fijar un proceso generador de datos (puede usar el proceso del modelo anterior con $\sigma = 4$)
-- Invocar 10000 veces el generador de la muestra
-- Sobre cada muestra invocar el estimador de los betas
-- Graficar el valor de $\widetilde{\beta}_0$ en un histograma guardando el vector de betas estimados.
-- Repetir los pasos anteriores para tamaños de muestra cada vez más grandes.
-- Repetir los pasos anteriores para $\widetilde{\beta}_1$
+- Generar una lista de tamaños de muestra a recorrer.
+- Generar un modelo teórico a usar.
+- Recorrer a través de un ciclo for todos los tamaños presentes en la lista.
+- Invocar 10000 veces el generador de la muestra sobre cada tamaño de muestra.
+- Sobre cada muestra invocar el estimador de los betas y sigma.
+- Almacenar cada grupo de estimaciones en sus correspondientes vectores de resultados.
+- Conformar un dataframe con el tamaño de muestra y estas estimaciones, al cual añadiremos además una columna con la cantidad dada por $\frac{(n-2)\widetilde{\sigma}²_e}{{\sigma²}_e}$ la cual se espera distribuida como una chi-cuadrado con $n-2$ grados de libertad, y con las estandarizaciones de los betas estimados, las cuales se esperan distribuidas como t-student con $n-2$ grados de libertad. 
+- Culminado el ciclo producir gráficos de las cantidades de interés: sigma estimado, cantidad ji-cudrado, betas estimados, y betas estandarizados.
+- Concluir sobre la validez de los comportamientos distribucionales esperados.
 - Concluir sobre cómo el tamaño de muestra afecta la magnitud del error de estimación de los betas.
-
 
 ```{r}
 
@@ -2021,6 +2089,8 @@ beta_1 <- 0.5
 # cada tamaño de muestra
 vector_beta_0_est <- vector()
 vector_beta_1_est <- vector()
+vector_se_beta_0_est <- vector()
+vector_se_beta_1_est <- vector()
 vector_sigma_est <- vector()
 tamanos <- vector()
 
@@ -2035,6 +2105,8 @@ for (n in c(5,10,15,20,50,100,500,1000)){
     betas_estimados <- estimador_betas(muestra$x, muestra$y)
     vector_beta_0_est[j] <- betas_estimados$beta_0
     vector_beta_1_est[j] <- betas_estimados$beta_1
+    vector_se_beta_0_est[j] <- betas_estimados$se_b0
+    vector_se_beta_1_est[j] <- betas_estimados$se_b1
     vector_sigma_est[j] <- betas_estimados$sigma
     tamanos[j] <- n
     j <- j+1
@@ -2048,6 +2120,10 @@ for (n in c(5,10,15,20,50,100,500,1000)){
 df_estimaciones <- data.frame(
   beta_0_est = vector_beta_0_est,
   beta_1_est = vector_beta_1_est,
+  beta_0_estandarizado = ((vector_beta_0_est-beta_0) /
+                             vector_se_beta_0_est),
+  beta_1_estandarizado = ((vector_beta_1_est-beta_1) /
+                             vector_se_beta_1_est),
   sigma_est = vector_sigma_est,
   chi_2 = (tamanos -2)*(vector_sigma_est^2)/sigma^2,
   tamano = tamanos
@@ -2071,84 +2147,57 @@ p1 <- ggplot(data=df_estimaciones, aes(x=beta_0_est))+
 
 plot(p1)
 
-p2 <- ggplot(data=df_estimaciones, aes(x=beta_1_est))+
+p2 <- ggplot(data=df_estimaciones, aes(x=beta_0_estandarizado))+
   geom_histogram()+
-  labs(y = "Frecuencia", x="Beta 1 estimado")+
+  labs(y = "Frecuencia", x="Beta 0 estandarizado")+
   facet_wrap(vars(tamano), scales="free")
 
 plot(p2)
 
-p3 <- ggplot(data=df_estimaciones, aes(x=chi_2))+
+p3 <- ggplot(data=df_estimaciones, aes(x=beta_1_est))+
   geom_histogram()+
-  labs(y = "Frecuencia", x="(n-2)^MSE/Sigma^2")+
+  labs(y = "Frecuencia", x="Beta 1 estimado")+
   facet_wrap(vars(tamano), scales="free")
 
 plot(p3)
+
+p4 <- ggplot(data=df_estimaciones, aes(x=beta_1_estandarizado))+
+  geom_histogram()+
+  labs(y = "Frecuencia", x="Beta 1 estandarizado")+
+  facet_wrap(vars(tamano), scales="free")
+
+plot(p4)
+
+p5 <- ggplot(data=df_estimaciones, aes(x=sigma_est))+
+  geom_histogram()+
+  labs(y = "Frecuencia", x="Sigma estimado")+
+  facet_wrap(vars(tamano), scales="free")
+
+plot(p5)
+
+p6 <- ggplot(data=df_estimaciones, aes(x=chi_2))+
+  geom_histogram()+
+  labs(y = "Frecuencia", x="(n-2)^MS_Res/Sigma^2")+
+  facet_wrap(vars(tamano), scales="free")
+
+plot(p6)
 ```
 
 [Conclusiones:](style="color=red;") 
 
-- Los histogramas para $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ tienen forma acampanada lo que sugiere una relación con la distribución normal (no estamos diciendo que se conduzcan como una normal)
+- Los histogramas para $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ tienen forma acampanada lo que sugiere una relación con la distribución t-student. Esto se confirma al inspeccionar los histogramas de las betas estandarizadas los cuales tienden a la normal conforme los grados de libertad crecen. Cómo una forma de confirmar la distribución subyacente se recomienda al alumno realizar una prueba de kolmogorov sobre cada histograma contra la teórica esperada (una distribución t con n-2 grados de libertad)
 
-- Las varianzas de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ dependen de los tamaños de muestra (y del sigma del proceso generador de datos aunque esta parte queda para inspección por parte del alumno)
+- Las varianzas de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ dependen de los tamaños de muestra (y del sigma del proceso generador de datos     que para todos los histogramas se dejó fijo en $\sigma_e=4$. Puede notar con el rango de variación de los betas se va estrechando conforme el tamaño de muestra crece. 
 
-- Los histogramas para $\widetilde{\sigma}²_e$ no se dibujaron, en su lugar
-se dibujó un histograma para una transformación (o escalamiento) dada por: 
+- El cociente $\frac{(n-2)\widetilde{\sigma}_e^2}{{\sigma_e}^2}$ en efecto parece seguir una distribución chi cuadrado con n-2 grados de libertad. Para confirmarlo se sugiere al alumno aplicar una prueba de kolmogorov sobre cada histograma. Note que por teorema central del límite incluso la ji-cuadrado tenderá a una distribución normal conforme el tamaño de muestra crece.
 
-$$\chi² = \frac{(n-2)*\widetilde{\sigma}²_e}{\sigma^2}=\frac{SSE}{\sigma^2}= \frac{1}{\sigma^2}\sum_{i=1}^{n}(y_i - \widetilde{y})²$$
 
-Es decir, en lugar de dibujar los valores originales de $\widetilde{\sigma}²_e$, dibujamos la suma escalada de los cuadrados de los residuales, donde el factor de escalamiento es precisamente la varianza de los errores del proceso generador de datos. 
-
-¿Por qué hicimos esto? Porque esta suma de cuadrados, es una suma de cuadrados de variables aleatorias normales (le queda al estudiante demostrar por qué), es decir que ésta será una distribución chi cuadrado. Para determinar sus grados de libertad tomaremos en cuenta la cantidad de cuadrados independientes en la suma, entendiendo por independientes los cuadrados que pueden variar libremente sin violar las ecuaciones que dieron lugar a $\widetilde{\beta_0}$ y $\widetilde{\beta_1}$
-
-- Será necesario derivar expresiones para la varianza de $\widetilde\beta_1$ y $\widetilde\beta_2$. Para ello tome en cuenta que las ecuaciones que los definen son combinaciones lineales de las $y_i$. Además las $y_i$ se asumen independientes (puesto que los $e_i$ lo son por suposición previa). También recuerde que las $y_i$ son variables aleatorias normales ya que dependen de los errores $e_i$ los cuales son variables aleatorias normales (de nuevo por suposición previa). 
-
-Acá es donde notamos la importancia del supuesto de normalidad de los errores, y el supuesto de independencia, pues estos son la garantía para proponer los test de hipótesis que vamos a ver a continuación.
-
-# 6.2 Prueba de hipótesis para $\beta_1$
-
-Considere el siguiente estadístico de prueba:
-
-$$t_0 = \frac{\widetilde\beta_0 - \beta_0}{\sqrt{Var(\widetilde\beta_0)}}$$
-Dada la normalidad de $\widetilde{\beta_0}$ y el hecho de que $\widetilde{\beta_0}$ es un estimador insesgado de $\beta_0$ podemos decir que $\t_0$ se distribuye como una variable normal estándar. Pero como obviamente tampoco conocemos el verdadero valor de la varianza de $\beta_0$, en su lugar tendremos que usar un estimado del mismo $\widetilde{Var}(\widetilde{\beta_0})$ dado por:
+## 6.4 Tabla Anova para probar desempeño general del modelo
 
 
 
 
 
-
-
-con $n-2$ grados de libertad.
-
-Entonces, podemos finalmente decir que tenemos instrumentos analíticos para proponer prueba de hipótesis para $\beta_0$, $\beta_1$, y $\sigma$
-
-Para $\beta_0$ podemos usar el estadístico de prueba dado por:
-
-$t_0 = \frac{\widetilde\beta_0 - \beta_{00}}{se(\widetilde\beta_0)}$
-
-con $se(\widetilde\beta_0)=\sqrt{(MSE*\left(\frac{1}{n}+\frac{\bar{x}²}{S_{xx}}\right)}$
-
-Así que proponemos la prueba para $\beta_0$:
-
-$H_0: \beta_0 = \beta_{00}$ vs $H_a: \beta_0\ne\beta_{00}$ donde se rechaza $H_0$ si $|t_0|>t_{\frac{\alpha}{2}, n-2}$
-
-
-
-
-$t_1 = \frac{\widetilde\beta_1 - \beta_1}{se(\widetilde\beta_1)}$
-
-
-Para $\beta_1$ podemos usar el estadístico de prueba dado por:
-
-$t_0 = \frac{\widetilde\beta_1 - \beta_{10}}{se(\widetilde\beta_1)}$
-
-con $se(\widetilde\beta_1)=\sqrt{\frac{MSE}{S_{xx}}}$
-
-Así que proponemos la prueba para $\beta_1$:
-
-$H_0: \beta_1 = \beta_{10}$ vs $H_a: \beta_0\ne\beta_{10}$ donde se rechaza $H_0$ si $|t_0|>t_{\frac{\alpha}{2}, n-2}$
-
-Para $\sigma²$ podemos usar el estadístico de prueba dado por:
 
 
 [Variable aleatoria]{style="color: red;"}: Una variable aleatoria X es una función de \[
