@@ -1,0 +1,58 @@
+---
+title: "Series de tiempo"
+author: "Hernan montes"
+date: "2023-10-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+[Variable aleatoria]{style="color: red;"}: Una variable aleatoria X es una función de \[
+f : \Omega \rightarrow \mathbb{R}\] con $\Omega$ el conjunto de resultados posibles de un experimento aleatorio. En otras palabras un mapeo desde el espacio de descripciones muestrales a los números reales con el fin de asociar a los resultados del experimento un valor numérico con el cual habilitar operaciones matemáticas. 
+
+[Proceso estocástico]{style = "color: red;"}: Sea $\mathcal{T}$ un conjunto arbitrario. Un proceso estocástico es una familia $\{X(t), \text{ t} \in \tau \}$, tal que, para cada $t \in \mathcal{T}, X(t)$ es una variable aleatoria.  Es decir, es una secuencia de variables aleatorias ordenadas por un índice, típicamente tomado del conjunto de los números enteros, o del conjunto de los números reales.
+
+[Proceso estocástico en tiempo discreto]{style = "color: red;}: Es un proceso estocástico con un índice temporal discreto. Significando que $\tau \in \mathbb{Z}$
+
+[Especificación de un proceso estocástico]{style = "color: red;"}: Sea $t_1, t_2, t_3,...,t_n$ elementos cualquiera de $\mathcal{T}$ y consideremos
+
+$$F(x_1, x_2, x_3, ..., x_n; t_1, t_2, t_3, ..., t_n)=P\{X(t_1)<=x_1, ..., X(t_n)<=x_n\}$$
+[Definición de un proceso estocástico estacionario]{style = "color: red;"}: Un proceso estocástico $\{X(t), \text{ t} \in \mathcal{T} \}$ se dice estrictamente estacionario si todas las distribuciones finito dimensionales tal como se definen en la ecuación anterior permanecen siendo las mismas sobre traslaciones en el tiempo, es decir:
+
+$$F(x_1, x_2, x_3, ..., x_n; t_1+\tau, t_2+\tau, t_3+\tau, ..., t_n+\tau)=F(x_1, x_2, x_3, ..., x_n; t_1, t_2, t_3, ..., t_n)$$
+Algunas consecuencias de lo anterior son:
+
+- $E\{X(t)\} = \mu(t) = \mu$
+- $Var\{X(t)\} = \sigma²(t) = \sigma²$
+- $\gamma(t_1, t_2) = \gamma(t_1-t_2, 0) = Cov\{X(t_1-t_2), X(0)\}$ o equivalentemente $\gamma{\tau} = Cov\{X(t), X(t+\tau)\} = Cov\{X(0), X(\tau)\}$ para t, $\tau \in \mathcal{T}$
+
+Reflexiones en lenguaje informal:
+
+- Un proceso estocástico quedará suficientemente definido si definimos la distribución de probabilidad n-dimensional conjunta para cada $n>=1$, es decir, tomando $n$ variables del proceso estocástico a la vez, sería necesario especificar la relación estadística de esas n variables a la vez para cada eleción de n. En nuestro contexto implica especificar cómo se espera que el precio de hoy se relacione con el precio de ayer, o cómo se espera que el precio de hoy se relacione con el de ayer y además con el de antier. Y así sucesivamente para cualquier grupo finito de precios que decida tomar a consideración.
+
+- Un proceso estocástico estacionario se puede interpretar como aquel cuyas propiedades estadísticas permanencen constantes a lo largo del tiempo y sólo cambiaran en función del grupo de $n$ variables que decida obervar conjuntamente, pero no de la posición de esas n variables en el tiempo. Por ejemplo, suponiendo que n=1, esto implicaría que las propiedades estadísticas de cada variable tomada individualmente no se van alteradas conforme el tiempo avance, en particular cada variable será estable en media y en varianza. Lo que significa que puedo reunir las observaciones individuales en cada momento en el tiempo para estimar la media constante y la varianza de toda la secuencia, en la media en que en cada punto temporal estoy asumiendo que la media y la varianza es igual. Esto siempre se cumplirá? Por supuesto que no, es una suposición que imponemos a los datos para poder hacer inferencia con un único set de valores históricos observados. 
+
+- Si la condición de estacionariedad estricta falla no hay nada que se pueda hacer en el estado actual del avance de la ciencia estadística.🤔 La única alternativa es relajar un poco las condiciones para exigencia de estacionariedad, como por ejemplo exigir estacionariedad débil consistente en pedir sólo homogeneidad en media, en varianza y en covarianza de segundo orden a la serie de tiempo bajo estudio.  Exigir estacionariedad estricta es algo muy complicado de garantizar en la naturaleza. 
+
+- Además es más fácil diseñar pruebas de estacionariedad débil.
+
+Apliquemos una para la serie de tiempo de residuales
+
+```{r}
+
+# Prueba de Dickey-FUller Aumentada
+#resultado_adf <- adf.test(mod1$residuals)
+#print(resultado_adf)
+
+# Prueba de White
+#resultado_white <- bptest(mod1)
+# Muestra el resultado de la prueba
+#print(resultado_white)
+
+```
+
+En este caso debemos interpretar valores p<0.05 de la prueba de Dickey como un apoyo a la hipótesis alternativa de estacionariedad. Es decir, podemos considerar los residuales del modelo como estacionarios, porque un modelo autoregresivo con 5 rezagos no logró encontrar evidencia estadística de autocorrelaciones del error conducentes a no estacionariedad. 
+
+Por otro lado, podemos interpretar valores p<0.05 de la prueba de White como un apoyo a la hipótesis de homocedasticidad, es decir, podemos considerar los residuales del modelo como constantes en varianza a lo largo del tiempo.

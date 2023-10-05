@@ -1,0 +1,117 @@
+---
+title: "Linealidad de los betas"
+author: "Hernan montes"
+date: "2023-10-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+## 6.5 Complemento: Una pequeña explicación sobre la linealidad de los betas
+
+En esta sección vamos a aclarar el asunto de que los BETAS sean lineales. La linealidad en este contexto hace referencia a que no tengan potencias y que los **coeficientes sean independendientes entre ellos**.
+
+Supongamos un modelo con coeficientes repetidos.
+
+$$E(y|x) = \beta_0 + \alpha * x + \alpha * x^2 $$
+Debemos factorizarlos para evitar estimarlos por separado y producir inconsistencias,esto debido a que ambos alpha (coeficientes) son dependientes. Es decir, reescribimos:
+
+$$E(y|x) = \beta_0 + \alpha (x + x^2) $$
+Donde el componente x + x² será el vector de valores de la variable predictora, que puede pensarse como una variable nueva:
+
+$$ \tilde{x} = x + x^2$$
+Y por lo tanto pensar al modelo como:
+
+$$ E(y|x) = \beta_0 + \alpha * \tilde{x}$$
+
+Esta transformación garantiza la creación de un nuevo modelo lineal respecto a $\beta_0$ y $\alpha$.
+
+Es importante anotar que el dataframe que alimentará el modelo deberá tener computada la variable auxiliar $\tilde{x}$, la cual debe ser pasada a la función encargada de estimar parámetros.
+
+Esto corresponde a crear una nueva variable con los cálculos mencionados $\tilde{x} = x + x^2$. Sin embargo, para graficar es conveniente usar la variable original.
+
+```{r}
+
+# Se define una semilla para generar los aleatorios.
+set.seed(77)
+
+x <- seq(1:10)
+alpha <- 0.7
+b0 <- 0.2
+
+E_y_x_3 = b0 + alpha * (x + x^2)
+y_obs_3 = E_y_x_3 + rnorm(10, 0, 4)
+
+x_auxiliar = x + x^2
+
+datos_simulados_2 <- data.frame(
+  x = x,
+  x_2 = x^2,
+  x_auxiliar = x_auxiliar,
+  E_y_x_3 = E_y_x_3,
+  y_obs_3 =  y_obs_3,
+  y_pred_3_1 = predict(lm(y_obs_3 ~ poly(x, 2))),
+  y_pred_3_2 = predict(lm(y_obs_3 ~ x_auxiliar )))
+
+
+modelo1a <- lm(y_obs_3 ~ poly(x, 2))
+modelo1b <- lm(y_obs_3 ~ poly(x, 2, raw = TRUE))
+modelo2 <- lm(y_obs_3 ~ x_auxiliar )
+```
+
+Nótese que los coeficientes arrojados por el modelo 1a al invocar la función poly sin parámetro de raw=TRUE, no son atribuibles o no están asociados a los términos $1,x,x^2$, es decir, **No es válido escribir**:
+
+$E(y|x)=$ `r round(modelo1a$coefficients[1], 2)` * 1 + `r round(modelo1a$coefficients[2], 2)` * x + `r round(modelo1a$coefficients[3], 2)` * x^2
+
+Esta ecuación no sería válida porque al remplazar para $x=5$ se obtiene $E(y|5)=$
+`r round(modelo1a$coefficients[1] * 1 + modelo1a$coefficients[2] * 5 + modelo1a$coefficients[3] * 5^2, 2)`, mientras que al remplazar en el modelo con el parámetro raw = TRUE, se obtendría: $E(y|5)=$ `r round(modelo1b$coefficients[1] * 1 + modelo1b$coefficients[2] * 5 + modelo1b$coefficients[3] * 5^2, 2)`
+
+Observe que para el valor $x=5$ los valores observados de $y$ están cercanos a 24 por lo que una predicción arrojando un valor cercano a 836, está claramente desfasada. Observe el gráfico más abajo para comprender lo explicado.
+
+Esto se debe a que los coeficientes anclados al modelo_1a están diseñados para ser usados sobre la siguiente base de polinomios ortogonales:
+
+-   $P_1(x)= a$
+-   $P_2(x)=m*x - c$
+-   $P_3(x)= k_1 + k_2 *x + k_3 * x ^2$
+
+Donde $a,m,c,k_1,k_2,k_3$ son parámetros estimados que lamentablemente no están siendo arrojados por el modelo.
+
+A continuación se muestra el resumen de cada uno de los modelos, utilizando la función summary().
+
+```{r}
+summary(modelo1a)
+summary(modelo1b)
+summary(modelo2)
+```
+
+```{r}
+
+datos_simulados_2 %>% 
+  ggplot(aes(x = x , y = y_obs_3))+
+  geom_point(col = 'green')+
+  geom_point(aes(y = y_pred_3_1), col = 'blue')+
+  geom_point(aes(y = y_pred_3_2), col = 'red')
+
+```
+
+```{r}
+
+# TAREA,
+# Buscar la descomposición ortogonal de los vectores.
+
+u1 = 1/sqrt(2)
+u2 = sqrt(3/2) * (5-1)
+u3 = sqrt(5/2) * ((3/2)*(5^2) - 3*5 + 1)
+
+#E_y_5 = coef1 * u1 + coef2*u2 + coef3*u3
+E_y_5 = modelo1a$coefficients[1] * u1 + modelo1a$coefficients[2]*u2 + modelo1a$coefficients[3]*u3
+
+modelo1a$coefficients[1]
+modelo1a$coefficients[2]
+modelo1a$coefficients[3]
+E_y_5
+```

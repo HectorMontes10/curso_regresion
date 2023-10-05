@@ -78,15 +78,9 @@ Estudios en Maestría en Ciencias con orientación en Matemáticas
 
 [Desempeño laboral]{style="color: red;"}
 
-Científico de datos con más de 3 años de experiencia en la construcción
-de modelos de aprendizaje automático y soluciones de minería de datos
-para obtener mejores conocimientos comerciales. Experiencia utilizando
-SQL, bibliotecas de Python (matplotlib, seaborn, flask, scikit-learn,
-pandas, numpy), modelos matemáticos y estadísticos para ofrecer
-soluciones robustas que agregan valor al negocio.
+Científico de datos con más de 3 años de experiencia en la construcción de modelos de aprendizaje automático y soluciones de minería de datos para obtener mejores conocimientos comerciales. Experiencia utilizando SQL, bibliotecas de Python (matplotlib, seaborn, flask, scikit-learn, pandas, numpy), modelos matemáticos y estadísticos para ofrecer soluciones robustas que agregan valor al negocio.
 
-Ha trabajado para clientes del sector industrial y financiero en México
-y Colombia, en áreas tales como:
+Ha trabajado para clientes del sector industrial y financiero en México y Colombia, en áreas tales como:
 
 -   Mantenimiento predictivo
 -   Diseño de campañas comerciales basadas en datos
@@ -103,53 +97,35 @@ Universidad Tecnológica de Pereira
 
 [Desempeño laboral]{style="color: red;"}
 
--   Consultor en soluciones análiticas para instituciones educativas.
--   Analista de datos en el observatorio social de la UTP.
--   Actualmente diseñador de tableros informativos (dashboards) para la
-    Universidad Pedagógica Nacional de Bogotá y la misma Universidad
-    Tecnológica de Pereira.
--   Docente catedrático en el área de informática y estadística general.
--   Uso principal del lenguaje R y sus librerias Tidyverse, RMarkdown,
-    RShiny y otras.
+- Consultor en soluciones análiticas para instituciones educativas.
+- Analista de datos en el observatorio social de la UTP.
+- Actualmente diseñador de tableros informativos (dashboards) para la Universidad Pedagógica Nacional de Bogotá y la misma Universidad Tecnológica de Pereira.
+- Docente catedrático en el área de informática y estadística general.
+- Uso principal del lenguaje R y sus librerias Tidyverse, RMarkdown, RShiny y otras.
 
 ## Contenido del curso
 
--   T1. Regresión Lineal, suposiciones y requisitos.
--   T2. Estimación de los parámetros e interpretación de los valores.
--   T3. Pruebas de hipótesis relacionadas con los parámetros.
--   T4. Evaluación de modelos de acuerdo a las suposiciones de
-    normalidad e independencia.
--   T5. Transformaciones de las variables, y sus implicaciones en las
-    pruebas de hipótesis.
--   T6. Series de Tiempo. Estacionariedad y cómo obtener una serie
-    estacionaria a partir de una que no lo es. Correlogramas.
--   T7. Modelos de Box y Cox. Estimación de parámetros.
--   T8. Criterios de evaluación de un modelo de series de tiempo.
-    Transformaciones.
+- T1. Regresión Lineal, suposiciones y requisitos.
+- T2. Estimación de los parámetros e interpretación de los valores.
+- T3. Pruebas de hipótesis relacionadas con los parámetros.
+- T4. Evaluación de modelos de acuerdo a las suposiciones de normalidad e independencia.
+- T5. Transformaciones de las variables, y sus implicaciones en las pruebas de hipótesis.
+- T6. Series de Tiempo. Estacionariedad y cómo obtener una serie estacionaria a partir de una que no lo es. Correlogramas.
+- T7. Modelos de Box y Cox. Estimación de parámetros.
+- T8. Criterios de evaluación de un modelo de series de tiempo. Transformaciones.
 
 ## Bibliografía.
 
-Regression Modeling and Data Analysis with Applications in R. Samprit
-Chatterjee, Jeffrey S. Simonoff\
-Montgomery, D. C., Peck, E. A., & Vining, G. G. (2002). Introducción al
-análisis de regresión lineal (3ª ed.). Limusa Wiley.\
-Time Series Analysis and Its Applications: With R Examples by Shumway
-and Stoffer.\
-Time Series Analysis: Forecasting and Control by Author(s): George E. P.
-Box, Gwilym M. Jenkins, Gregory C. Reinsel, Greta M. Ljung.\
+Regression Modeling and Data Analysis with Applications in R. Samprit Chatterjee, Jeffrey S. Simonoff\
+Montgomery, D. C., Peck, E. A., & Vining, G. G. (2002). Introducción al análisis de regresión lineal (3ª ed.). Limusa Wiley.\
+Time Series Analysis and Its Applications: With R Examples by Shumway and Stoffer.\
+Time Series Analysis: Forecasting and Control by Author(s): George E. P. Box, Gwilym M. Jenkins, Gregory C. Reinsel, Greta M. Ljung.\
 <https://fhernanb.github.io/libro_regresion/rls.html#modelo-estad%C3%ADstico>\
 <https://bookdown.org/victor_morales/SeriesdeTiempo/>
 
 ## Motivación
 
-Los métodos de regresión son técnicas estadísticas utilizadas para
-modelar y comprender la relación entre variables. La motivación detrás
-de estos métodos radica en la necesidad de analizar y cuantificar cómo
-una o más variables predictoras influyen en una variable respuesta. Los
-métodos de regresión son ampliamente utilizados en diversos campos,
-incluyendo la investigación científica, la economía, la medicina, la
-ingeniería y más. A continuación, se detallan algunas de las principales
-motivaciones detrás de estos métodos:
+Los métodos de regresión son técnicas estadísticas utilizadas para modelar y comprender la relación entre variables. La motivación detrás de estos métodos radica en la necesidad de analizar y cuantificar cómo una o más variables predictoras influyen en una variable respuesta. Los métodos de regresión son ampliamente utilizados en diversos campos, incluyendo la investigación científica, la economía, la medicina, la ingeniería y más. A continuación, se detallan algunas de las principales motivaciones detrás de estos métodos:
 
 <figure>
 
@@ -161,18 +137,9 @@ motivaciones detrás de estos métodos:
 
 [Modelado de Relaciones:]{style="color: red;"}
 
-La motivación fundamental de la regresión es modelar la relación entre
-variables. En muchos casos, existe la necesidad de entender cómo una
-variable dependiente cambia en función de una o más variables
-independientes. Por ejemplo, en la economía, podría ser necesario
-entender cómo las tasas de interés afectan el gasto del consumidor.
+La motivación fundamental de la regresión es modelar la relación entre variables. En muchos casos, existe la necesidad de entender cómo una variable dependiente cambia en función de una o más variables independientes. Por ejemplo, en la economía, podría ser necesario entender cómo las tasas de interés afectan el gasto del consumidor.
 
-[Predicción y Estimación:]{style="color: red;"} Los modelos de regresión
-también se utilizan para hacer predicciones y estimaciones. Dado un
-conjunto de datos históricos, los modelos de regresión pueden ayudar a
-predecir valores futuros de la variable dependiente en función de los
-valores de las variables independientes. Esto es especialmente útil en
-campos como la meteorología, la finanzas y el marketing.
+[Predicción y Estimación:]{style="color: red;"} Los modelos de regresión también se utilizan para hacer predicciones y estimaciones. Dado un conjunto de datos históricos, los modelos de regresión pueden ayudar a predecir valores futuros de la variable dependiente en función de los valores de las variables independientes. Esto es especialmente útil en campos como la meteorología, la finanzas y el marketing.
 
 <figure>
 
@@ -183,37 +150,19 @@ S&P</figcaption>
 
 </figure>
 
-[Control y Optimización:]{style="color: red;"} En algunos casos, se
-utilizan modelos de regresión para optimizar y controlar procesos. Por
-ejemplo, en la manufactura, los modelos de regresión pueden usarse para
-identificar las condiciones ideales que conducen a la máxima eficiencia
-o calidad del producto.
+[Control y Optimización:]{style="color: red;"} En algunos casos, se utilizan modelos de regresión para optimizar y controlar procesos. Por ejemplo, en la manufactura, los modelos de regresión pueden usarse para identificar las condiciones ideales que conducen a la máxima eficiencia o calidad del producto.
 
-[Validación de Teorías:]{style="color: red;"} En la investigación
-científica y social, los modelos de regresión pueden usarse para validar
-o refutar teorías existentes. Al comparar los resultados del modelo con
-las expectativas teóricas, se puede evaluar la validez de las hipótesis.
+[Validación de Teorías:]{style="color: red;"} En la investigación científica y social,
+los modelos de regresión pueden usarse para validar o refutar teorías existentes. Al comparar los resultados del modelo con las expectativas teóricas, se puede evaluar la validez de las hipótesis.
 
-[Gestión de Riesgos:]{style="color: red;"} Los modelos de regresión
-también se utilizan para evaluar riesgos y tomar decisiones informadas.
-En finanzas, por ejemplo, se pueden utilizar para evaluar el riesgo de
-inversión y la exposición a diferentes factores del mercado.
+[Gestión de Riesgos:]{style="color: red;"} Los modelos de regresión también se utilizan para evaluar riesgos y tomar decisiones informadas. En finanzas, por ejemplo, se pueden utilizar para evaluar el riesgo de inversión y la exposición a diferentes factores del mercado.
 
 **Ejemplo**
 
-El modelo CAPM (Capital Asset Pricing Model) es un modelo de valoración
-de activos financieros desarrollado por William Sharpe que permite
-estimar su rentabilidad esperada en función del riesgo sistemático. Su
-desarrollo está basado en diversas formulaciones de Harry Markowitz
-sobre la diversificación y la teoría moderna de portafolios. Dos puntos
-claves son:
+El modelo CAPM (Capital Asset Pricing Model) es un modelo de valoración de activos financieros desarrollado por William Sharpe que permite estimar su rentabilidad esperada en función del riesgo sistemático. Su desarrollo está basado en diversas formulaciones de Harry Markowitz sobre la diversificación y la teoría moderna de portafolios. Dos puntos claves son:
 
-1.  El modelo CAPM es utilizado para calcular la rentabilidad que un
-    inversionista debe exigir al realizar una inversión en un activo
-    financiero en función del riesgo que está asumiendo.
-2.  El modelo CAPM establece una relación lineal entre el rendimiento
-    esperado de un activo y su riesgo sistemático, medido por su
-    $\beta_i$.
+1. El modelo CAPM es utilizado para calcular la rentabilidad que un inversionista debe exigir al realizar una inversión en un activo financiero en función del riesgo que está asumiendo.
+2. El modelo CAPM establece una relación lineal entre el rendimiento esperado de un activo y su riesgo sistemático, medido por su $\beta_i$.
 
 La fórmula del modelo CAPM es la siguiente:
 
@@ -221,10 +170,7 @@ $E(r_i)=r_f+\beta_i*(E(r_m)-r_f)$
 
 Donde:
 
-$E(r_i)$ es la tasa de rentabilidad esperada de un activo concreto. $rf$
-es la rentabilidad del activo sin riesgo. $\beta_i$ es la medida de la
-sensibilidad del activo respecto a su benchmark. $E(r_m)$ es la tasa de
-rentabilidad esperada del mercado en que cotiza el activo.
+$E(r_i)$ es la tasa de rentabilidad esperada de un activo concreto. $rf$ es la rentabilidad del activo sin riesgo. $\beta_i$ es la medida de la sensibilidad del activo respecto a su benchmark. $E(r_m)$ es la tasa de rentabilidad esperada del mercado en que cotiza el activo.
 
 <figure>
 
@@ -235,10 +181,7 @@ financieros</figcaption>
 
 </figure>
 
-[Análisis de Causa y Efecto:]{style="color: red;"} Los modelos de
-regresión pueden ayudar a establecer relaciones causa-efecto entre
-variables. Esto es útil para comprender cómo los cambios en una variable
-influyen en otras variables y viceversa.
+[Análisis de Causa y Efecto:]{style="color: red;"} Los modelos de regresión pueden ayudar a establecer relaciones causa-efecto entre variables. Esto es útil para comprender cómo los cambios en una variable influyen en otras variables y viceversa.
 
 <figure>
 
@@ -248,28 +191,15 @@ influyen en otras variables y viceversa.
 
 </figure>
 
-En resumen, la motivación detrás de los métodos de regresión radica en
-la necesidad de entender, modelar, predecir y cuantificar las relaciones
-entre variables en una variedad de campos. Estos métodos permiten tomar
-decisiones informadas, realizar análisis profundos y obtener información
-valiosa a partir de los datos disponibles.
+En resumen, la motivación detrás de los métodos de regresión radica en la necesidad de entender, modelar, predecir y cuantificar las relaciones entre variables en una variedad de campos. Estos métodos permiten tomar decisiones informadas, realizar análisis profundos y obtener información valiosa a partir de los datos disponibles.
 
 # 1. INTRODUCCIÓN NO FORMAL AL MODELO LINEAL SIMPLE
 
-En este capítulo introduciremos el modelo lineal simple partiendo de
-datos reales del precio del aguacate y el precio del dólar. Más que una
-presentación formal o matemática del modelo, nuestro objetivo será
-construirlo paso a paso usando las ideas estadísticas detrás del método.
-Confiamos en que esto le al lector una idea más precisa de cómo éste
-modelo usa los datos dados para relacionar las variables de inteŕes, y
-que comprenda sus fortalezas pero también sus limitaciones.
+En este capítulo introduciremos el modelo lineal simple partiendo de datos reales del precio del aguacate y el precio del dólar. Más que una presentación formal o matemática del modelo, nuestro objetivo será construirlo paso a paso usando las ideas estadísticas detrás del método. Confiamos en que esto le dé al lector una idea más precisa de cómo éste modelo usa los datos dados para relacionar las variables de inteŕes, y que comprenda sus fortalezas pero también sus limitaciones.
 
 ## 1.1 Lectura de datos
 
-A continuación, cargaremos dos tablas de datos que contienen información
-sobre el precio del dolar, también conocida como tasa representativa del
-mercado, y otra con la información del precio del aguacate Hass tomada
-de una fuente gubernamental y de la página del SIPSA.
+A continuación, cargaremos dos tablas de datos que contienen información sobre el precio del dólar, también conocida como tasa representativa del mercado, y otra con la información del precio del aguacate Hass tomada de una fuente gubernamental y de la página del SIPSA.
 
 Los enlaces para acceder a información relacionada son:
 
@@ -286,10 +216,7 @@ hass <- read.xlsx("datasets/Hass_Precios_Historicos.xlsx") %>% clean_names()
 
 ## 1.2 Creación de funciones.
 
-Se programa una función de flextable que mejorará la impresión de tablas
-de resumen. Para usarla sólo bastará invocar la función ftable() al
-final de la sentencia (usando %\>% tidyverse) o con el ftable()
-encapsular o encerrar la tabla que se quiere ajustar.
+Se programa una función de flextable que mejorará la impresión de tablas de resumen. Para usarla sólo bastará invocar la función ftable() al final de la sentencia (usando %\>% tidyverse) o con el ftable() encapsular o encerrar la tabla que se quiere ajustar.
 
 ```{r}
 # Funciones
@@ -311,7 +238,7 @@ ftable <- function(x) {
 }
 ```
 
-Como ejemplo del uso de la función:
+Este es un ejemplo del uso de la función:
 
 *Sin flextable*
 
@@ -330,11 +257,9 @@ dolar %>%
 
 ## 1.3 Depuración de los datos
 
-### Dolar
+### Dólar
 
-Como en todo proceso de análisis de datos, es necesario realizar una
-depuración y ajuste de los datos. Para este caso, fue necesario trabajar
-sobre la variable de la fecha y el valor.
+Como en todo proceso de análisis de datos, es necesario realizar una depuración y ajuste de los datos. Para este caso, fue necesario trabajar sobre la variable de la fecha y el valor.
 
 ```{r}
 # Vamos a sacar un valor promedio de cada variable por mes
@@ -408,29 +333,13 @@ hass_dolar %>%
   geom_point()+ theme_light()
 ```
 
-Cómo se puede notar uno intuye que hay alguna relación entre ambas
-variables en la medida en que parece suceder que cuando el precio del
-dólar aumenta, también lo hace el precio de aguacate. La relación no es
-perfecta pues no vemos una curva suave que sea capaz de pasar por todos
-los puntos, más bien debemos reconocer que hay ciertas variaciones en el
-proceso. Estas variaciones pueden deberse a factores no contemplados por
-el modelo, después de todo no podemos esperar que el precio del aguacate
-dependa exclusivamente del precio del dólar.
+Como se puede notar, hay alguna relación entre ambas variables puesto que si el precio del dólar aumenta, también lo hace el precio de aguacate. La relación no es perfecta pues no vemos una curva suave que sea capaz de pasar por todos los puntos, más bien debemos reconocer que hay ciertas variaciones en el proceso. Estas variaciones pueden deberse a factores no contemplados por el modelo, después de todo no podemos esperar que el precio del aguacate dependa exclusivamente del precio del dólar.
 
 ## 1.5 Generando un modelo súper simplificado (modelo ingenuo)
 
-Ahora vamos a generar el modelo más sencillo que podamos imaginar para
-predecir el precio del aguacate, al cual llamaremos un modelo ingenuo.
-La razón del apelativo es que el modelo "ingenuamente" supondrá que es
-posible predecir el precio que tendrá el aguacate con el promedio
-histórico.
+Ahora vamos a generar el modelo más sencillo que podamos imaginar para predecir el precio del aguacate, al cual llamaremos un modelo ingenuo. La razón del apelativo es que el modelo "ingenuamente" supondrá que es posible predecir el precio que tendrá el aguacate con el promedio histórico.
 
-La siguiente gráfica muestra la linea horizontal que simboliza el
-promedio histórico del precio del aguacate. También debe notar que
-predecir basado en esta línea es despreciar cualquier aporte de la
-variable precio del dólar en la predicción, es decir, es un modelo que
-no explota la relación (sea esta débil o sea esta fuerte) entre el
-precio del aguacate y su variable explicativa precio del dólar.
+La siguiente gráfica muestra la linea horizontal que simboliza el promedio histórico del precio del aguacate. También debe notar que predecir basado en esta línea es despreciar cualquier aporte de la variable precio del dólar en la predicción, es decir, es un modelo que no explota la relación (sea ésta débil o sea ésta fuerte) entre el precio del aguacate y su variable explicativa precio del dólar.
 
 ```{r, warning=FALSE}
 
@@ -451,82 +360,37 @@ theme_light()
 Observe que el modelo ingenuo no sería tan inadecuado en dos
 circunstancias:
 
--   Si los datos se encuentran muy cercanos al precio histórico de
-    manera consistente sin importar en que valor del precio del dólar me
-    posicione. Lo que vendría a indicar un escenario donde moverme a lo
-    largo de diferentes valores del precio del dólar no genera ningún
-    patrón de distanciamiento frente al valor histórico de referencia.
+- Si los datos se encuentran muy cercanos al precio histórico de manera consistente sin importar en que valor del precio del dólar me posicione. Lo que vendría a indicar un escenario en el cual moverme a lo largo de diferentes valores del precio del dólar no genera ningún patrón de distanciamiento frente al valor histórico de referencia.
 
--   Si los datos del precio del aguacate se alejan de la línea histórica
-    de referencia pero el precio del dólar tampoco puede seguirlos, es
-    decir, si la relación entre precio del dólar y precio del aguacate
-    se parece a una nube de puntos sin ningún patrón o tendencia
-    evidente. En este caso cualquier cosa que supongamos de la relación
-    entre precio de dólar y precio del aguacate será producto de nuestra
-    imaginación 🤦🤦
+- Si los datos del precio del aguacate se alejan de la línea histórica de referencia pero el precio del dólar tampoco puede seguirlos, es decir, si la relación entre precio del dólar y precio del aguacate se parece a una nube de puntos sin ningún patrón o tendencia evidente. En este caso cualquier cosa que supongamos de la relación entre precio de dólar y precio del aguacate será producto de nuestra imaginación 🤦🤦
 
-En estos dos escenarios es mejor retener el modelo ingenuo a falta de
-una variable que de verdad explique lo que pasa con el precio del
-aguacate.
+En estos dos escenarios es mejor retener el modelo ingenuo a falta de una variable que de verdad explique lo que pasa con el precio del aguacate.
 
-Ahora bien, ninguno de los dos escenarios anteriores parece ser el
-nuestro, más bien acá se nota que el precio del dólar si está acompasado
-con el precio del aguacate. Sin embargo antes de entrar en la búsqueda
-de esas relaciones es importante notar dos cosas:
+Ahora bien, ninguno de los dos escenarios anteriores parece ser el nuestro, más bien acá se nota que el precio del dólar si está acompasado con el precio del aguacate. Sin embargo antes de entrar en la búsqueda de esas relaciones es importante notar dos cosas:
 
--   El modelo ingenuo es mi modelo de referencia, esto significa que si
-    un modelo predictivo construido para predecir el precio del aguacate
-    es mejor, lo tendrá que ser respecto a este modelo ingenuo.
+- El modelo ingenuo es mi modelo de referencia, esto significa que si un modelo predictivo construido para predecir el precio del aguacate es mejor, lo tendrá que ser respecto a este modelo ingenuo.
 
--   Es posible medir el desajuste actual de mi modelo ingenuo tomando la
-    distancia de cada punto a la recta horizontal de promedio histórico,
-    esto es:
+- Es posible medir el desajuste actual de mi modelo ingenuo tomando la distancia de cada punto a la recta horizontal de promedio histórico.
 
 ## 1.6 Calidad de ajuste del modelo ingenuo
 
-Sea $e_i = y_i - \bar{y}$ las diferencia entre el dato del precio de
-aguacate $y_i$ y el promedio histórico $\bar{y}$. Como tengo muchas
-diferencias, será necesario definir una métrica resumen, por
-conveniencia elijamos la suma de los cuadrados de las diferencias,
-debido a que si sumamos las diferencias, éstas se me compensarán, pues
-diferencias negativas cancelarán las positivas, y no quiero esto. Más
-bien me interesa que ambas sumen a mi medida de desajuste. Llamemos a
-esta medida la suma de cuadrados del error:
+Sea $e_i = y_i - \bar{y}$ las diferencia entre el dato del precio de aguacate $y_i$ y el promedio histórico $\bar{y}$. Como tengo muchas diferencias, será necesario definir una métrica resumen, por conveniencia elijamos la suma de los cuadrados de las diferencias, debido a que si sumamos las diferencias, éstas se me compensarán, pues diferencias negativas cancelarán las positivas, y no quiero esto. Más bien me interesa que ambas sumen a mi medida de desajuste. Llamemos a esta medida la suma de cuadrados del error:
 
 $$SCE_{\text{ingenuo}} = \sum^{n}_{i=1}e_i²=\sum^{n}_{i=1}(y_i - \bar{y})²$$
 
-En la definición de la cantidad quisimos usar el subíndice "ingenuo"
-para nombrar al SCE, esto con el fin de hacer énfasis que tal métrica se
-asocia al modelo, si el modelo cambia a otro tipo de modelo el SCE
-cambiará también: será la distancia de cada $y_i$ a la curva definida
-por el otro modelo. Veremos esto más adelante. No obstante ya podemos
-sacar nuestras primeras conclusiones:
+En la definición de la cantidad quisimos usar el subíndice "ingenuo" para nombrar al SCE, esto con el fin de hacer énfasis en que tal métrica se asocia al modelo, si el modelo cambia a otro tipo de modelo el SCE cambiará también: será la distancia de cada $y_i$ a la curva definida por el otro modelo. Veremos esto más adelante. No obstante ya podemos sacar nuestras primeras conclusiones:
 
-1.  Entre más grandes sean cada una de las distancias $e_i$
-    individuales, más grande será SCE.
-2.  Todas las distancias contribuyen con igual importancia al SCE,
-    excepto en lo que se refiere a su magnitud no hay porque pensar que
-    un distanciamiento de $u$ unidades sea más importante que otro de
-    las mismas $u$ unidades. Esto puede ser obvio pero no lo es cuando,
-    por ejemplo, queremos castigar más las distancias que se dan en la
-    zona central del gráfico que las que se dan en los extremos del
-    gráfico.
-3.  El SCE es sensible a la cantidad de datos, razón por la cual entre
-    más datos (es decir entre más grande sea n), más grande será SCE.
-    Esto dificulta seriamente la posibilidad de comparar modelos que
-    fueron calculados sobre una cantidad distinta de puntos.
+1. Entre más grandes sean cada una de las distancias $e_i$ individuales, más grande será SCE.
+2. Todas las distancias contribuyen con igual importancia al SCE, excepto en lo que se refiere a su magnitud no hay porque pensar que un distanciamiento de $u$ unidades sea más importante que otro de las mismas $u$ unidades. Esto puede ser obvio pero no lo es cuando, por ejemplo, queremos castigar más las distancias que se dan en la zona central del gráfico que las que se dan en los extremos del gráfico.
+3. El SCE es sensible a la cantidad de datos, razón por la cual entre más datos (es decir entre más grande sea n), más grande será SCE. Esto dificulta seriamente la posibilidad de comparar modelos que fueron calculados sobre una cantidad distinta de puntos.
 
-De acuerdo con lo anterior modifiquemos un poco nuestra definición de
-desajuste, así:
+De acuerdo con lo anterior modifiquemos un poco nuestra definición de desajuste, así:
 
 $$MSE_{\text{ingenuo}} =  \color{red}{\frac{1}{n}}\sum^{n}_{i=1}(y_i - \bar{y})²$$
 
-Es decir, nuestra medida de desajuste será el promedio de la suma de las
-diferencias cuadradas de cada dato $y_i$ respecto a su media $\bar{y}$,
-dicho de otra manera la varianza de la variable $Y$ a predecir!!!!
+Es decir, nuestra medida de desajuste será el promedio de la suma de las diferencias cuadradas de cada dato $y_i$ respecto a su media $\bar{y}$, dicho de otra manera la varianza de la variable $Y$ a predecir!!!!
 
-A continuación invitamos al estudiante a calcular la varianza de la
-variable a predecir, es decir, el desajuste del modelo ingenuo.
+A continuación invitamos al estudiante a calcular la varianza de la variable a predecir, es decir, el desajuste del modelo ingenuo.
 
 ```{r}
 
@@ -538,9 +402,7 @@ variable a predecir, es decir, el desajuste del modelo ingenuo.
 
 ```
 
-Observe el siguiente gráfico en el que hemos pintado las distancias que
-hay entre cada dato $y_i$ observado y el promedio histórico (valor
-predicho $\bar{y}$ por el modelo ingenuo)
+Observe el siguiente gráfico en el que hemos pintado las distancias que hay entre cada dato $y_i$ observado y el promedio histórico (valor predicho $\bar{y}$ por el modelo ingenuo)
 
 ```{r}
 hass_dolar %>% 
@@ -554,64 +416,33 @@ hass_dolar %>%
 
 ## 1.7 Construyendo un modelo lineal simple con los datos
 
-Este es el momento de comenzar a usar la información extra con la que
-contamos, esto es, el precio del dólar, el cual se convertirá en una
-variable predictora del precio del aguacate. En estadística no hay una
-única forma de hacer esto, pero lo usual es partir de especificaciones
-muy sencillas. Veamos:
+Este es el momento de comenzar a usar la información extra con la que contamos, esto es, el precio del dólar, el cual se convertirá en una variable predictora del precio del aguacate. En estadística no hay una única forma de hacer esto, pero lo usual es partir de especificaciones muy sencillas. Veamos:
 
-Sea $Y$ el precio del aguacate y sea $X$ el precio del dólar.
-Investiguemos si este modelo sencillo nos funciona:
+Sea $Y$ el precio del aguacate y sea $X$ el precio del dólar. Investiguemos si este modelo sencillo nos funciona:
 
 $$y = \beta_{0} + \beta_{1} * x + e \text{ con } e \text{~}N(0, {\sigma_e}^2)$$
 
 ## 1.8 Algunas observaciones sobre las fortalezas y limitaciones del modelo
 
-Expliquemos qué implica la ecuación anterior haciendo ciertas
-anotaciones de gran relevancia práctica para entender **cómo los
-estadísticos piensan al momento de plantear modelos**:
+Expliquemos qué implica la ecuación anterior haciendo ciertas anotaciones de gran relevancia práctica para entender **cómo los estadísticos piensan al momento de plantear modelos**:
 
 [Observación genial 1:]{style="color: red;"}
 
-Para un x fijo, es decir un x dado, es posible calcular el valor de $y$
-con el modelo anterior, donde tácitamente estamos diciendo que el valor
-de $y$ dependerá de $x$ en forma exacta, excepto por una perturbación
-aleatoria $e$ que representará la parte del valor de $y$ que no puede
-ser capturada por el término $\beta_{0} + \beta_{1} * x$.
+Para un x fijo, es decir un x dado, es posible calcular el valor de $y$ con el modelo anterior, donde tácitamente estamos diciendo que el valor de $y$ dependerá de $x$ en forma exacta, excepto por una perturbación aleatoria $e$ que representará la parte del valor de $y$ que no puede ser capturada por el término $\beta_{0} + \beta_{1} * x$.
 
-¿Cuándo sucederá que el valor de $y$ pueda ser exactamente capturado por
-el término $\beta_{0} + \beta_{1} * x$? Cuando $y$ dependa en forma
-lineal exacta del valor de $x$. Esta es una condición demasiado fuerte
-que rara vez ocurre en la práctica, por eso agregamos la perturbación
-$e$ como una forma de modelar la **incertidumbre** en la determinación
-de $y$ dado un valor de $x$. Esto no soluciona todos los problemas pero
-ayuda a obtener un modelo relativamente más realista.
+¿Cuándo sucederá que el valor de $y$ pueda ser exactamente capturado por el término $\beta_{0} + \beta_{1} * x$? Cuando $y$ dependa en forma lineal exacta del valor de $x$. Esta es una condición demasiado fuerte que rara vez ocurre en la práctica, por eso agregamos la perturbación $e$ como una forma de modelar la **incertidumbre** en la determinación de $y$ dado un valor de $x$. Esto no soluciona todos los problemas pero ayuda a obtener un modelo relativamente más realista.
 
-[¿Cuáles son los riesgos que implica asumir a priori un comportamiento
-específico para el error?]{style="color: red;"}
+[¿Cuáles son los riesgos que implica asumir a priori un comportamiento específico para el error?]{style="color: red;"}
 
 [Observación genial 2:]{style="color: red;"}
 
-La perturbación $e$ puede recibir varios nombres en estadística, la
-encontrarás nombrada como: perturbación, choque, error, o residual. Lo
-importante no es el nombre que reciba, sino las condiciones que vamos a
-suponer sobre sus valores.
+La perturbación $e$ puede recibir varios nombres en estadística, la encontrarás nombrada como: perturbación, choque, error, o residual. Lo importante no es el nombre que reciba, sino las condiciones que vamos a suponer sobre sus valores.
 
-En particular no vamos a exigir que $e$ tenga valores predecibles, muy
-al contrario vamos a exigir que sea un valor aleatorio, precisamente
-porque está modelando incertidumbre. Pero esto no implica que no podamos
-poner ciertas condiciones sobre el **tipo de aleatoriedad deseada para**
-$e$. En este caso supondremos que $e$ se distribuye como una variable
-aleatoria normal con media $\mu=0$ y desviación estándar $\sigma_e$.
-Conviene aclarar que esto es una suposición, no implica que
-efectivamente los errores vayan a cumplir tal supuesto.
+En particular no vamos a exigir que $e$ tenga valores predecibles, muy al contrario vamos a exigir que sea un valor aleatorio, precisamente porque está modelando incertidumbre. Pero esto no implica que no podamos poner ciertas condiciones sobre el **tipo de aleatoriedad deseada para** $e$. En este caso supondremos que $e$ se distribuye como una variable aleatoria normal con media $\mu=0$ y desviación estándar $\sigma_e$. Conviene aclarar que esto es una suposición, no implica que efectivamente los errores vayan a cumplir tal supuesto.
 
 [Observación genial 3:]{style="color: red;"}
 
-¿Por qué suponemos normalidad para $e$? Porque si $e$ es en efecto una
-especie de componente incierto en el valor de $y$, entonces muy
-seguramente será la suma de muchos efectos independientes que lo están
-provocando. En nuestro contexto estos efectos inciertos pueden ser:
+¿Por qué suponemos normalidad para $e$? Porque si $e$ es en efecto una especie de componente incierto en el valor de $y$, entonces muy seguramente será la suma de muchos efectos independientes que lo están provocando. En nuestro contexto estos efectos inciertos pueden ser:
 
 -   $F_1$: Cambios en la productividad de los cultivos.
 -   $F_2$: Condiciones climatológicas.
@@ -626,85 +457,32 @@ provocando. En nuestro contexto estos efectos inciertos pueden ser:
 
 Y un gran etcétera.
 
-Es decir, existen innumerables factores, distintos al precio del dólar
-que impiden que el precio del aguacate pueda ser determinado de forma
-exacta sólo por observar el valor del dólar. En estadística se ha
-estudiado que cuando no estamos midiendo los demás factores que afectan
-el valor de una variable, y dejamos que estos contribuyan de forma
-desacoplada e independiente a dicho valor, el efecto general $e$ que
-resume el efecto global de todos los factores a la vez, suele
-comportarse bajo la **distribución normal** sencillamente porque hay un
-teorema en matemáticas, conocido como el Teorema del Límite Central que
-básicamente así lo garantiza, al postular que: ***la suma de*** $k$
-***efectos aleatorios independientes tiende a adoptar el comportamiento
-normal conforme la cantidad k de efectos crece***.
+Es decir, existen innumerables factores, distintos al precio del dólar que impiden que el precio del aguacate pueda ser determinado de forma exacta sólo por observar el valor del dólar. En estadística se ha estudiado que cuando no estamos midiendo los demás factores que afectan el valor de una variable, y dejamos que estos contribuyan de forma desacoplada e independiente a dicho valor, el efecto general $e$ que resume el efecto global de todos los factores a la vez, suele comportarse bajo la **distribución normal** sencillamente porque hay un teorema en matemáticas, conocido como el Teorema del Límite Central que básicamente así lo garantiza, al postular que: ***la suma de*** $k$ ***efectos aleatorios independientes tiende a adoptar el comportamiento normal conforme la cantidad k de efectos crece***.
 
-Es importante destacar que el Teorema del Límite Central tiene algunas
-condiciones y suposiciones, como la independencia de las variables
-aleatorias y que la suma debe efectuarse sobre una cantidad $k$ de ellas
-suficientemente grande. Éste es uno de los conceptos fundamentales en
-estadística y es ampliamente utilizado en la teoría y la práctica de
-esta disciplina.
+Es importante destacar que el Teorema del Límite Central tiene algunas condiciones y suposiciones, como la independencia de las variables aleatorias y que la suma debe efectuarse sobre una cantidad $k$ de ellas suficientemente grande. Éste es uno de los conceptos fundamentales en estadística y es ampliamente utilizado en la teoría y la práctica de esta disciplina.
 
 [Observación para nada genial 4 😥😢:]{style="color: red;"}
 
-Excepto por el componente aleatorio $e$, el modelo restringe la relación
-de $Y$ y $X$ al universo de relaciones lineales. Existirá una posible
-relación por cada par de valores $\beta_0$ y $\beta_1$ que decidamos
-elegir. Pero por más que nos esforcemos en modificarlos siempre
-conducirán a relaciones representadas por líneas rectas, de ahí que el
-modelo asuma el nombre de regresión lineal.
+Excepto por el componente aleatorio $e$, el modelo restringe la relación de $Y$ y $X$ al universo de relaciones lineales. Existirá una posible relación por cada par de valores $\beta_0$ y $\beta_1$ que decidamos elegir. Pero por más que nos esforcemos en modificarlos siempre conducirán a relaciones representadas por líneas rectas, de ahí que el modelo asuma el nombre de regresión lineal.
 
-Si queremos capturar otras posibles dependencias de $Y$ respecto a $X$
-podemos generalizar la relación usando $y = f(x) + e$ donde $f(x)$ puede
-ser una nueva especificación funcional con otra estructura deseada, por
-ejemplo un polinomio o cualquier otra función que querramos definir. Lo
-importante es que detrás de la definición de $f(x)$ haya alguna
-justificación producto de haber analizado los datos en búsqueda de
-relaciones que capturen bien la dependencia.
+Si queremos capturar otras posibles dependencias de $Y$ respecto a $X$ podemos generalizar la relación usando $y = f(x) + e$ donde $f(x)$ puede ser una nueva especificación funcional con otra estructura deseada, por ejemplo un polinomio o
+cualquier otra función que querramos definir. Lo importante es que detrás de la definición de $f(x)$ haya alguna justificación producto de haber analizado los datos en búsqueda de relaciones que capturen bien la dependencia.
 
 [Observación genial final:]{style="color: red;"}
 
-Son los datos observados para cada valor de $y$ y $x$ los que nos deben
-informar sobre el par de valores $\beta_0$ y $\beta_1$ que crean la
-relación lineal que mejor representa nuestra nube de puntos, pero de
-nada sirven los valores observados si no definimos una métrica que nos
-informe sobre la calidad del ajuste.
+Son los datos observados para cada valor de $y$ y $x$ los que nos deben informar sobre el par de valores $\beta_0$ y $\beta_1$ que crean la relación lineal que mejor representa nuestra nube de puntos, pero de nada sirven los valores observados si no definimos una métrica que nos informe sobre la calidad del ajuste.
 
 ## 1.9 Introducción a las medidas de ajuste para modelos no ingenuos
 
-De la observación final del apartado anterior nos queda una inquietud:
-¿Cómo decidimos el par de valores a asignar a los parámetros del modelo
-lineal si no tenemos un criterio para poder saber cuál es el mejor
-modelo?
+De la observación final del apartado anterior nos queda una inquietud: ¿Cómo decidimos el par de valores a asignar a los parámetros del modelo lineal si no tenemos un criterio para poder saber cuál es el mejor modelo?
 
-Para salir de este embrollo, reconozcamos que nunca en un problema real
-sujeto a incertidumbre una recta pasará exactamente por todos los
-puntos, razón por la cual aparecerán componentes de error $e_i$ por cada
-$y_i$ y $x_i$ observado. Vimos que esto ocurrión con el modelo ingenuo y
-por supuesto ocurre también para un modelo no ingenuo. La idea es
-entonces reducir la magnitud de estos errores al mínimo posible y el par
-de valores $\beta_1$ y $\beta_2$ que así lo logren será nuestra elección
-óptima de cara al objetivo de minimización del error.
+Para salir de este embrollo, reconozcamos que nunca en un problema real sujeto a incertidumbre una recta pasará exactamente por todos los puntos, razón por la cual aparecerán componentes de error $e_i$ por cada $y_i$ y $x_i$ observado. Vimos que esto ocurrió con el modelo ingenuo y por supuesto ocurre también para un modelo no ingenuo. La idea es entonces reducir la magnitud de estos errores al mínimo posible y el par de valores $\beta_1$ y $\beta_2$ que así lo logren será nuestra elección óptima de cara al objetivo de minimización del error.
 
-Otro criterio de ajuste que se podría usar es el de maximizar la
-probabilidad de ocurrencia de los valores observados bajo el supuesto de
-que el modelo usa valores $\beta_0$ y $\beta_1$ previamente
-especificados. De esta manera si un par de valores hace menos probable
-haber obtenido nuestros datos observados deberán descartarse.
+Otro criterio de ajuste que se podría usar es el de maximizar la probabilidad de ocurrencia de los valores observados bajo el supuesto de que el modelo usa valores $\beta_0$ y $\beta_1$ previamente especificados. De esta manera si un par de valores hace menos probable haber obtenido nuestros datos observados deberá descartarse.
 
-¿Pero cómo podemos medir la probabilidad de ocurrencia de nuestros datos
-observados una vez damos valores específicos para los betas? Esta es una
-cuestión que se tratará más adelante cuando discutamos los **métodos de
-estimación de parámetros**, nombre con el que se conoce al procedimiento
-estadístico encaminado a elegir los mejores betas para un conjunto de
-datos observados.
+¿Pero cómo podemos medir la probabilidad de ocurrencia de nuestros datos observados una vez damos valores específicos para los betas? Esta es una cuestión relacionada con los **métodos de estimación de parámetros**, nombre con el que se conoce al procedimiento estadístico encaminado a elegir los mejores betas para un conjunto de datos observados. Si se trata de maximizar la probabilidad de ocurrencia deberíamos usar el método de estimación por máxima verosimilitud. Se recomienda al estudiante dar una mirada a la bibliografía sugerida para entender cómo opera este método. Sin embargo podemos anticipar que ambos métodos conducen, en el caso de la regresión lineal simple, a iguales estimaciones de los paramétros.
 
-Por lo pronto vamos a proceder de manera más intuitiva, dejando de lado
-el formalismo matemático, y vamos a ejemplificar un posible modelo
-ajustado usando valores $\beta_0=700$ y $\beta_1 = 1.2$. Hemos elegido
-estos valores por simple inspección visual así que no esperamos que sean
-óptimos en ningún sentido, veamos:
+Ahora vamos a proceder de manera más intuitiva, dejando de lado el formalismo matemático, y vamos a ejemplificar un posible modelo ajustado usando valores $\beta_0=700$ y $\beta_1 = 1.2$. Hemos elegido estos valores por simple inspección visual así que no esperamos que sean óptimos en ningún sentido, veamos:
 
 ```{r}
 
@@ -720,56 +498,24 @@ hass_dolar %>%
   geom_line( aes( x= x, y = y_pred), col = "red")
 ```
 
-Aunque no estamos seguros de la optimalidad de los betas elegidos, el
-ajuste basado en este modelo es a simple vista decente, pero no
-deberíamos depender de esto. Es necesario usar las herramientas que R
-nos ofrece para estimar los betas. Antes de pasar a su uso ciego,
-revisemos en qué consideraciones estadísticas se basan estos métodos.
-Para ello definamos primero los errores cometidos por el modelo, y más
-aún, la medida de desempeño que usaremos para decidir cuál es la mejor
-elección de los betas. Usaremos entonces la métrica MSE(Mean Squared
-Errors) dada por:
+Aunque no estamos seguros de la optimalidad de los betas elegidos, el ajuste basado en este modelo es a simple vista decente, pero no deberíamos depender de esto. Es necesario usar las herramientas que R nos ofrece para estimar los betas. Antes de pasar a su uso ciego, revisemos en qué consideraciones estadísticas se basan estos métodos. Para ello definamos primero los errores cometidos por el modelo, y más aún, la medida de desempeño que usaremos para decidir cuál es la mejor elección de los betas. Usaremos entonces la métrica MSE(Mean Squared Errors) dada por:
 
 $$MSE_{\text{NO ingenuo}} =  \frac{1}{n}\sum^{n}_{i=1}e_i²$$
 
-Por otro lado podemos decir que $e_i = y_i - \hat{y}$, donde la cantidad
-$\hat{y}$ representa el valor de la variable $Y$ que arroja el modelo,
-el cual es por regla general diferente al verdadero valor observado de
-$Y$, es decir, los errores son las diferencia de lo observado $y_i$ y lo
-predicho por el modelo basado en la recta $\hat{y}$, por lo tanto:
+Por otro lado podemos decir que $e_i = y_i - \hat{y}$, donde la cantidad $\hat{y}$ representa el valor de la variable $Y$ que arroja el modelo, el cual es por regla general diferente al verdadero valor observado de $Y$, es decir, los errores son las diferencia de lo observado $y_i$ y lo predicho por el modelo basado en la recta $\hat{y_i}$, por lo tanto:
 
-$$MSE_{\text{NO ingenuo}} =  \frac{1}{n}\sum^{n}_{i=1}(y_i - \hat{y})²$$
+$$MSE_{\text{NO ingenuo}} =  \frac{1}{n}\sum^{n}_{i=1}(y_i - \hat{y_i})²$$
 
 Y más específicamente:
 
 $$MSE_{\text{NO ingenuo}} =  \frac{1}{n}\sum^{n}_{i=1}(y_i - (\beta_0 + \beta_1*x_i))²$$
 $$MSE_{\text{NO ingenuo}} =  \frac{1}{n}\sum^{n}_{i=1}(y_i - \beta_0 - \beta_1*x_i)²$$
 
-Con esta expresión ya se hace patente que $MSE_{\text{NO ingenuo}}$ es
-función de los pares de valores $(x_i, y_i)$ a los que se debe ajustar
-la recta, así como de los valores que elijamos para los betas.
+Con esta expresión ya se hace patente que $MSE_{\text{NO ingenuo}}$ es función de los pares de valores $(x_i, y_i)$ a los que se debe ajustar la recta, así como de los valores que elijamos para los betas.
 
-Sin embargo, como los pares $(x_i, y_i)$ ya vienen dados por nuestra
-base de datos o, hablando en términos más generales, por la información
-recaudada para la construcción del modelo, sólo tendremos opción de
-variar los betas en aras de minimizar la cantidad
-$MSE_{\text{NO ingenuo}}$. Dicho de otra manera los pares de valores
-$(x_i, y_i)$ **se comportan como constantes** a lo largo de mi proceso
-de minimización.
+Sin embargo, como los pares $(x_i, y_i)$ ya vienen dados por nuestra base de datos o, hablando en términos más generales, por la información recaudada para la construcción del modelo, sólo tendremos opción de variar los betas en aras de minimizar la cantidad $MSE_{\text{NO ingenuo}}$. Dicho de otra manera los pares de valores $(x_i, y_i)$ **se comportan como constantes** a lo largo de mi proceso de minimización.
 
-Dado lo anterior, es buena idea definir una función MSE en R que permita
-calcular, para diferentes elecciones de los betas, la medida de
-desempeño. Esta medida de desempeño es conocida también en la literatura
-como función de pérdida, queriendo indicar con ello una pérdida de
-ajuste del modelo a los datos. Es importante aclarar que no existe una
-única elección para la función de pérdida de un modelo predictivo, otras
-alternativas típicas son la mediana de las desviaciones absolutas
-(MEDA), la media de los errores absolutos (MAE), entre otros. Sin
-embargo en regresión lineal es usual usar MSE porque su expresión como
-cuadrado de errores permite usar teoría de inferencia basada en la
-distribución F cuando los errores se asumen normales. Veremos esto más a
-detalle cuando discutamos pruebas de hipótesis sobre el modelo de
-regresión.
+Dado lo anterior, es buena idea definir una función MSE en R que permita calcular, para diferentes elecciones de los betas, la medida de desempeño. Esta medida de desempeño es conocida también en la literatura como función de pérdida, queriendo indicar con ello una pérdida de ajuste del modelo a los datos. Es importante aclarar que no existe una única elección para la función de pérdida de un modelo predictivo, otras alternativas típicas son la mediana de las desviaciones absolutas (MEDA), la media de los errores absolutos (MAE), entre otros. Sin embargo en regresión lineal es usual usar MSE porque su expresión como cuadrado de errores permite usar teoría de inferencia basada en la distribución F cuando los errores se asumen normales. Veremos esto más a detalle cuando discutamos pruebas de hipótesis sobre el modelo de regresión.
 
 ## 1.10 Una relación importante entre los betas del modelo lineal
 
@@ -785,45 +531,26 @@ $\beta_1$ son constantes, tenemos que:
 $$E(y) = E(\beta_0) + E(\beta_1*x) + E(e)$$ Así que:
 
 $$E(y) = \beta_0 +\int_{-\infty}^{\infty}\beta_1 *xf(x)dx + E(e)$$
-$$E(y) = \beta_0 + \beta_1*\int_{-\infty}^{\infty}xf(x)dx + E(e)$$ Y
-como $\int_{-\infty}^{\infty}xf(x)dx$ es por definición $E(x)$ y además
-$E(e) = 0$ por diseño (de acuerdo con el supuesto usado para la
-distribución del error), entonces:
+$$E(y) = \beta_0 + \beta_1*\int_{-\infty}^{\infty}xf(x)dx + E(e)$$ Y como $\int_{-\infty}^{\infty}xf(x)dx$ es por definición $E(x)$ y además $E(e) = 0$ por diseño (de acuerdo con el supuesto usado para la distribución del error), entonces:
 
-$$E(y) = \beta_0 + \beta_1*E(x)$$ Dicho de otra manera, la recta del
-modelo debe pasar por el punto $(E(x), E(y))$ !!
+$$E(y) = \beta_0 + \beta_1*E(x)$$ Dicho de otra manera, la recta del modelo debe pasar por el punto $(E(x), E(y))$ !!. Este punto no es más que el centroide de distribución bivariada $(x_i, y_i)$ de mi proceso generador de datos.
 
-La recta debe pasar por el centroide de la nube de puntos.
-
-Ciertamente no conocemos el valor esperado ni de la variable predictora
-X ni de la variable respuesta Y, pero buenos estimados basados en
-información muestral serían $\bar{x}$ y $\bar{y}$. Es decir, no podremos
-saber con precisión los valores $\beta_0$ y $\beta_1$, pero nos podemos
-conformar con buenas estimaciones que cumplan la condición:
+Ciertamente no conocemos el valor esperado ni de la variable predictora X ni de la variable respuesta Y, pero buenos estimados basados en información muestral serían $\bar{x}$ y $\bar{y}$. Es decir, no podremos saber con precisión los valores $\beta_0$ y $\beta_1$, pero nos podemos conformar con buenas estimaciones que cumplan la condición:
 
 $$\bar{y} = \color{red}{\widetilde{\beta}_0} + \color{red}{\widetilde{\beta}_1}\bar{x}$$
 
-El coloreado y la tilde ancha para los betas pretenden enfatizar que
-estos valores son estimados de los correspondientes $\beta_0$ Y
-$\beta_1$ del modelo teórico subyacente. En conclusión: la mejor recta
-estimada deberá pasar por $(\bar{x}, \bar{y})$, y por lo tanto hay una
-relación atando a los betas estimados:
+El coloreado y la tilde ancha para los betas pretenden enfatizar que estos valores son estimados de los correspondientes $\beta_0$ Y $\beta_1$ del modelo teórico subyacente. En conclusión: la mejor recta estimada deberá pasar por $(\bar{x}, \bar{y})$, y por lo tanto hay una relación atando a los betas estimados:
 
 $$\begin{equation} \label{eq:ec0}
   \color{red}{\widetilde{\beta}_0} = \bar{y} - \color{red}{\widetilde{\beta}_1}\bar{x}
 \end{equation}
-$$ Es decir que dando valores a $\color{red}{\widetilde{\beta}_1}$
-podremos obtener valores para $\color{red}{\widetilde{\beta}_0}$ y en
-últimas dibujar diversas rectas en el plano, con el fin de establecer
-cuál de ellas minimiza el $MSE_{\text{NO ingenuo}}$.
+$$ 
+
+Es decir que dando valores a $\color{red}{\widetilde{\beta}_1}$ podremos obtener valores para $\color{red}{\widetilde{\beta}_0}$ y en últimas dibujar diversas rectas en el plano, con el fin de establecer cuál de ellas minimiza el $MSE_{\text{NO ingenuo}}$.
 
 ## 1.11 Una animación que ilustra la estimación de betas
 
-A continuación presentamos un código en R que permite comprender cómo
-funcionan numéricamente los métodos de estimación de betas para un
-modelo lineal simple, específicamente cuando se usa como método de
-estimación el criterio de minimización del promedio de los cuadrados de
-los errores:
+A continuación presentamos un código en R que permite comprender cómo funcionan numéricamente los métodos de estimación de betas para un modelo lineal simple, específicamente cuando se usa como método de estimación el criterio de minimización del promedio de los cuadrados de los errores:
 
 ```{r}
 # Extraemos las variables de interés
@@ -845,7 +572,7 @@ xmax = max(x) + 50
 ymin = min(y) - 50
 ymax = max(y) + 50
 
-# Construimos una función para calcular el MSE en función de x_i, y_i, b1 y b0
+# Construimos una función para calcular el MSE en función de los n parejas (x_i, y_i), b1 y b0
 MSE <- function(x, y, b0, b1) {
   errors <- y - (b0 + b1*x)
   squared_errors <- errors^2
@@ -871,6 +598,8 @@ mse_df = data.frame(
 
 # Capturando el renglón donde ocurre el mínimo mse
 pos_min <- which(mse_df$mse==min(mse_df$mse))
+b0_aprox <- round(mse_df[pos_min, "B0"],0)
+b1_aprox <- mse_df[pos_min, "B1"]
 
 # Impriendo las filas cercanas al mínimo
 mse_df$color_point[(pos_min - 4):(pos_min + 4)] <- rep('red',9)
@@ -879,19 +608,10 @@ ftable(mse_df[(pos_min - 8):(pos_min + 8), ])
 
 ¿Qué hemos logrado hasta acá?
 
--   Demostrar que el valor de $MSE_{\text{NO ingenuo}}$ depende de los
-    betas elegidos para el modelo.
--   Demostrar cómo el valor de $\color{red}{\widetilde{\beta}_0}$ está
-    atado con el de $\color{red}{\widetilde{\beta}_1}$ si de verdad
-    queremos que la recta estimada respete la condición de que
-    $e \text{~}N(0, {\sigma_e}^2)$ y por lo tanto de que $E(e)=0$.
--   Generar un dataframe que calcula los valores de
-    $MSE_{\text{NO ingenuo}}$ para cada par de valores elegidos para
-    $\color{red}{\widetilde{\beta}_0}$ y $\color{red}{\widetilde{\beta}_1}$,
-    dando valores a $\color{red}{\widetilde{\beta}_1}$
--   Estimamos que el $\color{red}{\widetilde{\beta}_1}$ óptimo está cerca
-    del valor 0.94, y que el $\color{red}{\widetilde{\beta}_0}$ óptimo
-    está cerca del valor 1452.
+- Demostrar que el valor de $MSE_{\text{NO ingenuo}}$ depende de los betas elegidos para el modelo.
+- Demostrar cómo el valor de $\color{red}{\widetilde{\beta}_0}$ está atado con el de $\color{red}{\widetilde{\beta}_1}$ si de verdad queremos que la recta estimada respete la condición de que $E(e)=0$.
+- Generar un dataframe que calcula los valores de $MSE_{\text{NO ingenuo}}$ para cada par de valores elegidos para $\color{red}{\widetilde{\beta}_0}$ y $\color{red}{\widetilde{\beta}_1}$, dando valores a $\color{red}{\widetilde{\beta}_1}$
+- Estimamos que el $\color{red}{\widetilde{\beta}_1}$ óptimo está cerca del valor `r b1_aprox`, y que el $\color{red}{\widetilde{\beta}_0}$ óptimo está cerca del valor `r b0_aprox`.
 
 Ahora graficaremos una curva que muestre esta relación:
 
@@ -899,21 +619,28 @@ Ahora graficaremos una curva que muestre esta relación:
 
 if (!file.exists("beta_vs_mse.gif")){
   # Crear la animación
-  animation <- ggplot(mse_df, aes(B1, mse)) +
-    geom_line(aes( x= B1, y = mse, color = color_point), linetype = "dashed") +
-    geom_point(aes(color = color_point), size = 3) +
-    labs(title = "Valores de MSE para cada posible B1, respetando E(e) = 0") +
-    geom_text(data = mse_df, 
-              aes(label = paste("MSE: ", round(mse,0))), x= 1, y = 2e6, color='black'
-    ) +
-    geom_text(data = mse_df, 
-              aes(label = paste("MSE mínimo: ", round(min(mse),0))),
-              x= 1, y = min(mse_df$mse) - 1e5, color='red') +
-    scale_color_manual(values = c("red" = "red", "green" = "green"),
-                       labels = c("Subóptima", "Óptima"),
-                       name = "Soluciones") +
-    theme_minimal() +
-    transition_reveal(B1)
+colors <- c("green", "red")
+animation <- ggplot(mse_df, 
+                    aes(x = B1, y = mse)) +
+  geom_line(aes(x = B1, y = mse,
+                color = factor(color_point),
+                group = cumsum(c(0, diff(factor(color_point) != 0)))
+  )) +
+  geom_point(aes(color = factor(color_point),
+                 group = cumsum(c(0, diff(factor(color_point) != 0))))) +
+  labs(title = "Valores de MSE para cada posible B1, respetando E(e) = 0") +
+  geom_text(data = mse_df, 
+            aes(label = paste("MSE: ", round(mse,0))), x= 1, y = 2e6,
+            color='black'
+  ) +
+  geom_text(data = mse_df, 
+            aes(label = paste("MSE mínimo: ", round(min(mse),0))),
+            x= 1, y = min(mse_df$mse) - 1e5, color='red') +
+  scale_color_manual(values = colors,
+                     labels = c("Subóptima", "Cercana al óptimo"),
+                     name = "Soluciones") +
+  theme_minimal() +
+  transition_reveal(B1)
 
   animate(animation, duration = 10, fps = 2, renderer = gifski_renderer())
   anim_save("beta_vs_mse.gif")
@@ -928,9 +655,7 @@ if (!file.exists("beta_vs_mse.gif")){
 
 </figure>
 
-Ahora veamos el efecto que tiene la elección de los betas en la recta
-regresora, e incluyamos pausas en la animación para detenernos en el
-momento en que encontremos la recta óptima.
+Ahora veamos el efecto que tiene la elección de los betas en la recta regresora, e incluyamos pausas en la animación para detenernos en el momento en que encontremos la recta óptima.
 
 ```{r results = 'hide'}
 
@@ -1014,25 +739,18 @@ MSE</figcaption>
 
 ## 1.12 Usando funciones en R para estimar parámetros
 
-Finalmente hemos llegado al punto en que usaremos las funciones de R
-para estimar parámetros del modelo de regresión lineal. Esto se hará
-bajo el enfoque de optimización, para ello conviene darle una mirada al
-siguiente problema:
+Finalmente hemos llegado al punto en que usaremos las funciones de R para estimar parámetros del modelo de regresión lineal. Esto se hará bajo el enfoque de optimización, para ello conviene darle una mirada al siguiente problema:
 
-Estime un par de valores $(\widetilde{\beta}_0,\widetilde{\beta}_1)$ tal que
-minimice la expresión $MSE = f(\beta_0,\beta_1)$, donde:
+Estime un par de valores $(\widetilde{\beta}_0,\widetilde{\beta}_1)$ tal que minimice la expresión $MSE = f(\beta_0,\beta_1)$, donde:
 
 $$f(\beta_0,\beta_1) = \frac{1}{n}\sum^{n}_{i=1}(y_i - \beta_0 - \beta_1*x_i)²$$
 Tomando en cuenta que no hay restricciones aplicadas a los betas.
 
-Para resolver el problema primero efectuemos algunas simplificaciones
-tomando partida de la siguiente identidad algebraica:
-$(a+b+c)² = a²+b²+c²+2ab+2ac+2bc$, de tal manera que:
+Para resolver el problema primero efectuemos algunas simplificaciones partiendo de la siguiente identidad algebraica: $(a+b+c)² = a²+b²+c²+2ab+2ac+2bc$, de tal manera que:
 
 $$f(\beta_0,\beta_1) = \frac{1}{n}\sum^{n}_{i=1}(y_i²+\beta_0²+\beta_1²x_i²-2y_i\beta_0-2y_i\beta_1x_i+2\beta_0\beta_1x_i)$$
 
-Ahora distribuyamos la suma y separemos aparte los términos que dependen
-de su índice:
+Ahora distribuyamos la suma y separemos los términos que dependen de su índice:
 
 $$f(\beta_0,\beta_1) = \frac{1}{n}\left[\sum^{n}_{i=1}y_i²+\beta_0²\sum^{n}_{i=1}1+\beta_1²\sum^{n}_{i=1}x_i²-2\beta_0\sum^{n}_{i=1}y_i-2\beta_1\sum^{n}_{i=1}y_ix_i+2\beta_0\beta_1\sum^{n}_{i=1}x_i\right]$$
 Simplificando términos y distribuyendo la fracción:
@@ -1041,36 +759,21 @@ $$f(\beta_0,\beta_1) = \frac{1}{n}\sum^{n}_{i=1}y_i²+\frac{\beta_0²}{n}n+\frac
 Para finalmente obtener:
 
 $$f(\beta_0,\beta_1) = \beta_0² +\bar{x²}\beta_1² -2\bar{y}\beta_0-\left[\frac{2}{n}\sum^{n}_{i=1}x_iy_i\right]\beta_1+2\bar{x}\beta_0\beta_1+\bar{y²} $$
-En la expresión anterior, las cantidades $\bar{x²}$, $-2\bar{y}$,
-$-\frac{2}{n}\sum^{n}_{i=1}x_iy_i$, $2\bar{x}$, $\bar{y²}$ son todas
-constantes por depender sólo de los datos que alimentan al modelo, en
-ese sentido son coeficientes numéricos para los respectivos betas de la
-función.
+En la expresión anterior, las cantidades $\bar{x²}$, $-2\bar{y}$, $-\frac{2}{n}\sum^{n}_{i=1}x_iy_i$, $2\bar{x}$, $\bar{y²}$ son todas constantes por depender sólo de los datos que alimentan al modelo, en ese sentido son coeficientes numéricos para los respectivos betas de la función.
 
 LLegados a este punto, podemos sacar las siguientes conclusiones:
 
--   La función $f$ sólo depende de los betas, puesto que los demás
-    valores son constantes, es decir los valores $(x_i, y_i)$ son
-    números consignados en una base de datos, y $n$ es la cantidad de
-    pares de números consignados. Todos los coeficientes dependerán de
-    operaciones sobre estos números.
+- La función $f$ sólo depende de los betas, puesto que los demás valores son constantes, es decir los valores $(x_i, y_i)$ son números consignados en una base de datos, y $n$ es la cantidad de pares de números consignados. Todos los coeficientes dependerán de operaciones sobre estos números.
 
--   De acuerdo con lo anterior la función $f$ es una función
-    multivariada, pues depende de dos variables: $\beta_0$ y $\beta_1$.
+- De acuerdo con lo anterior la función $f$ es una función multivariada, pues depende de dos variables: $\beta_0$ y $\beta_1$.
 
--   Existen métodos muy sencillos para resolver un problema de
-    optimización no restringido cuando la función a optimizar es
-    convexa, entonces sólo nos resta demostrar que la función anterior
-    lo es.
+- Existen métodos muy sencillos para resolver un problema de optimización no restringido cuando la función a optimizar es convexa, entonces sólo nos resta demostrar que la función anterior lo es.
 
-**Definición de convexidad**
+[Definición de convexidad:]{style="color: red;"}
 
-Para demostrar que $f(\beta_0, \beta_1)$ es convexa, debemos verificar
-que su matriz hessiana sea semidefinida positiva. La matriz hessiana es
-una matriz de segundas derivadas parciales de la función.
+Para demostrar que $f(\beta_0, \beta_1)$ es convexa, debemos verificar que su matriz hessiana sea semidefinida positiva. La matriz hessiana es una matriz de segundas derivadas parciales de la función.
 
-Primero, calculemos las derivadas parciales de $f$ con respecto a
-$\beta_0$ y $\beta_1$:
+Primero, calculemos las derivadas parciales de $f$ con respecto a $\beta_0$ y $\beta_1$:
 
 $$\begin{equation} \label{eq:ec1}
   \frac{\partial f}{\partial \beta_0} = 2\beta_0-2\bar{y}+2\bar{x}\beta_1
@@ -1078,8 +781,9 @@ $$\begin{equation} \label{eq:ec1}
 $$ $$\begin{equation} \label{eq:ec2}
   \frac{\partial f}{\partial \beta_1} = 2\bar{x²}\beta_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}\beta_0
 \end{equation}
-$$ Luego, calculemos las segundas derivadas parciales de $f$ con
-respecto a $\beta_0$ y $\beta_1$:
+$$ 
+
+Luego, calculemos las segundas derivadas parciales de $f$ con respecto a $\beta_0$ y $\beta_1$:
 
 $$\frac{\partial^2 f}{\partial \beta_0^2} = 2 > 0$$
 $$\frac{\partial^2 f}{\partial \beta_1^2} = 2\bar{x^2} > 0$$
@@ -1090,7 +794,7 @@ La matriz hessiana de $f$ es:
 $$
 H(f) = \begin{bmatrix}
 \frac{\partial^2 f}{\partial \beta_0^2} & \frac{\partial^2 f}{\partial \beta_0 \partial \beta_1} \\
-\frac{\partial^2 f}{\partial \beta_0 \partial \beta_1} & \frac{\partial^2 f}{\partial \beta_1^2}
+\frac{\partial^2 f}{\partial \beta_1 \partial \beta_0} & \frac{\partial^2 f}{\partial \beta_1^2}
 \end{bmatrix}
 $$
 
@@ -1103,10 +807,11 @@ H(f) = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Para que $f(\beta_0, \beta_1)$ sea convexa, la matriz hessiana debe ser
-semidefinida positiva, lo que significa que debe cumplir la propiedad:
+Para que $f(\beta_0, \beta_1)$ sea convexa, la matriz hessiana debe ser semidefinida positiva, lo que significa que debe cumplir la propiedad:
+
 $$v^ \top Hv>=0 \text{ para }\forall v \in \mathbb{R}²
-$$ Es decir, debemos verificar si:
+$$ 
+Es decir, debemos verificar si:
 
 $$\begin{bmatrix} a & b
 \end{bmatrix}H\begin{bmatrix}
@@ -1166,21 +871,11 @@ $$S_{xx}=\sum^{n}_{i=1}(x_i-\bar{x})*(x_i-\bar{x})=\sum^{n}_{i=1}(x_i-\bar{x})^2
 Luego:
 
 $$v^ \top Hv = 2(a+b\bar{x})²+2b²\frac{S_{xx}}{n} \text{ con } \text{ }v=(a,b)$$
-Y como ambos sumandos son no negativos se tiene que
-$$v^ \top Hv >= 0 \text{ para }\forall v\in \mathbb{R}²$$ Es decir, la
-matriz hessiana es semidefinida positiva y por lo tanto
-$f(\beta_0,\beta_1)$ es convexa en el espacio de parámetros $\beta_0$ y
-$\beta_1$. Esto implica que el problema de regresión lineal, que busca
-minimizar esta función de errores, tiene un mínimo global y puede ser
-resuelto de manera eficiente mediante métodos de optimización convexa.
+Y como ambos sumandos son no negativos se tiene que $$v^ \top Hv >= 0 \text{ para }\forall v\in \mathbb{R}²$$ Es decir, la matriz hessiana es semidefinida positiva y por lo tanto $f(\beta_0,\beta_1)$ es convexa en el espacio de parámetros $\beta_0$ y $\beta_1$. Esto implica que el problema de regresión lineal, que busca minimizar esta función de errores, tiene un mínimo global y puede ser resuelto de manera eficiente mediante métodos de optimización convexa.
 
-Una condición necesaria y suficiente para que
-$(\widetilde{\beta}_0,\widetilde{\beta}_1)$ sea un mínimo global es que
-$\nabla{} f(\widetilde{\beta}_0,\widetilde{\beta}_1)=0$
+Una condición necesaria y suficiente para que $(\widetilde{\beta}_0,\widetilde{\beta}_1)$ sea un mínimo global es que $\nabla{} f(\widetilde{\beta}_0,\widetilde{\beta}_1)=0$
 
-Por lo tanto retomando $\ref{eq:ec1}$ y $\ref{eq:ec2}$ el problema de
-minimización queda resuelto hallando la solución al sistema de
-ecuaciones:
+Por lo tanto retomando $\ref{eq:ec1}$ y $\ref{eq:ec2}$ el problema de minimización queda resuelto hallando la solución al sistema de ecuaciones:
 
 $$\begin{equation} \label{eq:ec3}
     2\widetilde{\beta}_0-2\bar{y}+2\bar{x}\widetilde{\beta}_1=0
@@ -1190,14 +885,12 @@ $$ $$\begin{equation} \label{eq:ec4}
   \end{equation}
 $$
 
-De modo que despejando $\widetilde{\beta}_0$ en $\ref{eq:ec3}$ tenemos lo
-siguiente:
+De modo que despejando $\widetilde{\beta}_0$ en $\ref{eq:ec3}$ tenemos lo siguiente:
 
 $$\begin{equation} \label{eq:ec5}
   \widetilde{\beta}_0 = \bar{y} - \widetilde{\beta}_1\bar{x}
 \end{equation}
-$$ Esto en concordancia con $\ref{eq:ec0}$, y además haciendo reemplazos
-en $\ref{eq:ec4}$ obtenemos:
+$$ Esto en concordancia con $\ref{eq:ec0}$, y además haciendo reemplazos en $\ref{eq:ec4}$ obtenemos:
 
 $$
   2\bar{x²}\widetilde{\beta}_1-\frac{2}{n}\sum^{n}_{i=1}x_iy_i+2\bar{x}(\bar{y}-\widetilde{\beta}_1\bar{x})=0\\
@@ -1206,29 +899,24 @@ $$
 
 Y usando la expresión dada en $\ref{eq:sigma_x}$ tenemos:
   
-$$\frac{S_{xx}}{n}\widetilde{\beta}_1=\frac{1}{n}\left(\sum^{n}_{i=1}x_iy_i-\frac{\bar{x}\bar{y}}{n}\right)\\S_{xx}\widetilde{\beta}_1 = \sum^{n}_{i=1}x_iy_i-\frac{\bar{x}\bar{y}}{n}
+$$\frac{S_{xx}}{n}\widetilde{\beta}_1=\frac{1}{n}\left(\sum^{n}_{i=1}x_iy_i-n\bar{x}\bar{y}\right)\\S_{xx}\widetilde{\beta}_1 = \sum^{n}_{i=1}x_iy_i-n\bar{x}\bar{y}
 $$ 
 
-Ahora, usando el hecho de que el lado derecho de la ecuación anterior
-cumple la siguiente equivalencia:
+Ahora, podemos usar el hecho de que el lado derecho de la ecuación anterior cumple la siguiente equivalencia:
 
-$$\sum^{n}_{i=1}x_iy_i-\frac{\bar{x}\bar{y}}{n}= \sum^{n}_{i=1}(x_i-\bar{x})*(y_i-\bar{y}) = S_{xy}$$
-Es decir, se convierte en la suma de productos cruzados de $x$ y la variable respuesta $y$, una vez estos han sido centrados respecto a la media, así como :
+$$\sum^{n}_{i=1}x_iy_i-n\bar{x}\bar{y}= \sum^{n}_{i=1}(x_i-\bar{x})*(y_i-\bar{y}) = S_{xy}$$
+Es decir, se puede convertir en la suma de productos cruzados de la variable $x$ y la variable respuesta $y$, previamente centradas respecto a sus medias.
+
+Por lo tanto se tendría que:
 
 $$\begin{equation} \label{eq:ec6}
     \widetilde{\beta}_1 = \frac{S_{xy}}{S_{xx}}
   \end{equation}
 $$ 
 
-Las ecuaciones $\ref{eq:ec5}$ y $\ref{eq:ec6}$ son muy informativas
-en su estructura, la primera indica que la recta regresora debe pasar
-por el centroide de la nube de puntos: $(\bar{x}, \bar{y})$ y la segunda
-indica que la pendiente de la recta es proporcional al grado de relación
-lineal que tenga la variable $x$ con la variable $y$ medida a través de
-la suma de productos cruzados $S_{xy}$, la cual a su vez se relaciona con la covarianza entre las variables $x$ y $y$.
+Las ecuaciones $\ref{eq:ec5}$ y $\ref{eq:ec6}$ son muy informativas en su estructura, la primera indica que la recta regresora debe pasar por el centroide de la nube de puntos: $(\bar{x}, \bar{y})$ y la segunda indica que la pendiente de la recta es proporcional al grado de relación lineal que tenga la variable $x$ con la variable $y$ medida a través de la suma de productos cruzados $S_{xy}$, la cual a su vez se relaciona con la covarianza entre las variables $x$ y $y$.
 
-Estos sencillos cálculos son realizados por R a través de la función
-"lm", así:
+Estos sencillos cálculos son realizados por R a través de la función "lm", así:
 
 ```{r}
 
@@ -1273,30 +961,17 @@ parametros %>%
 
 ```
 
-Podemos notar entonces que ambos métodos son consistentes entre si, algo
-que no es de extrañar pues internamente R implementa estos métodos en
-sus librerías.
+Podemos notar entonces que ambos métodos son consistentes entre si, algo que no es de extrañar pues internamente R implementa estos métodos en sus librerías.
 
 # 2. COMPROBACIÓN DEL SUPUESTO DE NORMALIDAD.
 
-Hemos llegado al punto en que ya tenemos todos los elementos necesarios
-para definir formalmente el modelo estimado sobre nuestros datos.
-Podemos ahora concluir que el mejor modelo para describir la relación
-entre la variable precio del aguacate ($y$) y precio del dólar($x$),
-pensado desde la perspectiva de minimización de cuadrados del error y
-estando restringidos a la familia de modelos de regresión lineal con
-componente de error normal es:
+Hemos llegado al punto en que ya tenemos todos los elementos necesarios para definir formalmente el modelo estimado sobre nuestros datos. Podemos ahora concluir que el mejor modelo para describir la relación entre la variable precio del aguacate ($y$) y precio del dólar($x$), pensado desde la perspectiva de minimización de cuadrados del error y estando restringidos a la familia de modelos de regresión lineal con componente de error normal es:
 
 $y = `r round(b0,2)` + `r round(b1,2)`x + e \text{ con e~N(0,`r round(sigma_2,1)`)}$
 
-Pero, aunque nos hemos esforzado por encontrar las mejores estimaciones
-de los betas para minimizar la función de pérdida, esto no garantiza que
-nuestro modelo induzca errores normales, por tal motivo conviene recordar lo siguiente:
+Pero, aunque nos hemos esforzado por encontrar las mejores estimaciones de los betas para minimizar la función de pérdida, esto no garantiza que nuestro modelo induzca errores normales, por tal motivo conviene recordar lo siguiente:
 
-💭 Cuando planteamos el modelo, tuvimos que suponer
-algunas cosas, entre ellas, que la distribución de los errores sería
-*normal*. Por lo tanto, ahora que tenemos construído nuestro modelo, es
-necesario que validemos la suposición hecha.
+💭 Cuando planteamos el modelo, tuvimos que suponer algunas cosas, entre ellas, que la distribución de los errores sería *normal*. Por lo tanto, ahora que tenemos construído nuestro modelo, es necesario que validemos la suposición hecha.
 
 🤔💭 ¿Cómo hacerlo ❔
 
@@ -1323,15 +998,9 @@ tabla_normalidad %>%
         align = "left", part = "all")
 ```
 
-Recordemos que la elección de la prueba depende de varios factores,
-incluyendo el tamaño de la muestra, el *conocimiento previo sobre la
-distribución de los datos* y los objetivos del análisis. Ninguna prueba
-es perfecta y es importante considerar el contexto y las características
-específicas de tus datos al seleccionar una prueba de normalidad.
+Recordemos que la elección de la prueba depende de varios factores, incluyendo el tamaño de la muestra, el *conocimiento previo sobre la distribución de los datos* y los objetivos del análisis. Ninguna prueba es perfecta y es importante considerar el contexto y las características específicas de tus datos al seleccionar una prueba de normalidad.
 
-🤔💭 Y si el texto anterior dice: *"el conocimiento previo sobre la
-distribución de los datos"* 🤔💭 ¿Será necesario representar la
-distribución en un gráfico? ¿Cómo funciona la prueba Lilliefors? A continuación describiremos los cálculos implicados:
+🤔💭 Y si el texto anterior dice: *"el conocimiento previo sobre la distribución de los datos"* 🤔💭 ¿Será necesario representar la distribución en un gráfico? ¿Cómo funciona la prueba Lilliefors? A continuación describiremos los cálculos implicados:
 
 ```{r}
 
@@ -1396,7 +1065,7 @@ estadistico_l <- Lilliefors_test$statistic
 print(paste0("Este es el estadístico de Lilliefors usando paquetería de R: ", estadistico_l))
 ```
 
-Hasta acá hemos verificado que los cálculos realizados manualmente coinciden con el código implementado por la librería nortest de R, y más específicamente en el código fuente de la función lillie.test. Ahora ilustremos algo de estos pasos usando una gráfica: 
+Hasta acá hemos verificado que los cálculos realizados manualmente coinciden con el código implementado por la librería nortest de R, y más específicamente en el código fuente de la función lillie.test. Ahora ilustremos algunos de estos pasos usando una gráfica: 
 ```{r}
 x_seg <- df_residuals$residuals[pos_estadistico_m1]
 y_sup_seg <- cdf_teorica[pos_estadistico_m1]
@@ -1447,20 +1116,17 @@ Comparemos los resultados contra la prueba de Shapiro WIlk y Kolmogorov
 shapiro.test(mod1$residuals)
 ks.test(mod1$residuals, "pnorm")
 ```
-Hemos notado diferencias con la prueba de Kolmogorov, ¿Cuál es la razón?, podrás encontrar en el siguiente artículo en el que Lilliefors introduce por primera vez su prueba:
+Hemos notado diferencias con la prueba de Kolmogorov, ¿Cuál es la razón?, podrás encontrarla en el siguiente artículo en el que Lilliefors introduce por primera vez su prueba:
 
-Lilliefors, H. (June 1967), "On the Kolmogorov--Smirnov test
-for normality with mean and variance unknown", Journal of the American
-Statistical Association, Vol. 62. pp. 399--402.
+Lilliefors, H. (June 1967), "On the Kolmogorov--Smirnov test for normality with mean and variance unknown", Journal of the American Statistical Association, Vol. 62. pp. 399--402.
 
-Una aclaración respecto a que esta prueba es menos potente ❗  en comparación con la prueba KS estándar, esto significa que es menos sensible para detectar desviaciones de la normalidad en muestras grandes, especialmente si los datos no siguen una distribución estrictamente normal. La prueba KS estándar es más robusta en este sentido, pero por lo mismo más conservador. En el contexto de modelos de regresión, no requerimos un cumplimiento estricto de la normalidad sino una semejanza razonable para habilitar el uso del modelo. En ese sentido es preferible usar Lilliefors.😀😎
+Haremos una aclaración respecto a la potencia de esta prueba en muestras grandes ❗  en comparación con la prueba KS estándar. Esto significa que es menos sensible para detectar desviaciones de la normalidad en muestras grandes, especialmente si los datos no siguen una distribución estrictamente normal. La prueba KS estándar es más robusta en este sentido, pero por lo mismo más conservadora. En el contexto de modelos de regresión, no requerimos un cumplimiento estricto de la normalidad sino una semejanza razonable para habilitar el uso del modelo. En ese sentido es preferible usar Lilliefors.😀😎
 
 🤔💭 Otras posibles preguntas son:
 
 - ¿Cuáles son los riesgos que implica asumir a priori un comportamiento específico para el error?
 - ¿Si el modelo no cumple con lo supuesto para el error, qué alternativas tengo?
-- Al plantear un modelo alternativo que captura mejor el comportamiento del error usando
-una distribución distinta a la normal ¿Puedo seguir usando los métodos de inferencia tradicionales o qué modificaciones debo introducir?
+- Al plantear un modelo alternativo que captura mejor el comportamiento del error usando una distribución distinta a la normal ¿Puedo seguir usando los métodos de inferencia tradicionales o qué modificaciones debo introducir?
 - ¿Por qué es importante para un magister en estadística conocer sobre métodos de simulación Montecarlo?
 
 # 3. EL SUPUESTO DE INDEPENDENCIA DEL ERROR
@@ -1594,9 +1260,9 @@ print(resultados_lb)
 
 - La prueba de Durbin Watson nos ayuda a revisar si hay autocorrelación del error de hoy con el error de hace un mes (recuerde que la serie es mensual). De hecho la prueba arroja un estadístico de prueba $DW < 2$ indicando con ello autocorrelación positiva de los errores. 
 
-- En consistencia con lo anterior la prueba de Ljung-Box arroja valores p sistemáticamente menores que 0.05 para todos los rezagos considerados: 1 mes, 2 meses, 3 meses, ..., 1 año. Y decimos que en consistencia con la prueba de Durbin Watson porque la prueba de Ljung box será indicativa de autocorrelación en máximo n rezagos si ya lo es para máximo n=1 rezagos como lo indica la prueba DW.
+- En consistencia con lo anterior la prueba de Ljung-Box arroja valores p sistemáticamente menores que 0.05 para todos los rezagos considerados: 1 mes, 2 meses, 3 meses, ..., 1 año. Decimos que es consistente con lo arrojado por la prueba de Durbin Watson ya que la prueba de Ljung box busca autocorrelación en máximo n rezagos, y si la serie ya estaba autocorrelacionada para n=1 rezagos (prueba de Durbin Watson) lo estará también para máximo n rezagos (prueba de Ljung-Box).
 
-- La no independencia del error invalida completamente mi modelo, porque en estos escenarios la varianza del error del modelo se encuentra subestimada, pues ante la presencia de autocorrelación de los residuales no podemos afirmar que $\sigma_e² = var(error)$ ya que esto asume implícitamente independencia. En procesos autocorrelacionados la varianza es realmente mayor que esto. Usar un error subestimado puede llevarme a conclusiones falsamente significativas, como por ejemplo puede declarar la variable predictora como significativa, al estimar inadecuadamente el error para $\beta_1$ ya que $\widetilde{V}(\widetilde{\beta}_1)$ depende de $\widetilde{\sigma}²_e$
+- La no independencia del error invalida completamente mi modelo, porque en estos escenarios la varianza del error del modelo se encuentra subestimada, pues ante la presencia de autocorrelación de los residuales no podemos afirmar que $\sigma_e² = var(error)$ ya que esto asume implícitamente independencia. En procesos autocorrelacionados la varianza es realmente mayor que esto. Usar un error subestimado puede llevarme a conclusiones falsamente significativas, como por ejemplo puede declarar la variable predictora como significativa, al estimar inadecuadamente el error para $\beta_1$ ya que $\widetilde{V}(\widetilde{\beta}_1)$ depende de $\widetilde{\sigma}²_e$ como veremos más adelante en el capítulo de prueba de hipótesis.
 
 Dejaremos el estudio de las cuestiones relativas al tratamiento de errores autocorrelacionados para el capítulo de series de tiempo. 
 
@@ -1604,13 +1270,14 @@ Dejaremos el estudio de las cuestiones relativas al tratamiento de errores autoc
 
 De manera informal este supuesto busca verificar que la varianza de los errores es estable, bien sea respecto al tiempo, respecto a una variable predictora, o respecto a la magnitud de los valores predichos. Las inspecciones de estas cuestiones usualmente se basan en el estudio de los patrones de los gráficos de residuales, en específico estudiamos:
 
-- Si un gráfico de residuales estandarizados (divididos por su desviación estándar) vs valor predicho arroja dispersiones diferentes conforme el valor predicho crece. En un gráfico como éste si observamos que la dispersión de los puntos cambia a lo largo de los valores ajustados (por ejemplo, los puntos se abren o se estrechan a medida que aumentan los valores ajustados), eso podría indicar la presencia de heterocedasticidad.
+- Si un gráfico de residuales estandarizados (residuales divididos por su desviación estándar) vs valor predicho arroja dispersiones diferentes conforme el valor predicho crece. En un gráfico como éste, si observamos que la dispersión de los puntos cambia a lo largo de los valores ajustados (por ejemplo, los puntos se abren o se estrechan a medida que aumentan los valores ajustados), eso podría indicar la presencia de heterocedasticidad.
 
-- Si el modelo posee una variable categórica predictiva (no es nuestro caso), respecto a la cual podamos validar si la dispersión del error es mayor en los grupos definidos por esa variable predictiva. Ampliaremos estas cuestiones en el apartado de modelo de regresión lineal múltiple.
+- Si el modelo posee una variable categórica predictora (no es nuestro caso), respecto a la cual podamos validar si la dispersión del error es mayor en los grupos definidos por esa variable predictora. Ampliaremos estas cuestiones en el apartado de modelo de regresión lineal múltiple.
 
-- Si un gráfico de residuos vs variables independientes revela que la dispersión de los residuos cambia con respecto a cada variable independiente. Por ejemplo, podemos patrones de abanico o embudo que puedan indicar problemas de heterocedasticidad.
+- Si un gráfico de residuos vs variables independientes revela que la dispersión de los residuos cambia con respecto a cada variable independiente. Por ejemplo, podemos tener patrones de abanico o embudo que puedan indicar problemas de heterocedasticidad.
 
 - Si alguna pruebas estadísticas formales como la prueba de Breusch-Pagan o la prueba de White proporcionan evidencia de heterocedasticidad al comprobarse que los cuadrados de los residuales se relación sistemáticamente con el conjunto de variables predictoras, esto es, si es posible construir un modelo no ingenuo que haga depender el cuadrado del error de los valores de las variables predictoras. Si tal cosa existe significa que los errores son heterocedasticos en la medida en que su varianza depende o cambia según los valores de las variables predictoras. 
+
 Apliquemos estos análisis a continuación:
 
 ```{r}
@@ -1681,7 +1348,7 @@ df_squared_error <- data.frame(
   precio_dolar_2 = hass_dolar$precio_dolar^2
 )
 
-#2. Calcule un modelo lineal ajustado sobre el cuadrado del error regresado por el termino lineal y cuadrático del precio del dolar
+#2. Calcule un modelo lineal ajustado sobre el cuadrado del error regresado por el termino lineal y cuadrático del precio del dólar
 
 modelo_white <- lm(data = df_squared_error,
                    squared_error ~ precio_dolar + precio_dolar_2)
@@ -1829,11 +1496,11 @@ Retomemos entonces nuestros modelo, para aterrizar mejor estas cuestiones:
 $$Y = \beta_0 + \beta_1X + e$$
 Nuestro proceso generador de datos consiste así en una función lineal que hace depender a $Y$ del valor de $X$ y de un componente aleatorio $e$ que indica la parte del valor de Y que no logra ser capturada por la relación lineal que la X tiene con la Y. Nosotros no conocemos $\beta_0$ y $\beta_1$, así como tampoco $\sigma_e$ (recordemos que $e\text{~}N(0,{\sigma_e}²)$). Así que debemos usar la información de la muestra de datos observados $(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)$ para intentar deducir los valores de estos tres parámetros. Sin embargo tales valores son sólo un estimado de los verdaderos parámetros del proceso generador de datos. 
 
-En capítulos anteriores dejamos claro que un método posible para estimar los parámetros $\beta_1$ y $\beta_2$ es usar minimización del MSE(Mean Squared Error), es un esfuerzo por generar la mejor recta ajustada a los datos, pero cabe preguntarse:
+En capítulos anteriores dejamos claro que un método posible para estimar los parámetros $\beta_1$ y $\beta_2$ es usar minimización del MSE(Mean Squared Error), en un esfuerzo por generar la mejor recta ajustada a los datos, pero cabe preguntarse:
 
 - ¿Generar una recta que se ajuste lo mejor posible a la muestra garantiza obtener estimaciones que realmente se parezcan a los parámetros de mi proceso generador de datos?
 
-Lo que queremos indicar con esta pregunta es que: un buen ajuste no tiene que ser sinónimo de buena estimación de parámetros, y si lo es deberíamos poderlo demostrar, porque el ajuste habla de la calidad del modelo para explicar los datos observados, y no necesariamente para explicar todo el universo de los datos que mi proceso generador de datos podría generar. Si nos ajustamos bien a la muestra, esto no implica a-priori ajustarnos bien a la población. No obstante algo nos hace sospechar que no es tan mala idea usar una estrategia como esta porque después de todo no conocemos más datos que los que la muestra pueda revelarnos.
+Lo que queremos indicar con esta pregunta es que: un buen ajuste de la recta no tiene que ser sinónimo de buena estimación de parámetros, y si lo es deberíamos poderlo demostrar, porque el ajuste habla de la calidad del modelo para explicar los datos observados, y no necesariamente para explicar todo el universo de los datos que mi proceso generador de datos podría generar. Si nos ajustamos bien a la muestra, esto no implica a-priori ajustarnos bien a la población. No obstante algo nos hace sospechar que no es tan mala idea usar una estrategia como esta porque después de todo no conocemos más datos que los que la muestra pueda revelarnos.
 
 ## 6.1 Estudiando el comportamiento estadístico de los estimadores
 
@@ -1894,7 +1561,7 @@ Para la varianza tenemos:
 
 $$Var(\widetilde{\beta}_0)=Var(\bar{y} - \widetilde{\beta}_1\bar{x})=Var(\bar{y})+{\bar{x}}^2Var(\widetilde{\beta}_1)=\frac{{\sigma_e}²}{n} + {\bar{x}}^2\frac{{\sigma_e}²}{S_{xx}}={\sigma_e}²\left(\frac{1}{n}+\frac{{\bar{x}}^2}{S_{xx}}\right)$$
 
-También es importante hacer ver que también $\widetilde{\beta}_0$ puede pensarse como combinación lineal de las $y_i$ ya que en su fórmula están involucradas las cantidades $\bar{y}$ y $\widetilde{\beta}_1$ a través de una combinación lineal. Por lo tanto, como una combinación lineal de combinaciones lineales de las $y_i$ es también una combinación lineal de $y_i$ podemos afirmar que por propiedad reproductiva de la normal $\widetilde{\beta}_0$ también se distribuye normal. 
+También es importante hacer ver que $\widetilde{\beta}_0$ puede pensarse como combinación lineal de las $y_i$ ya que en su fórmula están involucradas las cantidades $\bar{y}$ y $\widetilde{\beta}_1$ a través de una combinación lineal. Por lo tanto, como una combinación lineal de combinaciones lineales de las $y_i$ es también una combinación lineal de $y_i$ podemos afirmar que por propiedad reproductiva de la normal $\widetilde{\beta}_0$ también se distribuye normal. 
 
 Una última anotación a realizar es que según el **teorema de Gauss-Markov**, para el modelo de regresión lineal con los supuestos $E(e)=0$ y $Var(e)={\sigma_e}²$ y por supuesto con errores no correlacionados, los estimadores por mínimos cuadrados son insesgados (tal como acabamos de demostrar), pero más importante que eso, tienen la varianza más pequeña que se pueda esperar dentro del universo de estimadores insesgados que se construyen como combinaciones lineales de los $y_i$. Es por esta razón que con frecuencia se dice que los estimadores por mínimos cuadrados son los **estimadores lineales insesgados óptimos**, donde __óptimos__ implica que son de varianza mínima. 
 
@@ -2059,7 +1726,7 @@ grid.arrange(generar_grafico(x=vector_x,n=50,sigma=4,beta_0,beta_1,
 
 [Observación:](style="color=red;") 
 
-Tal como se aprecia en el gráfico, las rectas se distancian más de la teórica conforme el $\sigma$ desconocido del proceso crece. Y cómo vimos en el apartado anterior: 
+Tal como se aprecia en el gráfico, las rectas se distancian más de la teórica conforme el $\sigma$ desconocido del proceso crece. Y como vimos en el apartado anterior: 
 
 $$\widetilde{\sigma}²_e=MS_{Res} = \sum_{i=1}^{n}\frac{(y_i-\tilde{y_i})²}{n-2}$$
 
@@ -2185,592 +1852,71 @@ plot(p6)
 
 [Conclusiones:](style="color=red;") 
 
-- Los histogramas para $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ tienen forma acampanada lo que sugiere una relación con la distribución t-student. Esto se confirma al inspeccionar los histogramas de las betas estandarizadas los cuales tienden a la normal conforme los grados de libertad crecen. Cómo una forma de confirmar la distribución subyacente se recomienda al alumno realizar una prueba de kolmogorov sobre cada histograma contra la teórica esperada (una distribución t con n-2 grados de libertad)
+- Los histogramas para $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ tienen forma acampanada lo que sugiere una relación con la distribución t-student. Esto se confirma al inspeccionar los histogramas de las betas estandarizadas los cuales tienden a la normal conforme los grados de libertad crecen. Como una forma de confirmar la distribución subyacente se recomienda al alumno realizar una prueba de kolmogorov sobre cada histograma contra la teórica esperada (una distribución t con n-2 grados de libertad)
 
-- Las varianzas de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ dependen de los tamaños de muestra (y del sigma del proceso generador de datos     que para todos los histogramas se dejó fijo en $\sigma_e=4$. Puede notar con el rango de variación de los betas se va estrechando conforme el tamaño de muestra crece. 
+- Las varianzas de $\widetilde{\beta}_0$ y $\widetilde{\beta}_1$ dependen de los tamaños de muestra (y del sigma del proceso generador de datos que para todos los histogramas se dejó fijo en $\sigma_e=4$. Puede notar con el rango de variación de los betas se va estrechando conforme el tamaño de muestra crece. 
 
 - El cociente $\frac{(n-2)\widetilde{\sigma}_e^2}{{\sigma_e}^2}$ en efecto parece seguir una distribución chi cuadrado con n-2 grados de libertad. Para confirmarlo se sugiere al alumno aplicar una prueba de kolmogorov sobre cada histograma. Note que por teorema central del límite incluso la ji-cuadrado tenderá a una distribución normal conforme el tamaño de muestra crece.
 
-
 ## 6.4 Tabla Anova para probar desempeño general del modelo
 
+Finalmente nos resta introducir la tabla de análisis de varianza, o tabla ANOVA. Esta tabla busca realizar un comparativo entre la parte de la varianza de mi variable a predecir $Y$ que está siendo capturada por mi modelo, vs la parte de la varianza que el modelo no logra capturar. Así pues consideremos la siguiente igualdad:
 
+$$y_i - \bar{y} = (\hat{y}_i - \bar{y}) + (y_i - \hat{y}_i)$$
+Discutamos cada término:
 
+- $y_i - \bar{y}$ representa la distancia de cada dato al promedio histórico, es decir mide la variabilidad de la variable original.
 
+- $\hat{y}_i - \bar{y}$ representa un pedazo de la distancia entre $y_i$ y $\bar{y}$, es decir, representa un pedazo de la variabilidad original de $Y$, ¿Cuál es este pedazo? Aquel que puede ser explicado como consecuencia de la predicción $\hat{y}_i$. A nosotros nos interesa que este pedazo sea lo más grande que se pueda, precisamente porque queremos que nuestro modelo logre explicar una buena porción de las variaciones que están sufriendo las $y_i$.
 
+- $y_i - \hat{y}_i$ es el residual, representa el otro pedazo de la distancia entre $y_i$ y $\bar{y}$, es decir, el resto de la variabilidad de $Y$ que no logró ser capturada por el modelo y que por lo tanto constituye un error de pronóstico. Queremos que esta cantidad sea lo más pequeña posible. 
 
+Ahora bien, cómo estas cantidades vienen con signo dependiendo de si la recta predicha se ubica por debajo o por encima de la recta horizontal ingenua, lo mejor es evitar la compensación de errores considerando los cuadrados, así:
 
-[Variable aleatoria]{style="color: red;"}: Una variable aleatoria X es una función de \[
-f : \Omega \rightarrow \mathbb{R}\] con $\Omega$ el conjunto de resultados posibles de un experimento aleatorio. En otras palabras un mapeo desde el espacio de descripciones muestrales a los números reales con el fin de asociar a los resultados del experimento un valor numérico con el cual habilitar operaciones matemáticas. 
+$$(y_i - \bar{y})^2 = \left((\hat{y}_i - \bar{y}) + (y_i - \hat{y}_i)\right)²$$
+Y resolviendo el cuadrado de la derecha tenemos:
 
-[Proceso estocástico]{style = "color: red;"}: Sea $\mathcal{T}$ un conjunto arbitrario. Un proceso estocástico es una familia $\{X(t), \text{ t} \in \tau \}$, tal que, para cada $t \in \mathcal{T}, X(t)$ es una variable aleatoria.  Es decir, es una secuencia de variables aleatorias ordenadas por un índice, típicamente tomado del conjunto de los números enteros, o del conjunto de los números reales.
+$$(y_i - \bar{y})^2 = (\hat{y}_i - \bar{y})^2 + 2(\hat{y}_i - \bar{y})(y_i - \hat{y}_i)+(y_i - \hat{y}_i)^2$$
+Luego, considerar que en realidad tenemos $n$ cantidades involucradas acá, una por cada posible $i=1,..,n$, apliquemos sumatoria en ambos lados para obtener:
 
-[Proceso estocástico en tiempo discreto]{style = "color: red;}: Es un proceso estocástico con un índice temporal discreto. Significando que $\tau \in \mathbb{Z}$
 
-[Especificación de un proceso estocástico]{style = "color: red;"}: Sea $t_1, t_2, t_3,...,t_n$ elementos cualquiera de $\mathcal{T}$ y consideremos
+$$\begin{equation} \label{eq:sct}
+\sum^{n}_{i=1}(y_i - \bar{y})^2 = \sum^{n}_{i=1}(\hat{y}_i - \bar{y})^2 + 2\sum^{n}_{i=1}(\hat{y}_i - \bar{y})(y_i - \hat{y}_i)+\sum^{n}_{i=1}(y_i - \hat{y}_i)^2
+\end{equation}$$
+Y en la ecuación $\ref{eq:sct}$ nos interesa especialmente el término que contiene el doble producto, veamos...
 
-$$F(x_1, x_2, x_3, ..., x_n; t_1, t_2, t_3, ..., t_n)=P\{X(t_1)<=x_1, ..., X(t_n)<=x_n\}$$
-[Definición de un proceso estocástico estacionario]{style = "color: red;"}: Un proceso estocástico $\{X(t), \text{ t} \in \mathcal{T} \}$ se dice estrictamente estacionario si todas las distribuciones finito dimensionales tal como se definen en la ecuación anterior permanecen siendo las mismas sobre traslaciones en el tiempo, es decir:
+$$2\sum^{n}_{i=1}(\hat{y}_i - \bar{y})(y_i - \hat{y}_i)=2\sum^{n}_{i=1}(\hat{y}_i- \bar{y})e_i=2\sum^{n}_{i=1}\hat{y}_ie_i-2\bar{y}\sum^{n}_{i=1}e_i$$
+Pero sabemos que $\sum^{n}_{i=1}e_i=0$ pues los errores se compensan entre sí. Investiguemos el término restante:
 
-$$F(x_1, x_2, x_3, ..., x_n; t_1+\tau, t_2+\tau, t_3+\tau, ..., t_n+\tau)=F(x_1, x_2, x_3, ..., x_n; t_1, t_2, t_3, ..., t_n)$$
-Algunas consecuencias de lo anterior son:
+$$\sum^{n}_{i=1}\hat{y}_ie_i=\sum^{n}_{i=1}(\widetilde{\beta}_0+\widetilde{\beta}_1x_i)(y_i-(\widetilde{\beta}_0+\widetilde{\beta}_1x_i))\\=\sum^{n}_{i=1}(\bar{y}-\widetilde{\beta}_1\bar{x}+\widetilde{\beta}_1x_i)(y_i-(\bar{y}-\widetilde{\beta}_1\bar{x}+\widetilde{\beta}_1x_i))\\=\sum^{n}_{i=1}[\bar{y}+\widetilde{\beta}_1(x_i-\bar{x})][(y_i-\bar{y})-\widetilde{\beta}_1(x_i-\bar{x})]\\=\bar{y}\sum^{n}_{i=1}(y_i-\bar{y})-\widetilde{\beta}_1\bar{y}\sum^{n}_{i=1}(x_i-\bar{x})+\widetilde{\beta}_1\sum^{n}_{i=1}(x_i-\bar{x})(y_i-\bar{y})-{\widetilde{\beta}_1}^2\sum^{n}_{i=1}(x_i-\bar{x})²$$
 
-- $E\{X(t)\} = \mu(t) = \mu$
-- $Var\{X(t)\} = \sigma²(t) = \sigma²$
-- $\gamma(t_1, t_2) = \gamma(t_1-t_2, 0) = Cov\{X(t_1-t_2), X(0)\}$ o equivalentemente $\gamma{\tau} = Cov\{X(t), X(t+\tau)\} = Cov\{X(0), X(\tau)\}$ para t, $\tau \in \mathcal{T}$
+Acá es fácil ver que los dos primeros sumandos son nulos pues representan las sumas de las desviaciones de cada variable respecto a su media, luego:
 
-Reflexiones en lenguaje informal:
+$$\sum^{n}_{i=1}\hat{y}_ie_i=\frac{S_{xy}}{S_{xx}}*S_{xy} - \left(\frac{S_{xy}}{S_{xx}}\right)^2*S_{xx}=0$$
+Así que retomando de nuevo $\ref{eq:sct}$ concluimos que:
 
-- Un proceso estocástico quedará suficientemente definido si definimos la distribución de probabilidad n-dimensional conjunta para cada $n>=1$, es decir, tomando $n$ variables del proceso estocástico a la vez, sería necesario especificar la relación estadística de esas n variables a la vez para cada eleción de n. En nuestro contexto implica especificar cómo se espera que el precio de hoy se relacione con el precio de ayer, o cómo se espera que el precio de hoy se relacione con el de ayer y además con el de antier. Y así sucesivamente para cualquier grupo finito de precios que decida tomar a consideración.
+$$\sum^{n}_{i=1}(y_i - \bar{y})^2 = \sum^{n}_{i=1}(\hat{y}_i - \bar{y})^2 +\sum^{n}_{i=1}(y_i - \hat{y}_i)^2\\
+SS_T = SS_R+SS_{Res}$$
 
-- Un proceso estocástico estacionario se puede interpretar como aquel cuyas propiedades estadísticas permanencen constantes a lo largo del tiempo y sólo cambiaran en función del grupo de $n$ variables que decida obervar conjuntamente, pero no de la posición de esas n variables en el tiempo. Por ejemplo, suponiendo que n=1, esto implicaría que las propiedades estadísticas de cada variable tomada individualmente no se van alteradas conforme el tiempo avance, en particular cada variable será estable en media y en varianza. Lo que significa que puedo reunir las observaciones individuales en cada momento en el tiempo para estimar la media constante y la varianza de toda la secuencia, en la media en que en cada punto temporal estoy asumiendo que la media y la varianza es igual. Esto siempre se cumplirá? Por supuesto que no, es una suposición que imponemos a los datos para poder hacer inferencia con un único set de valores históricos observados. 
+Es decir, que en definitiva la varibilidad de $Y$ capturada a través de $SS_T$ puede ser descompuesta como la variabilidad explicada por el modelo de regresión (en adelante denominada $SS_R$) más la variabilidad de los residuales(en adelante denominada $SS_{Res}$). También se ha dicho que $SS_{Res}$ es tal que $\frac{SS_{Res}}{{\sigma^2}_e}$ se distribuye como una ${\chi^2}_{n-2}$. Y de manera similar se puede demostrar que $\frac{SS_{R}}{{\sigma^2}_e}$ se distribuye como una ${\chi^2}_{1}$. Ahora estableciendo sin prueba (ver bibliografía de Montgomery apéndice C3) que ambas sumas de cuadrados son independientes entre sí, se puede concluir que la cantidad:
 
-- Si la condición de estacionariedad estricta falla no hay nada que se pueda hacer en el estado actual del avance de la ciencia estadística.🤔 La única alternativa es relajar un poco las condiciones para exigencia de estacionariedad, cómo por ejemplo exigir estacionariedad débil consistente en pedir sólo homogeneidad en media, en varianza y en covarianza de segundo orden a la serie de tiempo bajo estudio.  Exigir estacionariedad estricta es algo muy complicado de garantizar en la naturaleza. 
+$$F_0=\frac{\frac{SS_R}{1*{\sigma^2}_e}}{\frac{SS_{Res}}{(n-2)*{\sigma^2}_e}} = \frac{\frac{{\chi^2}_{1}}{1}}{\frac{{\chi^2}_{n-2}}{n-2}}=\frac{MS_{R}}{MS_{Res}}$$
+Se distribuye como una $F_{1, n-2}$ de Snedecor con $1$ grado de libertad en el numerador y $n-2$ en el denominador, debido a que es el cociente de dos variables aleatorias ji-cuadrado independientes divididas entre sus grados de libertad. Note que hemos introducido una nueva notación para los cocientes $\frac{SS_R}{1}$ y $\frac{SS_{Res}}{n-2}$, los cuales se denominan cuadrados medios corregidos de la regresión y del error respectivamente ($MS_{R}$ y $MS_{Res}$)
 
-- Además es más fácil diseñar pruebas de estacionariedad débil.
+A continuación una tabla que resume los hallazgos más importantes de todo esto, pero generalizada para el caso de regresión múltiple. 
 
-Apliquemos una para la serie de tiempo de residuales
+<figure>
 
-```{r}
+<img src="Tabla anova.jpg"/>
 
-# Prueba de Dickey-FUller Aumentada
-resultado_adf <- adf.test(mod1$residuals)
-print(resultado_adf)
+<figcaption>Tabla Anova para un modelo de regresión múltiple</figcaption>
 
-# Prueba de White
-resultado_white <- bptest(mod1)
-# Muestra el resultado de la prueba
-print(resultado_white)
+</figure>
 
-```
+Además considerando que $E(MS_{Res})={\sigma^2}_e$ y $E(MS_{R})={\sigma^2}_e + {\beta_1}^2S_{xx}$
 
-En este caso debemos interpretar valores p<0.05 de la prueba de Dickey como un apoyo a la hipótesis alternativa de estacionariedad. Es decir, podemos considerar los residuales del modelo como estacionarios, porque un modelo autoregresivo con 5 rezagos no logró encontrar evidencia estadística de autocorrelaciones del error conducentes a no estacionariedad. 
+Podríamos afirmar que si el valor $F_0$ propuesto arriba llegase a ser muy grande, seguramente sería indicativo de que $\beta_1 \ne 0$. Igualmente si $\beta_1$ llegase a ser diferente de 0, entonces $F_0$ se distribuye F de Snedecor con parámetro de no centralidad igual a:
 
-Por otro lado, podemos interpretar valores p<0.05 de la prueba de White como un apoyo a la hipótesis de homocedasticidad, es decir, podemos considerar los residuales del modelo como constantes en varianza a lo largo del tiempo.
+$$\lambda = \frac{{\beta_1}^2S_{xx}}{{\sigma^2}_e}$$
 
-# Varianza de los residuales del modelo
-
-# Obteniendo los coeficientes.
-
-```{r}
-mod1$coefficients
-```
-
-# Valores ajustados - Fitted values.
-
-```{r}
-mod1$fitted.values %>% 
-  head(20)
-```
-
-# Residuales
-
-```{r}
-mod1$residuals %>% 
-  head(20)
-
-# Los valores ajustados y los residuales también se pueden recuperar usando las funciones fitted( ) y residuals( ). Consulte la ayuda de estas funciones para conocer otros detalles.
-
-```
-
-Calcular la varianza de los residuales.
-
-```{r}
-
-# En esta sección el estudiante desarrollará los cálculos.
-
-
-
-```
-
-# Porcentaje de variabilidad no explicada por el modelo.
-
-```{r}
-
-# En esta sección el estudiante desarrollará los cálculos.
-
-
-
-
-```
-
-# Diagrama de dispersión con los puntos originales
-
-## Creación de la columna de predicción
-
-En este chunk trabajamos con el modo de escritura Tidyverse, aunque se
-muestra cómo sería con R base.
-
-```{r}
-
-#hass_dolar$predicciones <- predict(mod1)
-
-hass_dolar <- hass_dolar %>% 
-  mutate(predicciones = predict(mod1))
-
-
-```
-
-```{r}
-
-
-hass_dolar %>% 
-  ggplot(aes(x = precio_dolar, y = precio_aguacate_kg)) +
-  geom_smooth(method = "lm", se = FALSE, color="lightblue") +
-  geom_segment(aes(xend=precio_dolar, yend=predicciones),
-               col='red', lty='dashed') +
-  geom_point() +
-  geom_point(aes(y=predicciones), col='red') +
-  theme_light()
-
-
-#Con R Base
-# ggplot(datos, aes(x=Edad, y=Resistencia)) +
-#   geom_smooth(method="lm", se=FALSE, color="lightgrey") +
-#   geom_segment(aes(xend=Edad, yend=predicciones), col='red', lty='dashed') +
-#   geom_point() +
-#   geom_point(aes(y=predicciones), col='red') +
-#   theme_light()
-
-```
-
-# REVISIÓN BÁSICA DE CONCEPTOS - Simulación.
-
-Vamos a simular un modelo de regresión cuya especificación funcional es
-la siguiente:
-
-$$ y = \beta_0 + \beta_1 * x + e $$
-
-Con $e \text{~} N(0,\sigma^2)$
-
-Como se puede notar, todo modelo teorico se compone de dos términos:
-
-1)  El valor E(y\|x)= E_y_x (valor esperado de y dado x)
-2)  El componente aleatorio también llamado error.
-
-Aunque en el modelo anterior hemos elegido una estructura lineal para
-representar E(y\|x) en realidad podemos elegir cualquier otra estructura
-alternativa, siempre que respetemos la linealidad en los betas.
-
-```{r eval=FALSE, include=FALSE}
-
-bo = 2
-b1_1 = 3
-b1_2 = 0.5
-x <- seq(1,10)
-
-# Estructura para el valor esperado de y dado x ()
-# Esta estructura admitiría otras formas funcionales
-
-# El valor esperado es deterministico.
-E_y_x_1 <- bo + b1_1 * x
-
-E_y_x_2 <- bo + b1_1 * x + b1_2 * x^2
-
-
-# el valor observado o valor real, es aleatorio.
-
-
-
-y_obs_1 <- E_y_x_1 + rnorm(10, 0, 4)
-
-y_obs_2 <- E_y_x_2 + rnorm(10, 0, 4)
-
-datos_simulados <- data.frame(
-  x = x,
-  x_2 = x^2,
-  E_y_x_1 = E_y_x_1,
-  E_y_x_2 = E_y_x_2,
-  y_obs_1 = y_obs_1,
-  y_obs_2 = y_obs_2,
-  y_pred_1 = predict(lm(y_obs_1 ~ x)),
-  y_pred_2 = predict(lm(y_obs_2 ~ x+ x^2)))
-
-
-```
-
-# Dibujamos un gráfico de dispersión
-
-```{r eval=FALSE, include=FALSE}
-datos_simulados %>% 
-  ggplot(aes(x = x, y = y_obs_1)) +
-  geom_smooth(method = "lm", formula = y~x, se = FALSE, color="lightblue") +
-  geom_point(col = "green")+
-  geom_point(aes(y=y_obs_2), col='red')+ 
-  geom_smooth(method="lm", se= FALSE ,formula=y_obs_2~poly(x, 2),color = "blue")+
-  ylab("Y")
-```
-
-# DISCUTIENDO SOBRE LA LINEALIDAD DE LOS BETAS
-
-En esta sección vamos a aclarar el asunto de que los BETAS sean
-lineales.
-
-La linealidad en este contexto hace referencia a que no tengan potencias
-y que los **coeficientes sean independendientes entre ellos**.
-
-Supongamos un modelo con coeficientes repetidos.
-
-$$E(y|x) = \beta_0 + \alpha * x + \alpha * x^2 $$
-
-Debemos factorizarlos para evitar estimarlos por separado y producir
-inconsistencias,esto debido a que ambos alpha (coeficientes) son
-dependientes.Es decir, reescribimos:
-
-$$E(y|x) = \beta_0 + \alpha (x + x^2) $$
-
-Donde el componente x + x² será el vector de valores de la variable
-predictora, que puede pensarse como una variable nueva:
-
-$$ \tilde{x} = x + x^2$$
-
-Y por lo tanto pensar al modelo como:
-
-$$ E(y|x) = \beta_0 + \alpha * \tilde{x}$$
-
-Esta transformación garantiza la creación de un nuevo modelo lineal
-respecto a $\beta_0$ y $\alpha$.
-
-Es importante anotar que el dataframe que alimentará el modelo deberá
-tener computada la variable auxiliar $\tilde{x}$, la cual debe ser
-pasada a la función encargada de estimar parámetros.
-
-Esto corresponde a crear una nueva variable con los cálculos mencionados
-$\tilde{x} = x + x^2$. Sin embargo, para graficar es conveniente usar la
-variable original.
-
-```{r eval=FALSE, include=FALSE}
-
-# Se define una semilla para generar los aleatorios.
-set.seed(77)
-
-alpha <- 0.7
-
-E_y_x_3 = bo + alpha * (x + x^2)
-y_obs_3 = E_y_x_3 + rnorm(10, 0, 4)
-
-x_auxiliar = x + x^2
-
-datos_simulados_2 <- data.frame(
-  x = x,
-  x_2 = x^2,
-  x_auxiliar = x_auxiliar,
-  E_y_x_3 = E_y_x_3,
-  y_obs_3 =  y_obs_3,
-  y_pred_3_1 = predict(lm(y_obs_3 ~ poly(x, 2))),
-  y_pred_3_2 = predict(lm(y_obs_3 ~ x_auxiliar )))
-
-
-modelo1a <-  lm(y_obs_3 ~ poly(x, 2))
-modelo1b <-  lm(y_obs_3 ~ poly(x, 2, raw = TRUE))
-modelo2 <-  lm(y_obs_3 ~ x_auxiliar )
-
-
-# Notese que los coeficientes arrojados por el modelo 1a al invocar la
-# función poly sin parámetro de raw=TRUE, no son atribuibles o no están
-# asociados a los términos $1,x,x^2$, es decir, **No es válido escribir**:
-# 
-# <!-- $$E(y|x)= `r round(modelo1a$coefficients[1], 2)` * 1 + `r round(modelo1a$coefficients[2], 2)` * x + `r round(modelo1a$coefficients[3], 2)` * x^2$$ -->
-# 
-# Esta ecuación no sería válida porque al remplazar para $x=5$ se obtiene
-# <!-- $E(y|5)=$ -->
-# <!-- `r round(modelo1a$coefficients[1] * 1 + modelo1a$coefficients[2] * 5 + modelo1a$coefficients[3] * 5^2, 2)`, -->
-# mientras que al remplazar en el modelo con el parámetro raw = TRUE, se
-# <!-- obtendría: $E(y|5)=$ -->
-# <!-- `r round(modelo1b$coefficients[1] * 1 + modelo1b$coefficients[2] * 5 + modelo1b$coefficients[3] * 5^2, 2)`. -->
-# 
-# Observe que para el valor $x=5$ los valores observados de $y$ están
-# cercanos a 24 por lo que una predicción arrojando un valor cercano a
-# 836, está claramente desfasada. Observe el gráfico más abajo para
-# comprender lo explicado.
-# 
-# Esto se debe a que los coeficientes anclados al modelo_1a están
-# diseñados para ser usados sobre la siguiente base de polinomios
-# ortogonales:
-# 
-# -   $P_1(x)= a$
-# -   $P_2(x)=m*x - c$
-# -   $P_3(x)= k_1 + k_2 *x + k_3 * x ^2$
-# 
-# Donde $a,m,c,k_1,k_2,k_3$ son parámetros estimados que lamentablemente
-# no están siendo arrojados por el modelo.
-# 
-# A continuación se muestra el resumen de cada uno de los modelos,
-# utilizando la función summary().
-
-```
-
-
-
-```{r eval=FALSE, include=FALSE}
-
-
-summary(modelo1a)
-summary(modelo1b)
-summary(modelo2)
-
-
-
-
-```
-
-```{r eval=FALSE, include=FALSE}
-
-datos_simulados_2 %>% 
-  ggplot(aes(x = x , y = y_obs_3))+
-  geom_point(col = 'green')+
-  geom_point(aes(y = y_pred_3_1), col = 'blue')+
-  geom_point(aes(y = y_pred_3_2), col = 'red')
-
-
-```
-
-```{r eval=FALSE, include=FALSE}
-
-# TAREA,
-# Buscar la descomposición ortogonal de los vectores.
-
-u1 = 1/sqrt(2)
-u2 = sqrt(3/2) * (5-1)
-u3 = sqrt(5/2) * ((3/2)*(5^2) - 3*5 + 1)
-
-#E_y_5 = coef1 * u1 + coef2*u2 + coef3*u3
-E_y_5 = modelo1a$coefficients[1] * u1 + modelo1a$coefficients[2]*u2 + modelo1a$coefficients[3]*u3
-
-modelo1a$coefficients[1]
-modelo1a$coefficients[2]
-modelo1a$coefficients[3]
-
-E_y_5
-
-```
-
-# ESTIMACIÓN DE PARÁMETROS
-
-## Por máxima verosimilitud.
-
-## Por mínimos cuadrados.
-
-```{r}
-
-
-
-
-
-```
-
-```{r eval=FALSE, include=FALSE}
-
-
-error <- rnorm(n = n, mean = 0, sd = sigma)
-
-y_observado <- beta_0 + (beta_1 * vector_x ) + error
-
-print(y_observado)
-
-plot(vector_x,y_observado)
-
-
-```
-
-# Modelo lineal
-
-```{r eval=FALSE, include=FALSE}
-
-modelo_y_predicho <- lm(y_observado ~ vector_x)
-
-y_predicho <- predict(modelo_y_predicho)
-
-print(y_predicho)
-
-
-```
-
-# Unión en un dataframe
-
-```{r eval=FALSE, include=FALSE}
-
-datos_modelo <- as.data.frame(vector_x) %>% 
-  mutate(E_y_x = E_y_x,
-         y_observado = y_observado,
-         y_predicho = y_predicho)
-
-```
-
-# Gráficando los valores
-
-```{r eval=FALSE, include=FALSE}
-
-datos_modelo %>% 
-  ggplot(  )+
-  geom_point( aes( x= vector_x, y = E_y_x), col = "blue")+
-  geom_point( aes( x= vector_x, y = y_observado), col = "red")+
-  geom_point( aes( x= vector_x, y = y_predicho), col = "brown")+
-  geom_line(aes( x= vector_x, y = E_y_x), col = "blue")+
-  geom_line(aes( x= vector_x, y = y_predicho), col = "black")
-
-```
-
-# Diferencia entre esperado y el predicho (Error)
-
-```{r eval=FALSE, include=FALSE}
-
-
-modelo_y_predicho$coefficients
-
-b_0_estimado <- modelo_y_predicho$coefficients[1]
-b_1_estimado <- modelo_y_predicho$coefficients[2]
-
-
-
-datos_modelo <- datos_modelo %>% 
-  mutate(error_predicho_observado = y_predicho - y_observado) 
-
-
-
-```
-
-# Construir función
-
-```{r eval=FALSE, include=FALSE}
-
-
-estimar_betas <-  function(n,b0,b1,sigma,distribucion){
-  
-  
-  if (distribucion == "normal") {
-    
-    errores <- rnorm(40,0,4)
-    
-  } else
-    
-  { errores <- runif(40,-6.928203,6.928203)  }
-  
-  
-  vector_x <- c(1: n) 
-  E_y_x <- b0 + (b1 * vector_x )
-  
-  #error <- rnorm(n = n, mean = 0, sd = sigma)
-  #error <- runif(n = n, min=-6.928203, max = 6.928203)
-  
-  
-  y_observado <- E_y_x + errores
-  modelo <- lm(y_observado ~ vector_x)
-  y_predicho <- predict(modelo)
-  
-  b0_estimado <- modelo$coefficients[1]
-  b1_estimado <- modelo$coefficients[2]
-  
-  return(list("b0_estimado" = b0_estimado,
-              "b1_estimado" = b1_estimado))
-  
-}
-
-
-
-```
-
-# Usando la función
-
-```{r eval=FALSE, include=FALSE}
-
-resultados1 <- estimar_betas(40,beta_0,beta_1,sigma,"normal")
-# resultados2 <- estimar_betas(40,beta_0,beta_1,sigma)
-# resultados3 <- estimar_betas(40,beta_0,beta_1,sigma)
-
-print(resultados1)
-# print(resultados2)
-# print(resultados3)
-
-
-```
-
-# Creando vector BETAS
-
-```{r eval=FALSE, include=FALSE}
-
-vector_betas <- function(n,beta_0,beta_1,sigma, n_sim, distribucion) {
-  
-  vector_b0 <- vector()
-  vector_b1 <- vector()
-  
-  for (i in 1:n_sim) {
-    
-    resultados <-  estimar_betas(n,beta_0,beta_1,sigma,distribucion)
-    
-    vector_b0[i] <- resultados$b0_estimado
-    vector_b1[i] <- resultados$b1_estimado
-    
-  }
-  
-  df_resultados <- data.frame(
-    b0 = vector_b0,
-    b1 = vector_b1)
-  
-  
-  
-  return(df_resultados)
-  
-}
-
-
-```
-
-```{r eval=FALSE, include=FALSE}
-
-
-df_resultados1 <- vector_betas(40,2,2,4,1000,"normal")
-df_resultados2 <- vector_betas(40,2,2,4,1000,"runif")
-
-
-```
-
-# Histograma comparando distribuciones.
-
-```{r eval=FALSE, include=FALSE}
-
-histo_b0_normal <- df_resultados1 %>% 
-  ggplot()+
-  geom_histogram(aes(x = b0))+
-  ylim(0,110)
-
-histo_b0_uniforme <- df_resultados2 %>% 
-  ggplot()+
-  geom_histogram(aes(x = b0))+
-  ylim(0,110)
-
-grid.arrange(histo_b0_normal,
-             histo_b0_uniforme, 
-             ncol = 2)
-
-
-```
-
-```{r eval=FALSE, include=FALSE}
-
-histo_b0_normal <- df_resultados1 %>% 
-  ggplot()+
-  geom_histogram(aes(x = b0))+
-  ylim(0,110)
-
-histo_b1_normal <- df_resultados1 %>% 
-  ggplot()+
-  geom_histogram(aes(x = b1))+
-  ylim(0,110)
-
-grid.arrange(histo_b0_normal,
-             histo_b1_normal, 
-             ncol = 2)
-
-
-```
-
-```{r eval=FALSE, include=FALSE}
-
-# Este chunk se configuró para no imprimirse
-
-vector_betas(100,2,2,4,1000,"normal")
-
-
-
-```
+Por consiguiente para probar la hipótesis $H_0: \beta_1=0$ vs $H_a: \beta_1 \ne0$, será suficiente con comparar $F_0$ contra $F_{\alpha,1,n-2}$, donde $\alpha$ es el nivel de significancia para la prueba y por lo tanto se rechaza $H_0$ si $F_0>F_{\alpha,1,n-2}$
