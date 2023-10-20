@@ -727,7 +727,7 @@ Las ecuaciones (\ref{eq:2.35}) pueden ser utilizadas para obtener estimadores de
 
 Un análisis de  (\ref{eq:2.34}) nos permite concluir que la función de autocovarianza y de autocorrelación de un proceso autorregresivo de orden $p$ es una mixtura de exponenciales (correspondientes a las raices $G_i$ que sean reales) y/o senosoidales amortiguadas (correspondientes a los pares de raices complejas conjugadas).
 
-En la siguiente figura tenemos las funciones de autocorrelación para dos procesos AR(2), uno con $\phi=0.5, \phi_2=0.3$ y otro con $\phi_1=1,\phi_2=-0.89$. De donde se deduce que:
+En la siguiente figura tenemos las funciones de autocorrelación para dos procesos AR(2), uno con $\phi=0.5, \phi_2=0.3$ y otro con $\phi_1=1,\phi_2=-0.89$.De donde se deduce que:
 
 **Proceso 1**:
 
@@ -803,7 +803,7 @@ En particular, para el proceso $MA(1)$ tenemos $\theta(B)=1-\theta B$, de modo q
 
 $X_t = (1 - \theta B)\varepsilon_t$
 
-De donde, formalmente sigue:
+De donde formalmente se sigue:
 
 $\varepsilon_t = (1 - \theta B)^{-1}X_t = (1 + \theta B + \theta^2 B^2 + \ldots)X_t$,
 
@@ -813,7 +813,7 @@ Por lo que tenemos:
 
 Si $|\theta| < 1$, la serie del lado derecho de (\ref{eq:2.43}) converge. En esta ecuación, expresamos $X_t$ como un proceso autoregresivo de orden infinito. Decimos que $|\theta| < 1$ es una condición de invertibilidad para el proceso MA(1). En general, el proceso (\ref{eq:2.36}) puede escribirse de la siguiente manera:
 
-\begin{equation} X_t = \sum\limits_{j=1}^{\infty}\pi_j X_{t-j} + \varepsilon_t \label{eq:2.44}\end{equation},
+\begin{equation} X_t = \sum\limits_{j=1}^{\infty}\pi_j X_{t-j} + \varepsilon_t \label{eq:2.44}\end{equation}
 
 Si se satisface la siguiente condición de invertibilidad: todas las raíces de $\theta(B) = 0$ deben estar fuera del círculo unitario. Ver Box, Jenkins y Reinsel (1994) para obtener más detalles.
 
@@ -839,32 +839,151 @@ La condición de invertibilidad es fundamental en el contexto de un proceso de m
 
 En resumen, la condición de invertibilidad es esencial para garantizar que un modelo MA sea adecuado y útil para el análisis y la predicción de una serie de tiempo. Sin esta condición, la interpretación de los parámetros y la capacidad del modelo para predecir valores futuros pueden verse comprometidas, lo que subraya la importancia de verificar y asegurar que un proceso MA sea invertible.
 
-## 4.7 Caso 3: Proceso ARMA(p,q)
-
-Pendiente de escritura
-
-## 4.8 Breve descripción del algoritmo de modelado
-
-# 5. Técnicas gráficas para identificación de modelos
-
-Pendiente
-
-# 6. Estimación de parámetros
-
-Pendiente
-
-# 7. Diagnóstico del modelo
-
-Pendiente
-
-# 8. Uso en predicción
-
-Pendiente
-
-# 9. CASO APLICADO DATASET DE AGUACATE
+Consideremos entonces el siguiente ejemplo:
 
 \begin{equation} X_t = \varepsilon_t - 0.8 \varepsilon_{t-1}, \varepsilon_t \sim \text{i.i.d. }\mathcal{N}(0,1)\label{eq:2.46}\end{equation}
 
+Donde tenemos un proceso MA(1) con $\theta_1 = 0.8$. Para este proceso reemplazando en (\ref{eq:2.41}) tenemos que $\rho_1 = \frac{-0.8}{(1+0.8^2)}=-0.49$, mientras que $\rho_{\tau}=0$, $\tau>=2$, y $\rho_{-\tau}=\rho_{\tau}$, por lo tanto tenemos un gráfico para el proceso $X_t$ y su función de autocorrelación como el que se muestra a continuación:
+
+<figure>
+<img src="Proceso MA(1).png"/>
+<figcaption>Img 1: Proceso MA(1) simulado, $\theta_1=0.8$ y su f.a.c.</figcaption>
+</figure>
+
+En la gráfica puede apreciar como las autocorrelaciones estimadas con base en la única trayectoria simulada tienden a ser despreciables después del lag 1, no logrando ser 0 completamente seguramente debido a que se trata de una muestra y no del proceso teórico como un todo. 
+
+Las bandas de confianza dibujadas en la f.a.c indican que en el 95% de los casos, trayectorias simuladas bajo el modelo teórico tendrán autocorrelaciones que caen dentro de las bandas, o lo que es lo mismo, que si el proceso subyacente es realmente el proceso teórico, sólo en el 5% de los casos observaremos autocorrelaciones por fuera de esas bandas, de manera que si sistemáticamente notamos que las autocorrelaciones están cayendo por fuera de las bandas, seguramente se deba a que el proceso que genera los datos realmente no sigue un modelo teórico de tipo MA(1).
+
+## 4.7 Caso 3: Proceso ARMA(p,q)
+
+Cómo se planteó al inicio de este capítulo un proceso ARMA(p,q) tiene la siguiente estructura:
+
+\begin{equation}X_t - \mu = \phi_1(X_{t−1} - \mu) + \phi_2(X_{t−2} - \mu)+... + \phi_p(X_{t−p}-\mu) + \varepsilon_t - \theta_1\varepsilon_{t−1} - \theta_2\varepsilon_{t−2}-...-\theta_q\varepsilon_{t−q}\label{eq:2.47}\end{equation}
+
+Donde $\varepsilon_t \sim RB(0,\sigma^2)$ de donde se sigue que la media del proceso es $\mu$. Si usamos los operadores autorregresivos y de medias móviles, definidos en las dos secciones anteriores, podemos escribir (\ref{eq:2.47}) de la forma:
+
+\begin{equation}\phi(B)\tilde{X_t}=\theta(B)\varepsilon_t\label{eq:2.48}\end{equation}
+
+Donde $\tilde{X_t}=X_t - \mu$, supongamos sin pérdida de generalidad que a partir de ahora $\mu=0$.
+
+[Proceso ARMA(1,1):]{style="color: red;"} Un modelo frecuentemente usado es el ARMA(1,1)
+
+\begin{equation}X_t=\phi X_{t-1}+\varepsilon_t-\theta\varepsilon_{t-1}\label{eq:2.49}\end{equation}
+
+Es facil ver que, por sustituciones sucesivas, podemos escribir que:
+
+$$X_t=\psi(B)\varepsilon_t$$
+Donde $\psi_j = \phi^{j-1}(\phi - \theta)$, $j>=1$. Una condición de estacionariedad es la misma que para un proceso AR(1), es decir, $|\phi|<1$. Del mimso modo una condición de invertibilidad $|\theta|<1|$ es válida aquí e implica que podemos escribir el proceso en la forma (\ref{eq:2.44}), con pesos $\pi_j = \phi^{j-1}(\phi - \theta)$. 
+
+Para un proceso ARMA(p,q) genérico la condición de estacionariedad es la misma que para procesos AR(p), es decir, que las raices de $\phi(B)=0$ deben estar fuera del círculo unitario, y una condición de invertibilidad es la misma que para un proceso MA(q), es decir, que las raices de $\theta(B)=0$ estén por fuera del círculo unitario. 
+
+Multiplicando (\ref{eq:2.47}) con $\mu=0$ por $X_{t-\tau}$ y tomando esperanzas, obtenemos:
+
+\begin{equation}\gamma_{\tau}=\phi_1 \gamma_{\tau-1} + \phi_2 \gamma_{\tau-2}+...+\phi_p \gamma_{\tau-p}+\gamma_{X\varepsilon}(\tau)-\theta_1\gamma_{X\varepsilon}(\tau-1)-...-\theta_q\gamma_{X\varepsilon}(\tau-q)\label{eq:2.50}\end{equation}
+
+Donde $\gamma_{X\varepsilon}(\tau)$ es la covarianza cruzada entre $X_t$ y $\varepsilon_t$, definida por:
+
+$$\gamma_{X\varepsilon}(\tau)=E(\varepsilon_tX_{t-\tau})$$
+Como $X_{t-\tau}$ si depende de choques $\varepsilon_t$ ocurridos hasta el instante $t-\tau$, tenemos que esta covarianza cruzada si es diferente de 0 para $\tau<=0$, luego:
+
+\begin{equation}\gamma_{\tau}=\phi_1 \gamma_{\tau-1} + \phi_2 \gamma_{\tau-2}+...+\phi_p, \tau>q \label{eq:2.51}\end{equation}
+
+Una conclusión es que las autocovarianzas (y por lo tanto las autocorrelaciones) de lags 1,2,...,q serán afectadas por los parámetros de medias móviles, pero para $\tau>q$ las mismas se comportan como los modelos autorregresivos. 
+
+Para el caso del modelo dado en (\ref{eq:2.49}), obtenemos fácilmente que:
+
+$\rho_1 = \frac{\gamma_1}{\gamma_0}=\frac{(1-\phi \theta)(\phi - \theta)}{1+\theta^2-2\phi\theta}$
+
+Y para $\tau>1$:
+
+$\rho_{\tau}=\phi\rho_{\tau-1}$
+
+La siguiente figura representa 100 observaciones generadas para un proceso ARMA(1,1), con $\phi=0.8, \theta=0.3$ y $\varepsilon_t \sim N(0,1)$. En la figura tenemos también un gráfico de la f.a.c.
+
+<figure>
+<img src="Proceso ARMA(1,1).png"/>
+<figcaption>Img 1: Proceso ARMA(1,1) simulado, $\phi=0.8$, $\theta_1=0.3$ y f.a.c f.a.c.</figcaption>
+</figure>
+
+## 4.8 Breve descripción del algoritmo de modelado
+
+Para el establecimiento de un modelo ARIMA sobre una serie temporal hay tres estrategias a considerar:
+
+[1. Identificación:]{style="color: red;"} En esta etapa nos dedicamos a estudiar cuál es el tipo y orden adecuado para modelar la serie bajo estudio, y para ello nos apoyamos en los gráficos de autocorrelación y autocorrelación parcial. Otras formas alternativas de identificación es escoger los órdenes del modelo que minimicen una cantidad, típicamente aquella que represente el mejor balance entre error residual y cantidad de parámetros en el modelo.
+
+[2. Estimación:]{style="color: red;"} Existen al menos tres métodos: métodos de momentos, métodos de mínimos cuadrados y métodos de máxima verosimilitud, sin embargo estimadores obtenidos cuando usamos el método de momentos no tienen tan buenas propiedades como cuando se usan los demás. Por eso estos estimadores son usados como valores iniciales para procedimientos más complejos como el de MV.
+
+[3. Diagnóstico:]{style="color: red;"} Después de estimar un modelo tenemos que verificar que él representa bien los datos observados. Cualquier deficiencia en el modelo puede sugerir un modelo alternativo que si represente bien los datos. Un método que podemos seguir si sabemos que un modelo más elaborado es necesario (donde por elaborado entendemos uno con más parámetros) es usar "superajuste", el cual consiste en estimar un modelo con parámetros extras validando si los mismos son significativos e incluso si reducen de forma substancial la varianza residual. Esto es muy útil cuando sabemos la dirección en la cual puede estar ocurriendo la inadecuación del modelo, algo que puede indigarse analizando los residuales. Acá aplicamos técnicas como el **Test de autocorrelación residual**, y el **Test de Box-Pierce-Ljung**
+
+En este informe estudiaremos de manera general dichos procedimientos, sin embargo para más detalles el lector puede consultar Morettin y Toloi (2006), y a Box, Jenkins y Reinsel(1994)
+
+El ciclo (1) a (3) que se describe arriba debe ser iterado hasta que en la etapa (3) verifiquemos que el modelo si es adecuado para los fines deseados. En muchas situaciones, más de un modelo puede ser considerado adecuado, y la decisión de cuál adoptar va a depender de algún criterio. Por ejemplo escojemos el modelo que minimice el error cuadrático de pronóstico. 
+
+[4. Pronósticos:]{style="color: red;"} Una vez se ha obtenido un modelo adecuado podemos usarlo para predicción. Acá podemos considerar la misma estructura funcional del modelo para derivar ecuaciones de pronóstico que consideren la estructura temporal ya detectada para el modelo estimado. 
+
+# 5. TÉCNICAS GRÁFICAS PARA IDENTIFICACIÓN DE MODELOS
+
+El objetivo de la etapa de identificación es determinar los valores p,d,q del modelo ARIMA(p,d,q). Un procedimiento de identificación consiste de 3 partes.
+
+a) Verificar si existe necesidad de una transformación sobre la serie original con el objetivo de estabilizar su varianza.
+
+b) Tomar diferencia de la serie obtenida en el item a), tantas veces como sea necesario para obtener una serie estacionaria, de modo que el proceso $\Delta X_t$ sea reducido a un proceso ARMA(p,q). El número de diferencias $d$ necesarias para que el proceso se torne estacionario es alcanzado cuando la f.a.c muestral de $\Delta X_t$ decrece rápidamente a cero. En esta etapa un test para verificar la existencia de raices unitarias en un polinomio autorregresivo puede ser de gran utilidad. Se puede utilizar acá el test de Dickey y Fuller(1979).
+
+c) Identificar el proceso ARMA(p,q) resultante por medio del análisis de las autocorrelaciones y las autocorrelaciones parciales estimadas, cuyos comportamientos deben imitar los comportamientos de las respectivas cantidades teóricas. Estos comportamientos para los modelos AR, MA, ARMA fueron estudiados en las secciones previas, pero un resumen de estas propiedades se ofrece a continuación:
+
+
+| Orden | (1,d,0) | (0,d,1) |
+| :--- | :--- | :--- |
+| Comportamiento de $p_k$| Disminuye exponencialmente |Solamente $\rho_1 \ne 0$  |
+| Comportamiento de $\phi_{kk}$| Solamente $\phi_{11} \ne 0$ |Disminución exponencial dominante|
+| Estimaciones iniciales| $\phi = \rho_1$ | $\rho_1 = -\frac{\theta}{1 + \theta^2}$ |
+| Dominio o región admisible| $-1 < \phi < 1$ | $-1 < \theta < 1$ |
+
+| Orden | (2,d,0) | (0,d,2) |
+| :--- | :--- | :--- |
+| Comportamiento de $p_k$| Mezcla de exponenciales u ondas  sinusoidales  amortiguadas | Solamente $\rho_1 \ne 0$ y $\rho_2 \ne 0$  |
+| Comportamiento de $\phi_{kk}$| Solamente $\phi_{11} \ne 0$ y $\phi_{22} \ne 0$ |Dominada por una mezcla de exponenciales o   sinusoidales amortiguadas.|
+| Estimaciones iniciales| $\begin{cases}\phi_1 = \frac{\rho_1 (1 - \rho_2)}{1 - \rho_1^2} \\\phi_2 = \frac{\rho_2 - \rho_1^2}{1 - \rho_1^2}\end{cases}$ | $\begin{cases}\rho_1 = \frac{-\theta_1 (1 - \theta_2)}{1 + \theta_1^2 + \theta_2^2}, \\\rho_2 =\frac{-\theta_2}{1 + \theta_1^2+\theta_2^2}\end{cases}$ |
+| Dominio o región admisible| $\begin{cases}-1 < \phi_2 < 1 \\\phi_2 - \phi_1 < 1 \\\phi_2 + \phi_1 < 1\end{cases}$ | $\begin{cases}-1 < \theta_2 < 1,\\\theta_2 - \theta_1 < 1, \\\theta_2 + \theta_1 < 1\end{cases}$|
+
+| Orden | (1,d,1) |
+| :--- | :--- |
+| Comportamiento de $p_k$ | Decae exponencialmente después del retraso (lag) 1|
+| Comportamiento de $\phi_{kk}$ | Dominada por disminución exponencial después del retraso (lag) 1|
+| Estimaciones iniciales |$\rho1 = \frac{(1 - \phi \theta)(\phi - \theta)}{1 + \theta^2 - 2 \phi \theta}, \rho_2 = \rho_1\phi$|
+| Dominio o región admisible |$-1 < \phi <1 , -1 < \theta < 1$|
+
+```{r}
+phi <- 0.7  # Coeficiente autorregresivo (AR)
+theta <- -0.4  # Coeficiente de promedios móviles (MA)
+n <- 100  # Número de observaciones a simular
+# Simula el proceso ARMA
+ar_puro <- arima.sim(model = list(order = c(1, 0, 0), ar = phi), n=n)
+ma_puro <- arima.sim(model = list(order = c(0, 0, 1), ma = theta), n=n)
+arma <- arima.sim(model = list(order = c(1, 0, 1), ar = phi, ma = theta), n=n)
+arima <- arima.sim(model = list(order = c(1, 1, 1), ar = phi, ma = theta), n=n)
+
+par(mfrow = c(2, 2))
+
+plot(ar_puro, type = 'l', main = "Simulación de un Proceso AR(1)")
+plot(ma_puro, type = 'l', main = "Simulación de un Proceso MA(1)")
+plot(arma, type = 'l', main = "Simulación de un Proceso ARMA(1,1)")
+plot(arima, type = 'l', main = "Simulación de un Proceso ARIMA(1,1,1)")
+
+#par(mfrow = c(1, 1))
+
+```
+
+# 6. Estimación de parámetros
+
+
+# 7. Diagnóstico del modelo
+
+
+# 8. Uso en predicción
+
+
+# 9. CASO APLICADO DATASET DE AGUACATE
 
 Primero observamos la apariencia de la serie de tiempo diaria:
 
@@ -874,7 +993,6 @@ hass_dia %>%
   ggplot(aes(x= fecha, y = precio_kg, group = 1))+
   geom_line()
 ```
-
 
 ```{r}
 hass_mes %>% 
@@ -908,15 +1026,12 @@ ggplot(data= df_variaciones, aes(x= seq(1,length(variaciones)),
 acf_variaciones <- acf(df_variaciones$variaciones)
 acf_variaciones$acf
 ```
+
 ```{r}
-
 pacf_variaciones <-  pacf(df_variaciones$variaciones)
-
-
 ```
 
 ```{r}
-
 library(forecast)
 model <- auto.arima(df_variaciones$variaciones)
 df_variaciones$pronosticos <- model$fitted
@@ -924,32 +1039,6 @@ df_variaciones$pronosticos <- model$fitted
 
 ```{r}
 plot(arima.sim(model = list(order = c(0, 0, 3), ma = c(0.0006, -0.1974,0.0716)), n=length(df_variaciones$variaciones)))
-
-```
-
-
-
-```{r}
-phi <- 0.7  # Coeficiente autorregresivo (AR)
-theta <- -0.4  # Coeficiente de promedios móviles (MA)
-n <- 100  # Número de observaciones a simular
-# Simula el proceso ARMA
-ar_puro <- arima.sim(model = list(order = c(1, 0, 0), ar = phi), n=n)
-ma_puro <- arima.sim(model = list(order = c(0, 0, 1), ma = theta), n=n)
-arma <- arima.sim(model = list(order = c(1, 0, 1), ar = phi, ma = theta), n=n)
-arima <- arima.sim(model = list(order = c(1, 1, 1), ar = phi, ma = theta), n=n)
-
-par(mfrow = c(2, 2))
-
-plot(ar_puro, type = 'l', main = "Simulación de un Proceso AR(1)")
-plot(ma_puro, type = 'l', main = "Simulación de un Proceso MA(1)")
-plot(arma, type = 'l', main = "Simulación de un Proceso ARMA(1,1)")
-plot(arima, type = 'l', main = "Simulación de un Proceso ARIMA(1,1,1)")
-
-#par(mfrow = c(1, 1))
-
 ```
 
 # 10. Conclusiones finales y áreas de profundización
-
-Pendiente
