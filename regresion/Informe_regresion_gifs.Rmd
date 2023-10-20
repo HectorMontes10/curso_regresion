@@ -17,8 +17,7 @@ date: "2023"
 editor_options: 
   markdown: 
     wrap: 72
-  wrap: 72
-chunk_output_type: inline
+  chunk_output_type: inline
 ---
 
 ```{=html}
@@ -64,6 +63,7 @@ library(tseries)
 library(lmtest)
 library(stats)
 library(sandwich)
+source("funciones_personalizadas.R")
 ```
 
 # INTRODUCCIÓN
@@ -214,29 +214,9 @@ dolar <- read.csv2("datasets/Tasa_de_Cambio_Representativa_del__Mercado_-Histori
 hass <- read.xlsx("datasets/Hass_Precios_Historicos.xlsx") %>% clean_names()
 ```
 
-## 1.2 Creación de funciones.
+## 1.2 Usando funciones personalizadas previamente creadas.
 
 Se programa una función de flextable que mejorará la impresión de tablas de resumen. Para usarla sólo bastará invocar la función ftable() al final de la sentencia (usando %\>% tidyverse) o con el ftable() encapsular o encerrar la tabla que se quiere ajustar.
-
-```{r}
-# Funciones
-
-## Función para crear flextable
-ftable <- function(x) {
-  x %>% 
-    flextable() %>% 
-    theme_vanilla() %>%
-    color(part = "footer", color = "#666666") %>%
-    color( part = "header", color = "#FFFFFF") %>%
-    bg( part = "header", bg = "#2c7fb8") %>%
-    fontsize(size = 11) %>%
-    font(fontname = 'Calibri') %>%
-    # Ajustes de ancho y tipo de alineación de las columnas
-    set_table_properties(layout = "autofit") %>% 
-    # width(j=1, width = 3) %>%
-    align(i = NULL, j = c(2:ncol(x)), align = "right", part = "all")
-}
-```
 
 Este es un ejemplo del uso de la función:
 
@@ -1907,9 +1887,9 @@ A continuación una tabla que resume los hallazgos más importantes de todo esto
 
 <figure>
 
-<img src="Tabla anova.jpg"/>
+<img src="Tabla Anova simple.png"/>
 
-<figcaption>Tabla Anova para un modelo de regresión múltiple</figcaption>
+<figcaption>Tabla Anova para un modelo de regresión lineal simple</figcaption>
 
 </figure>
 

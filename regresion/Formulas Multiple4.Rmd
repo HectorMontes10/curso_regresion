@@ -1,0 +1,369 @@
+---
+title: "REGRESIÓN LINEAL MÚLTIPLE"
+subtitle: "Maestría en Investigación Operativa y Estadística"
+author:
+  - "Julián Piedrahíta Monroy"
+  - "Héctor Hernán Montes"
+output: 
+  rmdformats::readthedown:
+    css: styles.css
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+date: "2023"
+editor_options: 
+  markdown: 
+    wrap: 72
+  wrap: 72
+chunk_output_type: inline
+---
+
+```{=html}
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+```
+<div>
+
+<img src="https://media2.utp.edu.co/imagenes/Logo-UTP-Azul.png" alt="UTP" class="watermark"/>
+
+</div>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  echo = TRUE,
+  message = FALSE,
+  options(scipen=999)
+)
+
+# Librerías
+library(tidyverse)
+library(janitor)
+library(openxlsx)
+library(flextable)
+library(viridis)
+library(scales)
+library(DT)
+library(lubridate)
+library(gridExtra)
+library(ggplot2)
+library(gganimate)
+library(animation)
+library(gifski)
+library(magick)
+library(nortest)
+library(fitdistrplus)
+library(tseries)
+library(lmtest)
+library(stats)
+library(sandwich)
+#install.packages("devtools")
+library(devtools)
+
+```
+
+
+
+```{r}
+
+devtools::install_github("kassambara/datarium")
+
+data("marketing", package = "datarium")
+head(marketing, 4)
+
+
+```
+
+
+```{r}
+
+model <- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+summary(model)
+
+```
+
+```{r}
+
+summary(model)$coefficient
+
+```
+
+```{r}
+
+model  <- lm(sales ~ youtube + facebook, data = marketing)
+summary(model)
+
+
+```
+sales = 3.5 + 0.045\*youtube + 0.187\*facebook
+
+```{r}
+
+confint(model)
+
+
+```
+
+```{r}
+
+sigma(model)/mean(marketing$sales)
+
+
+```
+
+$y=x\beta+\varepsilon$
+
+En donde
+
+$y= \begin{bmatrix}y_1 \\y_2 \\\vdots \\y_n\end{bmatrix}, x=\begin{bmatrix}1 & X_{11} & X_{12} & \cdots & X_{1k}\\1 & X_{21} & X_{22} & \cdots & X_{2k}\\\vdots & \vdots & \vdots & \ddots & \vdots \\1 & X_{n1} & X_{n2} & \cdots & X_{nk}\end{bmatrix}$
+
+$\beta=\begin{bmatrix}\beta_1 \\\beta_2 \\\vdots \\\beta_n\end{bmatrix},  \varepsilon=\begin{bmatrix}\varepsilon_1 \\\varepsilon_2 \\\vdots \\\varepsilon_n\end{bmatrix}$
+
+Se desea determinar el vector $\hat{\beta}$ de estimadores de mínimos cuadrados que minimice.
+
+$S(\beta) = \sum\limits_{i=1}^{n} (\varepsilon_i^2) = \varepsilon' \varepsilon= (y-X\beta)'(y-X\beta)$
+
+Nótese que $S(\beta)$ se puede expresar como sigue:
+
+$S(\beta) = y'y - \beta'X'y - y'X\beta + \beta'X'X\beta = y'y-2\beta'X'y + \beta'X'X\beta$
+
+ya que $\beta'X'y$  es una matriz de 1x1, es decir, un escalar, y que su transpuesta $(\beta'X'y)'=y'X\beta$ es el mismo escalar. Los estimadores de mínimos cuadrados deben satisfacer:
+
+$\left.\frac{\partial S}{\partial \beta}\right|_{\hat{\beta}}  = -2X'y + 2X'X\beta  = 0$
+
+Que simplifica a:
+
+\begin{equation}X'X\beta  = X'y \label{eq:ref1}\end{equation}
+
+Así, el estimador de $\beta$ por mínimos cuadrados es:
+
+
+\begin{equation}\beta' = (X'X)^{-1}X'y\label{eq:ref2}\end{equation}
+
+
+Al escribir (\ref{eq:ref1}) con detalle se obtiene.
+
+
+$\begin{bmatrix}n & \sum\limits_{i=1}^{n} x_{i1} & \sum\limits_{i=1}^{n} x_{i2} & \cdots & \sum\limits_{i=1}^{n} x_{ik}\\ \sum\limits_{i=1}^{n} x_{i1} & \sum\limits_{i=1}^{n} x_{i1}^2 & \sum\limits_{i=1}^{n} x_{i1} x_{i2} & \cdots & \sum\limits_{i=1}^{n} x_{i1} x_{ik}\\\vdots & \vdots & \vdots & \ddots & \vdots \\\sum\limits_{i=1}^{n} x_{ik} & \sum\limits_{i=1}^{n} x_{ik}x_{i1} & \sum\limits_{i=1}^{n} x_{ik}x_{i2} & \cdots & \sum\limits_{i=1}^{n} x_{ik}^2\end{bmatrix} \begin{bmatrix}\hat{\beta_0}\\\hat{\beta_1}\\\vdots \\\hat{\beta_k}\end{bmatrix}=\begin{bmatrix}\sum\limits_{i=1}^{n} y_i\\\sum\limits_{i=1}^{n} x_{i1}y_i\\\vdots \\\sum\limits_{i=1}^{n} x_{ik}y_i\end{bmatrix}$
+
+
+El modelo ajustado de regresión que corresponde a los niveles de las variables regresoras $x'=[1,x_1,x_2,...,x_k]$ es:
+
+$\hat{y} = x' \hat{\beta} = \hat{\beta_0} + \sum\limits_{j=1}^{k} \hat{\beta_j}x_j$
+
+El vector de valores ajustados $\hat{y_i}$ que corresponden a los valores observados $y_i$ es:
+
+$\hat{y} = X\hat{\beta} = X(X'X)^{-1}X'y = Hy$
+
+La diferencia entre el valor observado $y_i$, y el valor ajustado $\hat{y_i}$ correspondiente es el **residual** $e_i = y_i - \hat{y_i}$. Los n residuales se pueden escribir cómodamente con notación matricial como sigue:
+
+$e = y - \hat{y}$
+
+Hay otras maneras de expresar el vector de residuales $e$, que pueden ser útiles, como:
+
+$e= y - X\hat{\beta}=y-Hy = (I - H) y$
+
+... Acá continuaría el ejemplo 3.1 Datos del tiempo de entrega.
+
+Estimación de $\sigma^2$
+
+Como en la regresión lineal simple, se puede desarrollar un estimador de $\sigma^2$ a partir de la suma de cuadrados de residuales.
+
+$SS_{Res} \sum\limits_{i=1}^{n} (y_i - \hat{y_i})^2$
+$= \sum\limits_{i=1}^{n} e_i^2$
+$=e'e$
+
+Se sustituye $e= y - X\hat{\beta}$ y se obtiene:
+
+$SS_{Res} = (y - X\hat{\beta})' (y - X\hat{\beta})$
+$ = y'y - \hat{\beta'}X'y - y'X\hat{\beta} + \hat{\beta'}X'X\hat{\beta}$
+$ = y'y - 2\hat{\beta'}X'y + \hat{\beta'}X'X\hat{\beta}$
+
+Como $X'X\hat{\beta} = X'y$, la última ecuación se transforma en:
+
+$SS_{Res} = y'y - \hat{\beta'}X'y$
+
+El **cuadrado medio residual**, o **cuadrado medio de residuales** es:
+
+$MS_{Res} = SS_{Res} / n - p$
+
+$MS_{Res} = \frac{SS_{Res}}{n - p}$
+
+Tambien existe la demostración de que el valor esperado de $MS_{Res}$ es $\sigma^2$, por lo que un estimador insesgado de $\sigma^2$ es:
+$\hat{\sigma}^2 = MS_{Res}$
+
+Como se dijo en el caso de regresión lineal simple, el estimador de $\sigma^2$ **depende del modelo**
+
+
+# Prueba de hipótesis en la regresión lineal múltiple
+
+## Prueba de la significancia de la regresión.
+
+Las hipótesis pertinentes son:
+
+$H_0: \beta_1=\beta_2= ... = \beta_k=0$
+$H_1: \beta_j \neq 0$  al menos para una j
+
+El rechazo de la hipótesis nula implica que al menos uno de los regresaores $x_1, x_2, ..., xk$ contribuye al modelo en forma significativa.
+
+El procedimiento de prueba es una generalización del análisis de varianza que se usó en la regresión lineal simple. La suma total de cuadrados $SS_T$ se divide en una suma de cuadrados debidos a la regresión, $SS_R$, Y A UNA SUMA DE CUADRADOS DE RESIDUALES, $SS_{Res}$. Así,
+
+$SS_T = SS_R + SS_{Res}$
+
+De acuerdo con la definición del estadístico F.
+
+$F_0 = \frac{SS_R/k}{SS_{Res}/(n - k -1)} = \frac{MS_R}{MS_{Res}}$
+
+Tiene la distribución $F_{k,n-k-1}$. Es demostrable que:
+
+$E(MS_{Res}) = \sigma^2$
+
+$E(MS_{R}) = \sigma^2 + \frac{ \beta^*´X'_c X_c \beta^*}{k\sigma^2}$
+
+
+Siendo $\beta^*$ = $(\beta_1,\beta_2... \beta_k)$ y $X_c$ es la matriz "centrada" del modelo, definida por:
+
+
+Claro, aquí tienes una matriz de 6 filas por 3 columnas donde cada elemento es "x-x":
+
+
+$\begin{bmatrix}x_{11}-\bar{x}_{1} & x_{12}-\bar{x}_{2} & . . . & x_{1k}-\bar{x}_{k} \\ x_{21}-\bar{x}_{1} & x_{22}-\bar{x}_{2} & . . . & x_{2k}-\bar{x}_{k} \\\vdots & \vdots & & \vdots \\ x_{i1}-\bar{x}_{1} & x_{i2}-\bar{x}_{2} & . . . & x_{ik}-\bar{x}_{k} \\\vdots & \vdots & & \vdots \\ x_{n1}-\bar{x}_{1} & x_{n2}-\bar{x}_{2} & . . . & x_{nk}-\bar{x}_{k} \\end{bmatrix}$
+
+Estos cuadrados medios esperados indican que si el valor observado de $F_0$ es grande, es probable que al menos una $\beta_j \neq 0$. También se puede demostrar que si al menos una $\beta_j \neq 0$, entonces $F_0$ tiene una distribución F no central, con $k$ y $n-k-1$ grados de libertad, y parámetro de no centralidad definido por:
+
+🚧`atención con esto porque me parece que hay un error en el libro con los betas de la siguiente fórmula.
+
+$\lambda = \frac{\beta^{*}´X'_c X_c \beta^*}{\sigma^2}$
+
+Este parámetro de no centralidad...
+Por consiguiente, para probar la hipótesis $H_0: \beta_1=\beta_2= ... = \beta_k=0$, se calcula el estadístico de prueba $F_0$ y se rechaza $H_0$ si:
+
+$F_0 > F_{\alpha,k,n-k-1}$
+
+El prodecimiento de prueba se resume normalmente en una **tabla de análisis de varianza**.
+Un fórmula de cálculo para $SS_{R}$ se deduce partiendo de:
+
+$SS_{Res} = y'y - \hat{\beta'}X'y$
+
+y ya que:
+
+$SST = \sum\limits_{i=1}^{n} y_i^2 - \frac{(\sum\limits_{i=1}^{n} y_i)^2}{n} = y'y - \frac{(\sum\limits_{i=1}^{n}y_i)^2}{n}$
+
+Se puede escribir la ecuación anterior en la forma:
+
+$SS_{Res} = y'y - \frac{(\sum\limits_{i=1}^{n}y_i)^2}{n} - \begin{bmatrix} \hat{\beta'} X'y - \frac{(\sum\limits_{i=1}^{n}yi)^2}{n}\\\end{bmatrix}$
+
+o bien,
+
+$SS_{Res} = SS_T - SS_R$
+
+Por consiguiente, la **suma de cuadrados de la regresión** es:
+
+$SS_{R} = \hat{\beta'}X'y - \frac{(\sum\limits_{i=1}^{n}yi)^2}{n}$
+
+La **suma de cuadrados de residuales**, o **suma residual de cuadrados** es:
+
+$SS_{Res} = y'y - \hat{\beta'}X'y$
+
+y la **suma total de cuadrados** es:
+
+$SS_T = y'y - \frac{(\sum\limits_{i=1}^{n}yi)^2}{n}$
+
+
+
+$R^2$ y $R^2$ ajustada
+
+$R^2_{Adj} = 1 - \frac{SS_{Res} / (n-p)}{SS_T / (n-1)}$
+
+En vista de que $SS_{Res}/(n-p)$ es el cuadrado medio de residuales y $SS_T / (n-1)$ es constante, independientemente de cuántas variables hay en el modelo,
+$R^2_{Adj}$ sólo aumentará al agregar una variable al modelo si esa adición reduce el cuadrado medio residual.
+
+# Pruebas sobre coeficientes individuales de regresión.
+
+$H_0: \beta_j = 0$
+$H_1: \beta_j \neq 0$
+
+Si no se rechaza $H_0: \beta_j = 0$, quiere decir que se puede eliminar el regresor $x_j$ del modelo. El **estadístico de prueba** para esta hipótesis es:
+
+$t_0 = \frac{\hat{\beta_j}}{\sqrt{\hat{\sigma}^2 C_{jj}}} = \frac{\hat{\beta_j}}{se(\hat{\beta_j})}$
+
+Donde $C_{jj}$ es el elemento diagonal de $(X'X)^{-1}$ que corresponde a $\hat{\beta}_j$. Se rechaza la hipótesis nula $H_0:\beta_j=0$ si:
+
+$|t_0|>t_{\alpha/2,n-k-1}$. Nótese que ésta es en realidad una **prueba parcial** o **marginal**, porque el coeficiente de regresión $\hat{\beta_j}$ depende de todas las demás variables regresoras $x_i (i \neq j)$, que hay en el modelo. Así, se trata de una prueba de la **contribución** de $x_j$ **dados los demás regresores del modelo**
+
+
+# Predicción de nuevas observaciones
+
+Con el modelo de regresión se pueden predecir observaciones futuras de $y$ que correspondan a determinados valores de las variables regresoras, por ejemplo $x_{01},x_{02},...,x_{0k}$. Si $x_0' = [1,x_{01},x_{02},...,x_{0k}]$, entonces un **estimado puntual de la observación futura** $y_0$ en el punto $x_{01},x_{02},...,x_{0k}$ es:
+
+$\hat{y}_0 = x'_0 \hat{\beta}$
+
+Un **intervalo de predicción de** $100(1-\alpha)$ **por ciento** para esta futura observación es:
+
+$\hat{y}_0 - t_{\alpha/2,n-p} \sqrt{\hat{\sigma}^2 (1 + x'_0 (X'X)^{-1}x_0)} \leq y_0 \leq \hat{y}_0 + t_{\alpha/2,n-p} \sqrt{\hat{\sigma}^2 (1 + x'_0 (X'X)^{-1}x_0)}$
+
+Es una generalización de intervalo de predicción para una futura observación en la regresión lineal simple.
+
+
+# Balanceo
+
+El lugar de los puntos en el espacio de $x$ tiene importancia potencial en la determinación de las propiedades del modelo de regresión. En particular, los puntos alejados o remotos tienen un impacto desproporcionado sobre los estimados de los parámetros, los errores estándar, valores predichos y estadísticas de resumen del modelo. La matriz de sombrero...
+
+$H = X(X'X)^{-1}X'$
+
+Desempeña un papel importante en la identificación de observaciones influyentes. Como se dijo antes, $H$ determina las varianzas y covarianzas de $\hat{y}$ y de $e$, porque $Var(\hat{y}) = \sigma^2H$ y $Var(e) = \sigma^2(I-H)$. Los elementos de $h_{ij}$ de la matriz $H$ pueden ser vistos como la cantidad de **balanceo** o palanqueo ejercido por la *i_ésima* observación $y_i$ sobre el *i_ésimo* valor ajustado de $\hat{y}_i$.
+
+
+Con frecuencia, la atención se dirige hacia los elementos diagonales $h_{ii}$ de la matriz H sombrero, que se pueden expresar como:
+
+$h_{ii} = x_i'(X'X)^{-1}x_i$
+
+Sucede que el tamaño promedio de los elementos de la diagonal es $\hat{h} = p/n$ porque $\sum\limits_{i=1}^{n}h_{ii} = rango(H) = rango(X) = p$, y por tradición se supone que toda observación para la cual la diagonal del sombrero es más del doble del promedio $2p/n$ está suficientemente alejada del resto de los datos como para considerarse un **punto de balanceo**. Como los elementos diagonales de la matriz de sombrero sólo examinan el lugar de la observación en el espacio de x, algunos analistas prefieren examinar los residuales estudentizados, o los residuales $R$ de Student **junto con** las $h_{ii}$...
+
+# Medidas de influencia: La D de Cook
+
+Mencionando la preferencia de tener en cuenta el lugar del punto en el espacio de $x$ y también la variable de respuesta, al medir la influencia. Cook ha sugerido una forma de hacerlo, con una medida de la distancia, elevada al cuadrado, entre el estimado por mínimos cuadrados basado en los n puntos $\hat{\beta}$, y el estimado obtenido eliminando el i_ésimo punto, por ejemplo $\hat{\beta}_{(i)}$. Esta medida de la distancia se puede expresar como sigue, en forma general:
+
+$D_i(M,c) = \frac{(\hat{\beta_{(i)}}-\hat{\beta})'M(\hat{\beta_{(i)}}-\hat{\beta})}{c}, i = 1,2, ... , n$ 
+
+Las opciones comunes de $M$ y $c$ son $M = X'X$ y $c = pMS_{Res}$, por lo que la ecuación se transforma en:
+
+$D_i (X'X, pMS_{Res}) \equiv D_i = \frac{(\hat{\beta_{(i)}}-\hat{\beta})'X'X(\hat{\beta_{(i)}}-\hat{\beta})}{pMS_{Res}}, i = 1,2, ... , n$
+
+Los puntos con grandes valores de $D_i$ tienen gran influencia sobre el estimado de $\hat{\beta}$ por mínimos cuadrados.
+
+La magnitud de $D_i$ se suele evaluar comparándola con $F_{\alpha,p,n-p'}$ Si $D_i = F_{0.5,p,n-p'}$ entonces al eliminar el punto $i$ se movería $\hat{\beta}_{(i)}$ hacia la frontera de una región de confianza aproximada de 50% para $\beta$, basándose en el conjunto completo de datos. Es un desplazamiento grande e indica que el estimado por mínimos cuadrados es sensible al i-ésimo punto de datos. Como $F_{0.5,p,n-p'} \approx 1 $, se suelen considerar como influyentes los puntos para los que $D_i > 1$. En el caso ideal sería bueno que cada estimado $\hat{\beta_{(i)}}$ permaneciera dentro de
+los límites de la región de confianza de 10 o de 20%. Esta recomendación de corte se basa en la semejanza de Di con la ecuación del elipsoide de confianza de la teoría normal. La medida de distancia $D_i$ no es una estadística F. Sin embargo, usar el corte igual a una unidad funciona muy bien en la práctica.
+
+La estadística $D_i$ se puede reexpresar como sigue:
+
+$D_i = \frac{r_i^2}{p}\frac{Var(\hat{y_i})}{Var(\hat{e_i})} = \frac{r_i^2}{p} \frac{h_{ij}}{(1-h_{ij})}, i= 1,2,...,n$
+
+Así se ve que, además de la constante $p$, la $D_i$ es el producto del cuadrado del i-ésimo residual estudentizado por $\frac{h_{ij}}{(1-h_{ij})}$.
+
+Se puede demostrar que esta relación es la distancia del vector $x_i$ al centroide de los datos restantes. Así, $D_i$ está formada por un componente que refleja lo bien que se ajusta el modelo a la i-ésima observación $yi$, y un componente que mide lo alejado que el punto está del resto de los datos.
+
+Cualquiera de los componentes (o ambos), pueden contribuir a un valor grande de $D_i$. Así, en $D_i$ se combinan la magnitud del residual para la i_ésima observación y la ubicación de ese punto en el espacio de $x$, para evaluar su influencia.
+
+Ya que $X\hat{\beta_{(i)}} - X\hat{\beta} = \hat{y}_{(i)} - \hat{y}$, otra forma de expresar la medida de distancia de Cook es:
+
+$D_i = \frac{(\hat{y}_{(i)}-\hat{y})'(\hat{y}_{(i)}-\hat{y})}{pMS_{Res}}$
+
+Así, otra forma de interpretar la distrancia de Cook es el cuadrado de la distancia euclidiana (sin considerar $pMS_{Res}$) que se mueve el vector de los valores ajustados cuando se elimina la i_ésima observación.
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,575 @@
+---
+title: "EJEMPLO REGRESION LINEAL SIMPLE"
+subtitle: "Precios de viviendas en Colombia"
+author:
+  - "Julián Piedrahita Monroy"
+  - "Héctor Hernán Montes"
+output: 
+  rmdformats::readthedown:
+    css: styles.css
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+date: "2023"
+editor_options: 
+  markdown: 
+    wrap: 72
+  wrap: 72
+chunk_output_type: inline
+---
+
+```{=html}
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+```
+<div>
+
+<img src="https://media2.utp.edu.co/imagenes/Logo-UTP-Azul.png" alt="UTP" class="watermark"/>
+
+</div>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  echo = TRUE,
+  message = FALSE,
+  options(scipen=999)
+)
+
+setwd("/home/hectormontes/Escritorio/Maestria/pronosticos/regresion")
+# Librerías
+library(tidyverse)
+library(janitor)
+library(openxlsx)
+library(flextable)
+library(viridis)
+library(scales)
+library(DT)
+library(lubridate)
+library(gridExtra)
+library(ggplot2)
+library(gganimate)
+library(animation)
+library(gifski)
+library(magick)
+library(nortest)
+library(fitdistrplus)
+library(tseries)
+library(lmtest)
+library(stats)
+library(sandwich)
+source("funciones_personalizadas.R")
+```
+
+## CARGANDO DATOS
+
+
+```{r}
+# Funciones
+
+## Función para crear flextable
+ftable <- function(x) {
+  x %>% 
+    flextable() %>% 
+    theme_vanilla() %>%
+    color(part = "footer", color = "#666666") %>%
+    color( part = "header", color = "#FFFFFF") %>%
+    bg( part = "header", bg = "#2c7fb8") %>%
+    fontsize(size = 11) %>%
+    font(fontname = 'Calibri') %>%
+    # Ajustes de ancho y tipo de alineación de las columnas
+    set_table_properties(layout = "autofit") %>% 
+    # width(j=1, width = 3) %>%
+    align(i = NULL, j = c(2:ncol(x)), align = "right", part = "all")
+}
+```
+
+## 6.5 Ejemplo práctico: Predicción de precios de viviendas
+
+Se reunió a un conjunto de especialistas inmobiliarios para generar una batería de indicadores capaces de predecir el precio de una vivienda en Colombia. Para ello los especialistas analizaron información relativa a la zona (estrato, caminabilidad, zonas verdes, seguridad), información del mercado inmobiliario(índice de vivienda nueva no cubierta, grado de saturación de la oferta), características de la propiedad(metro cuadrados construidos, nro de habitaciones, nro de baños, acabados). 
+
+Con toda esta información se les pidió conformar un índice sintético que reuniera todos los atributos relevantes de la unidad en una única cantidad numérica conocida como índice de valuación inmobiliaria. Este valor va de 0 a 100, donde el 0 está asociado a una vivienda con pésimas características y 100 para viviendas con óptimas características. Para la conformación del índice los expertos usaron todo su conocimiento de negocio para ponderar los atributos antes listados según su importancia, en un esfuerzo por capturar los aspectos que permiten predecir el valor de la vivienda.
+
+Se le ha encomendado a usted realizar un análisis del poder predictivo de la herramienta para lo cual usted decidió pasar 1500 viviendas por la calculadora generada por los expertos, de tal manera que ésta le arrojara el valor de índice correspondiente. Acto seguido usted conformó un dataset con la información del índice y el precio de la vivienda en lista 0 (precio de compra sobre planos). Usted conocía el precio real de estas 1500 viviendas gracias a que constituyen proyectos de reciente lanzamiento, y los precios de mercado fueron facilitados por los constructores con los que usted tiene convenio para la venta de esas viviendas. 
+
+Las preguntas a resolver son:
+
+- ¿Está el indice de valuación inmobiliaria relacionada con el precio real de la vivienda? Apóyese en herramientas gráficas.
+- ¿Considera usted que un modelo de regresión lineal sería un buen modelo para capturar el poder predictor que tiene el índice? Justifique usando criterios de adecuación del modelo.
+- Teniendo en cuenta que usted sólo posee una muestra de 1500 viviendas y no la base completa del mercado inmobiliario, ¿Qué puede inferir de los betas asociados al modelo?
+- ¿Cuál es el error estándar estimado del beta1 del modelo y del intercepto? ¿Qué le dicen estos valores sobre la calidad del modelo?
+- ¿Qué le dicen los valores p de los betas sobre la significancia estadística de los mismos en el modelo?
+- Ejecute una análisis de varianza sobre los residuales del modelo. ¿Qué concluye sobre la calidad general del modelo, más allá del análisis de cada beta particular?
+- ¿Cómo interpretaría el coeficiente de determinación $R²$ del modelo?
+- ¿Considera que podría haber usado otro enfoque distinto para evaluar la capacidad predictiva de la herramienta?
+- ¿Qué complicaciones crees que puede tener en la práctica crear una calculadora de tal estilo?
+
+[Pregunta 1: Explorando relación lineal]{style="color: red;"}
+
+```{r}
+datos_inm <- read_csv(file="precios_inm.csv")
+datos_inm %>% 
+  head(10) %>% 
+  ftable()
+
+datos_inm$precio <-datos_inm$precio/1e6
+datos_inm %>% 
+  head(10) %>% 
+  ftable()
+
+# Un pequeño test de correlación
+correlation_test <- cor.test(x = datos_inm$IVI, y =datos_inm$precio)
+datos_inm %>% 
+  ggplot(aes(x= IVI, y= precio)) +
+  geom_point()+ theme_light()+
+  labs(title="Relación entre el índice IVI y el precio",
+       x="Índice de valuación inmobiliaria",
+       y="Precio(Millones COP)")
+
+print(correlation_test)
+```
+
+Podemos observar que si hay una relación lineal entre las variables, excepto por la zona de valores altos de IVI que presenta un comportamiento ambugüo pues existe zonas donde la relación parece estar presente y zonas donde no. Además la prueba de significaciancia para el índice de correlación arroja un p valor menor a 0.05, lo que como mínimo estaría indicando la presencia de correlación diferente de cero entre las variables. Se estima una correlación cercana a `r round(correlation_test$estimate,2)`
+
+[Pregunta 2: Adecuación del modelo]{style="color: red;"}
+
+Calcularemos el modelo de regresión lineal bajo la estructura:
+
+$Precio = \beta_0 + \beta_1IVI + e \text{~}N(0, {\sigma^2}_e)$, para ello usamos la función lm de R
+
+```{r}
+modelo_precios <- lm(formula = precio~IVI, data=datos_inm)
+print(summary(modelo_precios))
+
+# datos_inm$predichos <- modelo_precios$fitted.values
+datos_inm <- datos_inm %>% 
+  mutate(pronosticos = modelo_precios$fitted.values,
+         errores = modelo_precios$residuals)
+  
+```
+Recuerde que debe abstenerse de leer cualquier dato de esta tabla hasta que haya hecho verificación de supuestos: Normalidad, homocedasticidad del error, independencia del error. Inspeccionemos normalidad:
+
+```{r}
+errores <- modelo_precios$residuals
+datos_inm$errores <- errores
+
+datos_inm %>% 
+  ggplot(aes(x=errores))+
+  geom_histogram()+
+  geom_density()
+
+test_normalidad <- lillie.test(errores)
+print(test_normalidad)
+```
+
+Puede notar que el gráfico arroja una cantidad anómala de casos que generaron sobrestimaciones del valor real de precios, es decir, no se esperaban esos valores tan negativos bajo el supuesto de normalidad del error. También se comprueba con la prueba de Lilliefors que hay violación de la normalidad porque el valor p<0.05. Es muy probable que esto se deba al hecho de que la zona de valores con IVI alto no logra seguir de manera apropiada a la zona de valores de precios altos. Dicho de otra manera, cuando la calculadora arroja IVI>60 es probable que no estime bien el precio de la vivienda.
+
+Una alternativa práctica acá es dar por sentado que la calculadora no es útil para predecir precios muy altos y que en particular falla cuando IVI>60. Removeremos estos datos y correremos de nuevo el modelo.
+
+```{r}
+datos_mod <- datos_inm[datos_inm$IVI<=60, c("IVI", "precio")]
+modelo_precios_2 <- lm(formula = precio~IVI, data=datos_mod)
+print(summary(modelo_precios_2))
+```
+
+De nuevo evite leer esta tabla hasta no comprobar supuestos:
+
+```{r}
+
+print(datos_mod)
+
+errores_mod <- modelo_precios_2$residuals
+datos_mod$errores <- errores_mod
+datos_mod$pronosticos<-modelo_precios_2$fitted.values
+
+datos_mod %>% 
+  ggplot(aes(x=errores))+
+  geom_histogram()+
+  geom_density()
+
+test_normalidad_2 <- lillie.test(errores_mod)
+print(test_normalidad_2)
+```
+
+Pese a que no está pasando la prueba de normalidad aun con tales remociones, si es claro que el valor del estadístico de prueba de Lilliefors rebajó bastante, pasó de `r round(test_normalidad$statistic,3)` a `r round(test_normalidad_2$statistic,3)`. Todo esto se nota en que la curva es ahora un poco más simétrica. Es muy probable que las máximas separaciones se estén dando en las colas de la distribución. Veamos:
+
+
+```{r}
+#Usamos nuestra función generalizada la cual gráfica la prueba Lilliefors en un función de la comparación de las distribuciones acumuladas
+
+colnames(datos_mod)<-c("x","y","errores","pronosticos")
+graph_lilliefors(df=datos_mod, for_residuals=TRUE,
+                 x_label="Índice de valuación inmobiliaria",
+                 y_label="Precio(Millones COP)")
+print(lillie.test(datos_mod$errores))
+```
+
+La gráfica nos muestra que la máxima separación está ocurriendo más allá del cuartil 3, no propiamente en una de las colas pero tampoco muy en la zona central. Obviaremos esta desviación de la normalidad pese a lo arrojado por la prueba porque el análisis de varianza suele ser robusto a pequeñas desviaciones de la normalidad en especial si no ocurren en la zona central de la gráfica. 
+
+Procedamos ahora con la prueba de Durbin Watson, tomando en cuenta que esta prueba es más útil cuando los datos tienen algún tipo de ordenamiento temporal y por lo tanto permiten definir un índice natural para la serie de los residuales. Veamos qué ocurre si simplemente se ejecuta la prueba con los residuales en el orden de aparición en el dataset. 
+
+```{r}
+
+#Resultado sin orden especificado
+dw <- dwtest(modelo_precios_2)
+ljung_box<-Box.test(modelo_precios_2$residuals,lag = 12,
+                    type = "Ljung-Box")
+
+#Ordenado según la variable a predecir
+datos_mod_or <- datos_mod %>% arrange(y)
+mod_1 <- lm(formula=y~x, data=datos_mod_or)
+
+
+#Ordenado según las predicciones
+datos_mod_or <- datos_mod_or %>% arrange(pronosticos)
+mod_2 <- lm(formula=y~x, data=datos_mod_or)
+
+#Ordenado según la variable predictora
+datos_mod_or <- datos_mod_or %>% arrange(x)
+mod_3 <- lm(formula=y~x, data=datos_mod_or)
+
+#Almacenamos resultados en un dataframe
+dw1 <-dwtest(mod_1)
+dw2 <-dwtest(mod_2)
+dw3 <-dwtest(mod_3)
+mod_1_lj_box <- Box.test(mod_1$residuals,lag = 12, type = "Ljung-Box")
+mod_2_lj_box <- Box.test(mod_2$residuals,lag = 12, type = "Ljung-Box")
+mod_3_lj_box <- Box.test(mod_3$residuals,lag = 12, type = "Ljung-Box")
+
+df_resultados <- data.frame(
+  orden = c("Sin orden", "Precio real", "Precio predicho", "IVI"),
+  est_dw = c(dw$statistic, dw1$statistic, dw2$statistic, dw3$statistic),
+  pval_dw = c(dw$p.value, dw1$p.value, dw2$p.value, dw3$p.value),
+  est_lj_box = c(ljung_box$statistic, mod_1_lj_box$statistic,
+                mod_2_lj_box$statistic, mod_3_lj_box$statistic),
+  pval_lj_box = c(ljung_box$p.value, mod_1_lj_box$p.value,
+                  mod_2_lj_box$p.value, mod_3_lj_box$p.value)
+)
+df_resultados %>% 
+  mutate(est_dw = round(est_dw, 3),
+         pval_dw = round(pval_dw, 6),
+         est_dw = round(est_dw, 3),
+         est_lj_box = round(est_lj_box, 3),
+         pval_lj_box = round(pval_lj_box, 6)) %>% 
+  ftable()
+```
+Podemos observar que la autocorrelación de errores se ve muy impactada por el orden en que decidamos procesar los datos. En todos los casos donde se impuso un orden dw fue menor que 2, indicando presencia de autocorrelación positiva. Veamos los gráficos para establecer qué tan fuerte es:
+
+```{r fig.width=8, fig.height=8}
+
+p0 <- datos_mod %>% 
+  ggplot(aes(x= seq(1,length(errores)), y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="Orden de aparición en el dataset",
+       y="Residual")
+
+p1 <- datos_mod_or %>% 
+  arrange(y) %>% 
+  ggplot(aes(x= y, y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="Precio real",
+       y="Residual")
+
+p2 <- datos_mod_or %>% 
+  arrange(pronosticos) %>% 
+  ggplot(aes(x= pronosticos, y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="Precio predicho",
+       y="Residual")
+
+p3 <- datos_mod_or %>% 
+  arrange(x) %>% 
+  ggplot(aes(x= x, y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="IVI",
+       y="Residual")
+
+p_arrange <- grid.arrange(p0,p1,p2,p3)
+grid::grid.draw(p_arrange)
+```
+
+Se observa cierta tendencia al crecimiento de los errores cuando estos se consideran bajo los tres ordenamientos posibles (por valor de precio real, por valor de precio predicho y por valor de IVI). Estas tendencias seguramente son las responsables del rechazo de la hipótesis de independencia. Si se tratara de mejorar el modelo es claro que debemos concentrarnos en las zonas extreemas de precios que son las que están sumando más a la presencia de tendencias y cambios en la variabilidad del error. Por ejemplo, una buena opción sería usar la calculadora sólo si esta arroja un valor de IVI entre 20 y 40. 
+
+La utilidad pŕactica de un modelo con esta restricción la debería dar el equipo desarrollador de la herramienta, quien tendrá la tarea de decidir si usar el modelo recortado como un primer MVP o si necesitan pivotear más la solución corrigiendo las fallas observadas antes de pasar a su uso.
+
+A continuación presentamos los nuevos resultados de normalidad y pruebas de independencia considerando el recorte adicional de datos. 
+
+```{r}
+
+datos_final  <- datos_mod[datos_mod$x>=20, c("x", "y")]
+datos_final  <- datos_final[datos_final$x<=40, c("x", "y")]
+modelo_precios_final <- lm(formula = y~x, data=datos_final)
+datos_final$errores <- modelo_precios_final$residuals
+datos_final$pronosticos<-modelo_precios_final$fitted.values
+
+test_normalidad_final <- lillie.test(datos_final$errores)
+print(test_normalidad_final)
+
+colnames(datos_final)<-c("x","y","errores","pronosticos")
+graph_lilliefors(df=datos_mod, for_residuals=TRUE,
+                 x_label="Índice de valuación inmobiliaria",
+                 y_label="Precio(Millones COP)")
+
+#Resultado sin orden especificado
+dwf <- dwtest(modelo_precios_final)
+f_ljung_box<-Box.test(modelo_precios_2$residuals,lag = 12,
+                    type = "Ljung-Box")
+
+#Ordenado según la variable a predecir
+datos_final_or <- datos_final %>% arrange(y)
+modf_1 <- lm(formula=y~x, data=datos_final)
+
+#Ordenado según las predicciones
+datos_final_or <- datos_final %>% arrange(pronosticos)
+modf_2 <- lm(formula=y~x, data=datos_final_or)
+
+#Ordenado según la variable predictora
+datos_final_or <- datos_final %>% arrange(x)
+modf_3 <- lm(formula=y~x, data=datos_final_or)
+
+#Almacenamos resultados en un dataframe
+dwf1 <-dwtest(modf_1)
+dwf2 <-dwtest(modf_2)
+dwf3 <-dwtest(modf_3)
+modf_1_lj_box <- Box.test(modf_1$residuals,lag = 12, type = "Ljung-Box")
+modf_2_lj_box <- Box.test(modf_2$residuals,lag = 12, type = "Ljung-Box")
+modf_3_lj_box <- Box.test(modf_3$residuals,lag = 12, type = "Ljung-Box")
+
+df_resultados_final <- data.frame(
+  orden = c("Sin orden", "Precio real", "Precio predicho", "IVI"),
+  est_dw = c(dwf$statistic, dwf1$statistic,
+             dwf2$statistic, dwf3$statistic),
+  pval_dw = c(dwf$p.value, dwf1$p.value,
+              dwf2$p.value, dwf3$p.value),
+  est_lj_box = c(f_ljung_box$statistic, modf_1_lj_box$statistic,
+                modf_2_lj_box$statistic, modf_3_lj_box$statistic),
+  pval_lj_box = c(f_ljung_box$p.value, modf_1_lj_box$p.value,
+                  modf_2_lj_box$p.value, modf_3_lj_box$p.value)
+)
+df_resultados_final %>% 
+  mutate(est_dw = round(est_dw, 3),
+         pval_dw = round(pval_dw, 6),
+         est_dw = round(est_dw, 3),
+         est_lj_box = round(est_lj_box, 3),
+         pval_lj_box = round(pval_lj_box, 6)) %>% 
+  ftable()
+
+#Gráficos después de última limpieza
+pf0 <- datos_final %>% 
+  ggplot(aes(x= seq(1,length(errores)), y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="Orden de aparición en el dataset",
+       y="Residual")
+
+pf1 <- datos_final %>% 
+  arrange(y) %>% 
+  ggplot(aes(x= y, y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="Precio real",
+       y="Residual")
+
+pf2 <- datos_final %>% 
+  arrange(pronosticos) %>% 
+  ggplot(aes(x= pronosticos, y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="Precio predicho",
+       y="Residual")
+
+pf3 <- datos_final %>% 
+  arrange(x) %>% 
+  ggplot(aes(x= x, y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="IVI",
+       y="Residual")
+
+pf_arrange <- grid.arrange(pf0,pf1,pf2,pf3)
+grid::grid.draw(pf_arrange)
+```
+
+Se aprecia una mejoría significativa en el valor p (aumentó) asociado a las pruebas de independencia, aunque sigue estando por debajo de 0.05, esto se debe posiblemente a la sensibilidad que la prueba tiene por el tamaño de muestra considerado (n=1225) y a que sigue presente una ligera tendencia en los extremos que en esta ocasión pasaremos por alto en aras a no hacer recortes masivos sobre los datos que haga completamente inútil el modelo(mejor trade-off entre una solución aproximada pero útil, que una solución teórica perfecta pero inútil).
+
+Pasemos ahora a las pruebas de homocedasticidad. 
+
+```{r}
+test_bp <- bptest(modelo_precios_final)
+test_white <- bptest(modelo_precios_final, 
+                          varformula = ~ (x + I(x^2)),
+                          data=datos_final)
+
+print(test_bp)
+print(test_white)
+```
+
+Se rechaza homocedasticidad, exploremos los motivos:
+
+```{r}
+datos_final %>% 
+  ggplot(aes(x= x, y= errores^2)) +
+  geom_point()+ theme_light()+
+  labs(title="Relación entre el índice IVI y el error cuadrado",
+       x="Índice de valuación inmobiliaria",
+       y="Errores cuadrados")
+```
+
+Este gráfico nos muestra la presencia de varios errores cuadrados atípicos que podrían estar alterando las pruebas de homocedasticidad
+
+```{r}
+#Boxplot de errores al cuadrado
+
+datos_final$errores2<-datos_final$errores^2
+datos_final %>% 
+  ggplot(aes(y=errores2)) +
+  geom_boxplot()
+
+Q1 <- as.numeric(quantile(datos_final$errores2, 0.25))
+Q3 <- as.numeric(quantile(datos_final$errores2, 0.75))
+IQR <- Q3-Q1
+
+sup_whisker <- Q3 + 1.5*IQR
+inf_whisker <- max(0,Q1 -1.5*IQR)
+```
+
+Las magnitudes de los atípicos son tales que distorsionan fuertemente el gráfico boxplot de los cuadrados del error sin dejar ver claramente la dispersión natural de los datos. El límite superior del bigote nos permitirá escribir condiciones para el filtrado de atípicos, por ejemplo remover $e²_i$ tales que $e²_i>`r round(sup_whisker,3)`$
+
+```{r}
+e2_outlier<- datos_final[datos_final$errores2>sup_whisker,]
+e2_outlier %>% 
+  head(10) %>% 
+  ftable()
+paste0("La tabla de atípicos contiene ", nrow(e2_outlier), " datos")
+e2_cleaned <- datos_final[datos_final$errores2<=sup_whisker, ]
+
+e2_cleaned %>% 
+  ggplot(aes(x= x, y= errores2)) +
+  geom_point()+ theme_light()+
+  labs(title="Relación entre el índice IVI y el error cuadrado",
+       x="Índice de valuación inmobiliaria",
+       y="Errores cuadrados")
+
+cleaned_model<-lm(y~x, data=e2_cleaned)
+cleaned_bp <- bptest(cleaned_model)
+cleaned_white <- bptest(cleaned_model, varformula = ~ (x + I(x^2)),
+                        data=datos_mod)
+
+df_var <- data.frame(
+  tratamiento = c("Con atípicos", "Removiendo atípicos"),
+  est_bp = c(test_bp$statistic, cleaned_bp$statistic),
+  pval_bp = c(test_bp$p.value, cleaned_bp$p.value),
+  est_white = c(test_white$statistic, cleaned_white$statistic),
+  pval_white = c(test_white$p.value, cleaned_white$p.value)
+)
+
+df_var %>% 
+  mutate(est_bp = round(est_bp, 3),
+         pval_bp = round(pval_bp, 6),
+         est_white = round(est_white, 3),
+         pval_white = round(pval_white, 6)) %>% 
+  ftable()
+
+```
+
+Se concluye que en efecto los atípicos estaban distorsionando fuertemente los test de homocedasticidad, aunque el test de breush-pagan se rechaza, la decisión está cerca del nivel de significancia del 0.05. En el caso del test de white el resultado es la aceptación de homocedasticidad, en parte por la adición de un grado de libertad extra al intentar modelar una relación cuadrática en un gráfico $e²_i$ vs $IVI$ en el que la relación parece ser muy débil. 
+
+En conclusión, con ciertas reservas aceptaremos el supuesto de homocedasticidad pero el grupo de analistas deberá inspeccionar con cuidado las razones de las fallas que el modelo está presentando sobre los `r nrow(e2_outlier)` datos atípicos detectados. 
+
+Ahora que tenemos un dataset final con datos cumpliendo en forma aproximada los supuestos, procedemos a las pruebas de hipótesis sobre los betas:
+
+
+```{r}
+
+test_hp <- lm(formula=y~x, data=e2_cleaned)
+print(summary(test_hp))
+
+```
+
+Concluimos que el modelo tiene un muy buen $R^2$ y $R^2$ ajustado (este último cobra más importancia en modelos de regresión múltiple). Lo que indica que gran parte de la variabilidad en el precio de las viviendas puede ser explicada por el indice IVI, y salvo por las limitaciones que la calculadora tiene para reconocer precios con IVI por debajo de 20 y por encima de 60, el instrumento parece ser un buen predictor de precios.
+
+Considere también que los valores p tanto para intercepto como para x (IVI) indican significancia estadística del parámetro y que la prueba F arroja que el modelo aporta de manera global y significativa a la predicción del precio. Además por cada unidad que aumenta el IVI se espera un aumento equivalente a `r round(test_hp$coefficients[2],3)` millones de pesos en el valor de la vivienda. Si se tratara además de ofrecer una predicción para un nuevo valor de vivienda  primero deberá cerciorarse que el valor IVI de tal vivienda se encuentre en el rango [20-40], y puede proceder usando la siguiente fórmula:
+
+```{r}
+p <- ggplot(e2_cleaned, aes(x = x, y = y)) +
+  geom_point()
+
+# Agrega una línea de regresión
+p <- p + geom_smooth(method = "lm", se = TRUE, fill="red")
+
+# Agrega títulos y etiquetas de ejes
+p <- p + labs(title = "Diagrama de Dispersión con Banda de Confianza",
+              x = "Índice de valuación inmobiliaria",
+              y = "Precio (Millones COP")
+
+# Muestra el gráfico
+print(p)
+
+#Prediciendo precio para una vivienda que arrojó un IVI de 35
+
+ivi_pred <- 35  # Reemplaza con el valor de x que desees predecir
+
+# Realiza la predicción
+predicciones <- predict(test_hp, 
+                        newdata = data.frame(x = ivi_pred),
+                        interval = "confidence", level = 0.95)
+
+# Imprime las predicciones
+print(predicciones)
+
+# Extrae los valores de la predicción, límite inferior y límite superior
+prediccion <- predicciones[1]
+limite_inferior <- predicciones[2]
+limite_superior <- predicciones[3]
+
+# Imprime la predicción y el intervalo de confianza
+cat("Predicción:", prediccion, "\n")
+cat("Intervalo de Confianza (95%): [", limite_inferior, ", ", limite_superior, "]\n")
+```
+
+Sólo resta apuntar que la fórmula usada para construir un intervalo de confianza para la $y$, dado un valor observado $x_0$, viene dada por:
+
+$\hat\mu_{y|x_0} - t_{\frac{\alpha}{2}, n-2}\sqrt{MS_{Res}\left(\frac{1}{n}+\frac{(x_0 - \hat{x})²}{S_{xx}}\right)}<=E(y|x_0)<=\hat\mu_{y|x_0} + t_{\frac{\alpha}{2}, n-2}\sqrt{MS_{Res}\left(\frac{1}{n}+\frac{(x_0 - \hat{x})²}{S_{xx}}\right)}$
+
+Donde:
+
+- $\hat\mu_{y|x_0}$ se refiere al valor predicho obtenido para $x_0$ al ser reemplazado en la recta de predicción.
+- $E(y|x_0)$ representa el verdadero valor promedio de la variable a predecir $Y$ cuando $X=x_0$, es decir, es la cantidad para la cual ofrecemos el intervalo de confianza.
+- $MS_{Res}$ es un estimado del ${\sigma^2}_e$ del modelo y viene dado ṕor $\frac{SS_{Res}}{n-2}$
+- $S_{xx}$ es la suma de cuadrados centrados de la $x$
+
+Confirmemos:
+
+```{r}
+
+alpha <- 0.05
+n <- nrow(e2_cleaned)
+ivi_barra <- mean(e2_cleaned$x)
+ivi_centrado <- e2_cleaned$x - ivi_barra
+y_pred <- test_hp$coefficients[1] + test_hp$coefficients[2]*ivi_pred
+paste0("Este es el valor predicho: ", round(y_pred,4))
+
+MS_Res <- sum(e2_cleaned$errores2)/(n-2)
+paste0("Este es el valor estimado del sigma^2 del error: ", round(MS_Res,4))
+
+t_cuantil <- qt(1-(alpha/2), df=n-2)
+paste0("Este es el valor del cuantil t para 95% de confianza y n-2 grados de libertad: ",round(t_cuantil,4))
+
+S_xx <- sum(ivi_centrado^2)
+error_pred <- (t_cuantil * sqrt(MS_Res*((1/n)+((ivi_pred-ivi_barra)^2)/S_xx)))
+
+lim_inf <- y_pred - error_pred
+lim_sup <- y_pred + error_pred
+
+cat("Intervalo de Confianza (95%): [", lim_inf, ", ", lim_sup, "]\n")
+```       

@@ -1,0 +1,98 @@
+---
+title: "TITULO DE PRUEBA"
+subtitle: "Subtítulo de prueba"
+author:
+  - "YO"
+output: 
+  rmdformats::readthedown:
+    css: styles.css
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+date: "2023"
+editor_options: 
+  markdown: 
+    wrap: 72
+  wrap: 72
+chunk_output_type: inline
+---
+
+```{=html}
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+```
+<div>
+
+<img src="https://media2.utp.edu.co/imagenes/Logo-UTP-Azul.png" alt="UTP" class="watermark"/>
+
+</div>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  echo = TRUE,
+  message = FALSE,
+  options(scipen=999)
+)
+
+setwd("/home/hectormontes/Escritorio/Maestria/pronosticos/regresion")
+# Librerías
+library(tidyverse)
+library(janitor)
+library(openxlsx)
+library(flextable)
+library(viridis)
+library(scales)
+library(DT)
+library(lubridate)
+library(gridExtra)
+library(ggplot2)
+library(gganimate)
+library(animation)
+library(gifski)
+library(magick)
+library(nortest)
+library(fitdistrplus)
+library(tseries)
+library(lmtest)
+library(stats)
+library(sandwich)
+```
+
+## CARGANDO DATOS
+
+
+```{r}
+# Funciones
+
+## Función para crear flextable
+ftable <- function(x) {
+  x %>% 
+    flextable() %>% 
+    theme_vanilla() %>%
+    color(part = "footer", color = "#666666") %>%
+    color( part = "header", color = "#FFFFFF") %>%
+    bg( part = "header", bg = "#2c7fb8") %>%
+    fontsize(size = 11) %>%
+    font(fontname = 'Calibri') %>%
+    # Ajustes de ancho y tipo de alineación de las columnas
+    set_table_properties(layout = "autofit") %>% 
+    # width(j=1, width = 3) %>%
+    align(i = NULL, j = c(2:ncol(x)), align = "right", part = "all")
+}
+```
+
+```{r}
+datos_insulina <-
+  read.csv("datos_estudio_res_insulina.csv", sep=",") %>% 
+  head() %>% 
+  ftable()
+```
+
+

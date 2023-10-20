@@ -1,0 +1,593 @@
+---
+title: "REGRESIÓN LINEAL MÚLTIPLE"
+subtitle: "Maestría en Investigación Operativa y Estadística"
+author:
+  - "Julián Piedrahíta Monroy"
+  - "Héctor Hernán Montes"
+output: 
+  rmdformats::readthedown:
+    css: styles.css
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+date: "2023"
+editor_options: 
+  markdown: 
+    wrap: 72
+  wrap: 72
+chunk_output_type: inline
+---
+
+```{=html}
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+```
+<div>
+
+<img src="https://media2.utp.edu.co/imagenes/Logo-UTP-Azul.png" alt="UTP" class="watermark"/>
+
+</div>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  echo = TRUE,
+  message = FALSE,
+  options(scipen=999)
+)
+
+# Librerías
+library(tidyverse)
+library(janitor)
+library(openxlsx)
+library(flextable)
+library(viridis)
+library(scales)
+library(DT)
+library(lubridate)
+library(gridExtra)
+library(ggplot2)
+library(gganimate)
+library(animation)
+library(gifski)
+library(magick)
+library(nortest)
+library(fitdistrplus)
+library(tseries)
+library(lmtest)
+library(stats)
+library(sandwich)
+library(car)
+library(reshape2)
+#install.packages("devtools")
+library(devtools)
+source("funciones_personalizadas.R")
+
+```
+
+## 1. Datos y contexto
+
+Iniciaremos la presentación del modelo de regresión lineal múltiple considerando el siguiente data set relativo a inversiones en marketing y las ventas que se esperan lograr con tales inversiones. Nuestro objetivo será intentar predecir ventas con base en la información de lo invertido en campañas en facebook, google y newspapers. Este es el aspecto del dataset:
+
+```{r echo=TRUE}
+#devtools::install_github("kassambara/datarium")
+data("marketing", package = "datarium")
+head(marketing, 4)
+```
+
+Construyamos un modelo lineal con los datos anteriores usando la ya conocida función lm de R:
+
+```{r}
+model <- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+summary(model)
+```
+
+Por lo pronto interpretemos esta salida sin preocuparnos por la comprobación de supuestos, las cuales tienen algunas particularidades respecto al modelo de regresión lineal simple ya ampliamente discutido. 
+
+Lo que podemos concluir (suponiendo provisionalmente que los supuestos se respetan) es:
+
+- A juzgar por los valores p de cada una de las variables implicadas en el modelo, se rechaza la hipótesis nula de que el beta para la variable que representa las inversiones en youtube es diferente de 0. Es decir que esta variable si afecta la cantidad de ventas obtenidas. Lo mismo se puede decir para las inversiones en facebook.
+
+- La variable newspaper no aporta significativamente a la predicción de ventas pues la prueba de hipótesis no condujo al rechazo de que el beta es 0.
+
+- El $R^2$ y el $R²$ ajustado revelan una capacidad del modelo de explicar cerca del 89% de la varianza en las ventas.
+
+- El valor F del modelo nos está indicando que el grupo de variables (vistas en conjunto) aportan información significativa para predecir las ventas. Es decir, hay al menos una variable con beta no nulo, lo cual por otro lado coincide con lo hallado en las pruebas de hipótesis sobre los betas individuales.
+
+En conclusión nuestro modelo quedaría escrito de la siguiente manera:
+
+$sales = `r model$coefficients[1]` + `r model$coefficients[2]`*youtube + `r model$coefficients[3]`*facebook$
+
+Podríamos además obtener intervalos de confianza estimados para los betas, así:
+```{r}
+ICs_betas <- confint(model)
+IC_intercept <-paste0("[",round(ICs_betas["(Intercept)","2.5 %"],3),"-",
+                      round(ICs_betas["(Intercept)","97.5 %"],3),"]")
+IC_youtube <-paste0("[",round(ICs_betas["youtube","2.5 %"],3),"-",
+                      round(ICs_betas["youtube","97.5 %"],3),"]")
+IC_facebook <-paste0("[",round(ICs_betas["facebook","2.5 %"],3),"-",
+                      round(ICs_betas["facebook","97.5 %"],3),"]")
+```
+
+Concluyendo que con un 95% de confianza se espera un intercepto $\beta_0$ entre `r IC_intercept`, un $\beta_1$ asociado a inversiones en youtube entre `r IC_youtube`, y un $\beta_2$ asociado a inversiones en facebook entre `r IC_facebook`
+
+
+## 2. Forma matricial del modelo y estimadores de mínimos cuadrados
+
+Un modelo de regresión lineal múltiple originalmente viene dado por:
+
+$$Y = \beta_0 + \beta_1*X_1 + \beta_2*X_2 + \beta_3*X_3 + ... + \beta_p*X_k + e$$  
+El componente de error de nuevo lo asumimos $e\text{~}N(0,{\sigma}^2_e)$
+
+Esto significa que si tenemos n tuplas de valores observados, estas se relacionan entre sí a través de la ecuación anterior:
+
+$$y_1 = \beta_0 + \beta_1*x_{11} + \beta_2*x_{12} + \beta_3*x_{13} + ... + \beta_k*x_{1k} + e_1$$
+$$y_2 = \beta_0 + \beta_1*x_{21} + \beta_2*x_{22} + \beta_3*x_{23} + ... + \beta_k*x_{2k} + e_2$$
+$$...$$
+$$y_n = \beta_0 + \beta_1*x_{n1} + \beta_2*x_{n2} + \beta_3*x_{n3} + ... + \beta_k*x_{nk} + e_n$$
+Por supuesto estas relaciones pueden ser escritas de manera más comprimida a través de la expresión matricial:
+
+$$y=x\beta+\varepsilon$$
+En donde:
+
+$y= \begin{bmatrix}y_1 \\y_2 \\\vdots \\y_n\end{bmatrix}, x=\begin{bmatrix}1 & x_{11} & x_{12} & \cdots & x_{1k}\\1 & x_{21} & x_{22} & \cdots & x_{2k}\\\vdots & \vdots & \vdots & \ddots & \vdots \\1 & x_{n1} & x_{n2} & \cdots & x_{nk}\end{bmatrix}$
+
+$\beta=\begin{bmatrix}\beta_1 \\\beta_2 \\\vdots \\\beta_k\end{bmatrix},  \varepsilon=\begin{bmatrix}\varepsilon_1 \\\varepsilon_2 \\\vdots \\\varepsilon_n\end{bmatrix}$
+
+Se desea determinar el vector $\hat{\beta}$ de estimadores de mínimos cuadrados que minimice.
+
+$S(\beta) = \sum\limits_{i=1}^{n} (\varepsilon_i^2) = \varepsilon' \varepsilon= (y-X\beta)'(y-X\beta)$
+
+Nótese que $S(\beta)$ se puede expresar como sigue:
+
+$S(\beta) = y'y - \beta'X'y - y'X\beta + \beta'X'X\beta = y'y-2\beta'X'y + \beta'X'X\beta$
+
+ya que $\beta'X'y$  es una matriz de 1x1, es decir, un escalar, y que su transpuesta $(\beta'X'y)'=y'X\beta$ es el mismo escalar. Los estimadores de mínimos cuadrados deben satisfacer:
+
+$\left.\frac{\partial S}{\partial \beta}\right|_{\hat{\beta}}  = -2X'y + 2X'X\beta  = 0$
+
+Que simplifica a:
+
+\begin{equation}X'X\beta  = X'y \label{eq:ref1}\end{equation}
+
+Así, el estimador de $\beta$ por mínimos cuadrados es:
+
+
+\begin{equation}\beta' = (X'X)^{-1}X'y\label{eq:ref2}\end{equation}
+
+
+Al escribir (\ref{eq:ref1}) con detalle se obtiene.
+
+
+$\begin{bmatrix}n & \sum\limits_{i=1}^{n} x_{i1} & \sum\limits_{i=1}^{n} x_{i2} & \cdots & \sum\limits_{i=1}^{n} x_{ik}\\ \sum\limits_{i=1}^{n} x_{i1} & \sum\limits_{i=1}^{n} x_{i1}^2 & \sum\limits_{i=1}^{n} x_{i1} x_{i2} & \cdots & \sum\limits_{i=1}^{n} x_{i1} x_{ik}\\\vdots & \vdots & \vdots & \ddots & \vdots \\\sum\limits_{i=1}^{n} x_{ik} & \sum\limits_{i=1}^{n} x_{ik}x_{i1} & \sum\limits_{i=1}^{n} x_{ik}x_{i2} & \cdots & \sum\limits_{i=1}^{n} x_{ik}^2\end{bmatrix} \begin{bmatrix}\hat{\beta_0}\\\hat{\beta_1}\\\vdots \\\hat{\beta_k}\end{bmatrix}=\begin{bmatrix}\sum\limits_{i=1}^{n} y_i\\\sum\limits_{i=1}^{n} x_{i1}y_i\\\vdots \\\sum\limits_{i=1}^{n} x_{ik}y_i\end{bmatrix}$
+
+
+El modelo ajustado de regresión que corresponde a los niveles de las variables regresoras $x'=[1,x_1,x_2,...,x_k]$ es:
+
+$\hat{y} = x' \hat{\beta} = \hat{\beta_0} + \sum\limits_{j=1}^{k} \hat{\beta_j}x_j$
+
+El vector de valores ajustados $\hat{y_i}$ que corresponden a los valores observados $y_i$ es:
+
+$\hat{y} = X\hat{\beta} = X(X'X)^{-1}X'y = Hy$
+
+La diferencia entre el valor observado $y_i$, y el valor ajustado $\hat{y_i}$ correspondiente es el **residual** $e_i = y_i - \hat{y_i}$. Los n residuales se pueden escribir cómodamente con notación matricial como sigue:
+
+$e = y - \hat{y}$
+
+Hay otras maneras de expresar el vector de residuales $e$, que pueden ser útiles, como:
+
+$$e=y - X\hat{\beta}=y-Hy=(I-H)y$$
+
+Donde $H=X(X'X)^{-1}X'$
+
+## 3. Reproduciendo cálculos básicos
+
+Vamos a reproducir las estimaciones de los betas haciendo uso de la teoría anterior para confirmar su equivalencia con la implementación en R:
+
+```{r}
+#Construyendo la matrix X
+
+df_x <- data.frame(
+  unos = rep(1,nrow(marketing)),
+  youtube = marketing$youtube,
+  facebook = marketing$facebook,
+  newspaper = marketing$newspaper
+)
+
+X <- as.matrix(df_x)
+print(head(X))
+
+#Construyendo la matriz y
+
+y <- as.matrix(marketing$sales)
+print(head(y))
+```
+
+Ahora que ya tenemos la matriz X calculemos la matriz H la cual sólo depende de operaciones sobre X.
+
+```{r}
+
+#Ahora calculemos la matriz H=X(X'X)^{-1}X'
+tX_X = t(X)%*%X
+tX_X_inv = solve(tX_X)
+tX_X_inv_tX = tX_X_inv%*%t(X) # Matriz para estimar los betas
+H = X%*%tX_X_inv_tX
+
+#Ahora calculamos el vector de betas estimados
+betas <- tX_X_inv_tX %*% y
+print(betas)
+```
+
+Ahora procedemos a calcular el vector de errores:
+
+```{r}
+# Construimos una matriz identidad de nxn
+I <- diag(nrow(marketing))
+e <- (I-H) %*% y
+
+#Comparamos contra los residuales arrojados por el modelo
+diff <- sum(e - model$residuals)
+print(diff)
+```
+
+Ya que tenemos los residuales computados, podemos proponer la siguiente estimación para ${\sigma^2}_e$:
+
+Como en la regresión lineal simple, se puede desarrollar un estimador de ${\sigma^2}_e$ a partir de la suma de cuadrados de residuales.
+
+$SS_{Res} = \sum\limits_{i=1}^{n} (y_i - \hat{y_i})^2= \sum\limits_{i=1}^{n} e_i^2=e'e$
+
+Se sustituye $e= y - X\hat{\beta}$ y se obtiene:
+
+$SS_{Res} = (y - X\hat{\beta})' (y - X\hat{\beta})= y'y - \hat{\beta'}X'y - y'X\hat{\beta} + \hat{\beta'}X'X\hat{\beta}= y'y - 2\hat{\beta'}X'y + \hat{\beta'}X'X\hat{\beta}$
+
+Como $X'X\hat{\beta} = X'y$, la última ecuación se transforma en:
+
+
+\begin{equation}SS_{Res} = y'y -\hat{\beta'}X'y\label{eq:ref3}\end{equation}
+
+El **cuadrado medio residual**, o **cuadrado medio de residuales** es:
+
+$MS_{Res} = SS_{Res} / n - p$ 
+
+Donde p es la cantidad de parámetros estimados
+
+$MS_{Res} = \frac{SS_{Res}}{n - p}$
+
+Tambien existe la demostración de que el valor esperado de $MS_{Res}$ es ${\sigma^2}_e$, por lo que un estimador insesgado de ${\sigma^2}_e$ es:
+
+$$\hat{\sigma}^2_e = MS_{Res}$$
+
+Como se dijo en el caso de regresión lineal simple, el estimador de $\sigma^2$ **depende del modelo**
+
+Confirmemos a continuación los cálculos:
+
+```{r}
+# Calculamos SS_Res a través de la fórmula y'y - \hat{\beta'}X'y
+
+SS_Res <- t(y)%*%y - (t(betas)%*%t(X))%*%y
+MS_Res <- SS_Res/(nrow(marketing)-length(betas))
+print(MS_Res)
+```
+
+Note que este cálculo coincide con los resultados de la anova arrojada por R:
+
+```{r}
+
+tabla_anova <- anova(model)
+print(tabla_anova)
+```
+
+## 4. Prueba de hipótesis en la regresión lineal múltiple
+
+dhadhashd
+
+### 4.1 Prueba de la significancia de la regresión
+
+Las hipótesis pertinentes son:
+
+$H_0: \beta_1=\beta_2= ... = \beta_k=0$
+
+$H_1: \beta_j \neq 0$  al menos para una j
+
+El rechazo de la hipótesis nula implica que al menos uno de los regresaores $x_1, x_2, ..., x_k$ contribuye al modelo en forma significativa.
+
+El procedimiento de prueba es una generalización del análisis de varianza que se usó en la regresión lineal simple. La suma total de cuadrados $SS_T$ se divide en una suma de cuadrados debidos a la regresión, $SS_R$, y a una suma de cuadrados de los residuales, $SS_{Res}$. Así:
+
+$SS_T = SS_R + SS_{Res}$
+
+De acuerdo con la definición del estadístico F.
+
+$F_0 = \frac{SS_R/k}{SS_{Res}/(n - k -1)} = \frac{MS_R}{MS_{Res}}$
+
+Tiene la distribución $F_{k,n-k-1}$. Es demostrable que:
+
+$E(MS_{Res}) = {\sigma^2}_e$
+
+$E(MS_{R}) = {\sigma^2}_e + \frac{ \beta^*´X'_c X_c \beta^*}{k\sigma^2}$
+
+Siendo $\beta^*$ = $(\beta_1,\beta_2... \beta_k)$ y $X_c$ es la matriz "centrada" del modelo, definida por:
+
+$\begin{bmatrix}x_{11}-\bar{x}_{1} & x_{12}-\bar{x}_{2} & . . . & x_{1k}-\bar{x}_{k} \\ x_{21}-\bar{x}_{1} & x_{22}-\bar{x}_{2} & . . . & x_{2k}-\bar{x}_{k} \\\vdots & \vdots & & \vdots \\ x_{i1}-\bar{x}_{1} & x_{i2}-\bar{x}_{2} & . . . & x_{ik}-\bar{x}_{k} \\\vdots & \vdots & & \vdots \\ x_{n1}-\bar{x}_{1} & x_{n2}-\bar{x}_{2} & . . . & x_{nk}-\bar{x}_{k}\end{bmatrix}$
+
+Estos cuadrados medios esperados indican que si el valor observado de $F_0$ es grande, es probable que al menos una $\beta_j \neq 0$. También se puede demostrar que si al menos una $\beta_j \neq 0$, entonces $F_0$ tiene una distribución F no central, con $k$ y $n-k-1$ grados de libertad, y parámetro de no centralidad definido por:
+
+$\lambda = \frac{\beta^{*}´X'_c X_c \beta^*}{\sigma^2}$
+
+Por consiguiente, para probar la hipótesis $H_0: \beta_1=\beta_2= ... = \beta_k=0$, se calcula el estadístico de prueba $F_0$ y se rechaza $H_0$ si:
+
+$F_0 > F_{\alpha,k,n-k-1}$
+
+El prodecimiento de prueba se resume normalmente en una **tabla de análisis de varianza**.
+
+Una fórmula de cálculo para la sumatoria de cuadrados de la regresión $SS_{R}$ se deduce usando (\ref{eq:ref3}) y reemplazando allí la siguiente ecuación previas manipulaciones algebraicas:
+
+\begin{equation}SST = \sum\limits_{i=1}^{n} y_i^2 - \frac{(\sum\limits_{i=1}^{n} y_i)^2}{n} = y'y - \frac{(\sum\limits_{i=1}^{n}y_i)^2}{n}\label{eq:ref4}\end{equation}
+
+Construyamos la estructura dada en  (\ref{eq:ref4}) al interior de (\ref{eq:ref3}) sumando y restando un término conveniente:
+
+$SS_{Res} = y'y - \frac{(\sum\limits_{i=1}^{n}y_i)^2}{n} - \left[\hat{\beta'} X'y - \frac{(\sum\limits_{i=1}^{n}yi)^2}{n}\right]$
+
+Es decir que:
+
+$SS_{Res} = SS_T - SS_R$
+
+Por consiguiente, la **suma de cuadrados de la regresión** es:
+
+\begin{equation}SS_{R} = \hat{\beta'}X'y - \frac{(\sum\limits_{i=1}^{n}yi)^2}{n}\label{eq:ref5}\end{equation}
+
+Todo lo discutido hasta acá puede entonces ser resumido en la siguiente estructura de tabla Anova:
+
+<figure>
+<img src="Tabla anova multiple.jpg"/>
+<figcaption>Img 1: Tabla Anova para un modelo de regresión lineal múltiple</figcaption>
+</figure>
+
+Cómo último apunte tenemos las siguientes fórmulas para: $R^2$ y $R^2$ ajustada
+
+$R^2 = 1 - \frac{SS_{Res}}{SS_T}$
+$R^2_{Adj} = 1 - \frac{SS_{Res} / (n-p)}{SS_T / (n-1)}$
+
+En vista de que $SS_{Res}/(n-p)$ es el cuadrado medio de residuales y $SS_T / (n-1)$ es constante, independientemente de cuántas variables hay en el modelo, $R^2_{Adj}$ sólo aumentará al agregar una variable al modelo si esa adición reduce el cuadrado medio residual.
+
+### 4.2 Reproduciendo cálculos de la tabla Anova
+
+A continuación presentamos la generación manual de los cálculos de la tabla Anova usando las formulas matemáticas dadas en (\ref{eq:ref3}), (\ref{eq:ref4}), y (\ref{eq:ref5})
+
+```{r}
+# Calculando SS_T: Recuerde que ésta no es más que la suma de cuadrados del modelo
+# ingenuo y por lo tanto es la suma de cuadrados centrados de la variable a predecir:
+
+SS_T <- sum((marketing$sales-mean(marketing$sales))^2)
+SS_T_anova <- sum(tabla_anova$`Sum Sq`)
+n <- length(marketing$sales)
+#SS_Res fue calculado en celda anterior (sección cálculos básicos)
+#SS_R es simplemente la resta entre SS_T  y SS_Res pero lo haremos con fórmula
+SS_R <- (t(betas)%*%t(X))%*%y - (sum(marketing$sales)^2)/n
+Sum_sq <- tabla_anova[c("youtube","facebook", "newspaper"), c("Sum Sq")]
+SS_R_anova <- sum(Sum_sq)
+MS_R_anova <- mean(Sum_sq)
+SS_Res_anova <- tabla_anova[c("Residuals"), c("Sum Sq")]
+MS_Res_anova <- tabla_anova[c("Residuals"), c("Mean Sq")]
+#Calculamos cuadrados medios de la regresión (MS_Res fue calculado en celda previa)
+k <- 3
+MS_R <- SS_R / k
+
+F_calculado<-MS_R/MS_Res 
+
+anova_calculada <- data.frame(
+  fuente_variacion = c("Regresión", "Residual", "Total"),
+  suma_cuadrados = c(SS_R, SS_Res, SS_T),
+  Grados_libertad = c(k,n-k-1,n-1),
+  Cuadrado_medio = c(MS_R, MS_Res, NaN),
+  Fo = c(F_calculado, NaN, NaN),
+  p_value = c(1-pf(F_calculado, k, n-k-1), NaN, NaN),
+  R2 = c(SS_R/SS_T, NaN, NaN),
+  R2_adj = c(1-(SS_Res/(n-k-1))/(SS_T/(n-1)), NaN, NaN)
+)
+
+print(anova_calculada)
+print(summary(model))
+```
+### 4.3 Pruebas sobre coeficientes individuales de regresión
+
+Las hipótesis se plantean así:
+
+$H_0: \beta_j = 0$
+$H_1: \beta_j \neq 0$
+
+Si no se rechaza $H_0: \beta_j = 0$, quiere decir que se puede eliminar el regresor $x_j$ del modelo. El **estadístico de prueba** para esta hipótesis es:
+
+$t_0 = \frac{\hat{\beta_j}}{\sqrt{\hat{\sigma}^2 C_{jj}}} = \frac{\hat{\beta_j}}{se(\hat{\beta_j})}$
+
+Donde $C_{jj}$ es el elemento diagonal de $(X'X)^{-1}$ que corresponde a $\hat{\beta}_j$. Se rechaza la hipótesis nula $H_0:\beta_j=0$ si:
+
+$|t_0|>t_{\alpha/2,n-k-1}$. Nótese que ésta es en realidad una **prueba parcial** o **marginal**, porque el coeficiente de regresión $\hat{\beta_j}$ depende de todas las demás variables regresoras $x_i (i \neq j)$, que hay en el modelo. Así, se trata de una prueba de la **contribución** de $x_j$ **dados los demás regresores del modelo**
+
+### 4.4 Predicción de nuevas observaciones
+
+Con el modelo de regresión se pueden predecir observaciones futuras de $y$ que correspondan a determinados valores de las variables regresoras, por ejemplo $x_{01},x_{02},...,x_{0k}$. Si $x_0' = [1,x_{01},x_{02},...,x_{0k}]$, entonces un **estimado puntual de la observación futura** $y_0$ en el punto $x_{01},x_{02},...,x_{0k}$ es:
+
+$\hat{y}_0 = x'_0 \hat{\beta}$
+
+Un **intervalo de predicción de** $100(1-\alpha)$ **por ciento** para esta futura observación es:
+
+$\hat{y}_0 - t_{\alpha/2,n-p} \sqrt{\hat{\sigma}^2 (1 + x'_0 (X'X)^{-1}x_0)} \leq y_0 \leq \hat{y}_0 + t_{\alpha/2,n-p} \sqrt{\hat{\sigma}^2 (1 + x'_0 (X'X)^{-1}x_0)}$
+
+Es una generalización de intervalo de predicción para una futura observación en la regresión lineal simple.
+
+## 5 Inspeccionando adecuación del modelo
+
+### 5.1 Normalidad del error
+
+```{r}
+df_lilliefors <-data.frame(
+  residuals = model$residuals
+) 
+graph_lilliefors(df_lilliefors, FALSE, "", "")
+
+ggplot(data=df_lilliefors, aes(x=residuals))+
+  geom_histogram()+
+  labs(y = "Frecuencia", x="Residuales")
+```
+
+### 5.2 Independencia del error:
+
+```{r}
+#Resultado sin orden especificado
+marketing$errores <- model$residuals
+dw <- dwtest(model)
+ljung_box<-Box.test(model$residuals,lag = 12,
+                    type = "Ljung-Box")
+
+print(dw)
+print(ljung_box)
+
+marketing %>% 
+  ggplot(aes(x= seq(1,length(errores)), y= errores)) +
+  geom_line()+ theme_light()+
+  labs(title="Comportamiento de los residuales",
+       x="Orden de aparición en el dataset",
+       y="Residual")
+
+```
+
+
+### 5.3 Homocedasticidad:
+
+```{r}
+test_bp <- bptest(model)
+print(test_bp)
+
+marketing %>% 
+  ggplot(aes(x= youtube, y= errores^2)) +
+  geom_point()+ theme_light()+
+  labs(title="Relación entre Youtube vs errores",
+       x="Inversión en Youtube",
+       y="Errores")
+
+marketing %>% 
+  ggplot(aes(x= facebook, y= errores^2)) +
+  geom_point()+ theme_light()+
+  labs(title="Relación entre Facebook vs errores",
+       x="Inversión en Facebook",
+       y="Errores")
+
+marketing %>% 
+  ggplot(aes(x= newspaper, y= errores^2)) +
+  geom_point()+ theme_light()+
+  labs(title="Relación entre Newspaper vs errores",
+       x="Inversión en Newspaper",
+       y="Errores")
+```
+
+### 5.4 Multicolinealidad:
+
+```{r}
+correlaciones <- cor(marketing[, c("youtube", "facebook", "newspaper")])
+print(correlaciones)
+vif_resultados <- vif(model)
+print(vif_resultados)
+
+marketing %>% 
+  ggplot(aes(x= youtube, y= facebook)) +
+  geom_point()+ theme_light()+
+  labs(title="Correlación Youtube vs Facebook",
+       x="Inversión en Youtube",
+       y="Inversión en Facebook")
+
+marketing %>% 
+  ggplot(aes(x= youtube, y= newspaper)) +
+  geom_point()+ theme_light()+
+  labs(title="Correlación Youtube vs Newspaper",
+       x="Inversión en Youtube",
+       y="Inversión en Newspaper")
+
+marketing %>% 
+  ggplot(aes(x= youtube, y= facebook)) +
+  geom_point()+ theme_light()+
+  labs(title="Correlación Facebook vs Newspaper",
+       x="Inversión en Facebook",
+       y="Inversión en Newspaper")
+
+pairs(marketing)
+```
+
+```{r}
+matriz_correlaciones <- cor(marketing)
+matriz_correlaciones_melted <- melt(matriz_correlaciones)
+
+ggplot(matriz_correlaciones_melted, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### 5.5 Puntos de influencia
+
+El lugar de los puntos en el espacio de $x$ tiene importancia potencial en la determinación de las propiedades del modelo de regresión. En particular, los puntos alejados o remotos tienen un impacto desproporcionado sobre los estimados de los parámetros, los errores estándar, valores predichos y estadísticas de resumen del modelo. La matriz de sombrero...
+
+$H = X(X'X)^{-1}X'$
+
+Desempeña un papel importante en la identificación de observaciones influyentes. Como se dijo antes, $H$ determina las varianzas y covarianzas de $\hat{y}$ y de $e$, porque $Var(\hat{y}) = \sigma^2H$ y $Var(e) = \sigma^2(I-H)$. Los elementos de $h_{ij}$ de la matriz $H$ pueden ser vistos como la cantidad de **balanceo** o palanqueo ejercido por la *i_ésima* observación $y_i$ sobre el *i_ésimo* valor ajustado de $\hat{y}_i$.
+
+Con frecuencia, la atención se dirige hacia los elementos diagonales $h_{ii}$ de la matriz H sombrero, que se pueden expresar como:
+
+$h_{ii} = x_i'(X'X)^{-1}x_i$
+
+Sucede que el tamaño promedio de los elementos de la diagonal es $\hat{h} = p/n$ porque $\sum\limits_{i=1}^{n}h_{ii} = rango(H) = rango(X) = p$, y por tradición se supone que toda observación para la cual la diagonal del sombrero es más del doble del promedio $2p/n$ está suficientemente alejada del resto de los datos como para considerarse un **punto de balanceo**. Como los elementos diagonales de la matriz de sombrero sólo examinan el lugar de la observación en el espacio de x, algunos analistas prefieren examinar los residuales estudentizados, o los residuales $R$ de Student **junto con** las $h_{ii}$...
+
+#### Medidas de influencia: La D de Cook
+
+Mencionando la preferencia de tener en cuenta el lugar del punto en el espacio de $x$ y también la variable de respuesta, al medir la influencia. Cook ha sugerido una forma de hacerlo, con una medida de la distancia, elevada al cuadrado, entre el estimado por mínimos cuadrados basado en los n puntos $\hat{\beta}$, y el estimado obtenido eliminando el i_ésimo punto, por ejemplo $\hat{\beta}_{(i)}$. Esta medida de la distancia se puede expresar como sigue, en forma general:
+
+$D_i(M,c) = \frac{(\hat{\beta_{(i)}}-\hat{\beta})'M(\hat{\beta_{(i)}}-\hat{\beta})}{c}, i = 1,2, ... , n$ 
+
+Las opciones comunes de $M$ y $c$ son $M = X'X$ y $c = pMS_{Res}$, por lo que la ecuación se transforma en:
+
+$D_i (X'X, pMS_{Res}) \equiv D_i = \frac{(\hat{\beta_{(i)}}-\hat{\beta})'X'X(\hat{\beta_{(i)}}-\hat{\beta})}{pMS_{Res}}, i = 1,2, ... , n$
+
+Los puntos con grandes valores de $D_i$ tienen gran influencia sobre el estimado de $\hat{\beta}$ por mínimos cuadrados.
+
+La magnitud de $D_i$ se suele evaluar comparándola con $F_{\alpha,p,n-p'}$ Si $D_i = F_{0.5,p,n-p'}$ entonces al eliminar el punto $i$ se movería $\hat{\beta}_{(i)}$ hacia la frontera de una región de confianza aproximada de 50% para $\beta$, basándose en el conjunto completo de datos. Es un desplazamiento grande e indica que el estimado por mínimos cuadrados es sensible al i-ésimo punto de datos. Como $F_{0.5,p,n-p'} \approx 1 $, se suelen considerar como influyentes los puntos para los que $D_i > 1$. En el caso ideal sería bueno que cada estimado $\hat{\beta_{(i)}}$ permaneciera dentro de
+los límites de la región de confianza de 10 o de 20%. Esta recomendación de corte se basa en la semejanza de Di con la ecuación del elipsoide de confianza de la teoría normal. La medida de distancia $D_i$ no es una estadística F. Sin embargo, usar el corte igual a una unidad funciona muy bien en la práctica.
+
+La estadística $D_i$ se puede reexpresar como sigue:
+
+$D_i = \frac{r_i^2}{p}\frac{Var(\hat{y_i})}{Var(\hat{e_i})} = \frac{r_i^2}{p} \frac{h_{ij}}{(1-h_{ij})}, i= 1,2,...,n$
+
+Así se ve que, además de la constante $p$, la $D_i$ es el producto del cuadrado del i-ésimo residual estudentizado por $\frac{h_{ij}}{(1-h_{ij})}$.
+
+Se puede demostrar que esta relación es la distancia del vector $x_i$ al centroide de los datos restantes. Así, $D_i$ está formada por un componente que refleja lo bien que se ajusta el modelo a la i-ésima observación $yi$, y un componente que mide lo alejado que el punto está del resto de los datos.
+
+Cualquiera de los componentes (o ambos), pueden contribuir a un valor grande de $D_i$. Así, en $D_i$ se combinan la magnitud del residual para la i_ésima observación y la ubicación de ese punto en el espacio de $x$, para evaluar su influencia.
+
+Ya que $X\hat{\beta_{(i)}} - X\hat{\beta} = \hat{y}_{(i)} - \hat{y}$, otra forma de expresar la medida de distancia de Cook es:
+
+$D_i = \frac{(\hat{y}_{(i)}-\hat{y})'(\hat{y}_{(i)}-\hat{y})}{pMS_{Res}}$
+
+Así, otra forma de interpretar la distrancia de Cook es el cuadrado de la distancia euclidiana (sin considerar $pMS_{Res}$) que se mueve el vector de los valores ajustados cuando se elimina la i_ésima observación.
+
+
+```{r}
+marketing$dist_cook <- cooks.distance(model)
+# Muestra las distancias de Cook para cada observación
+
+marketing %>% 
+  arrange(desc(dist_cook)) %>% 
+  head()
+
+ggplot(marketing, aes(x = seq(1,nrow(marketing)), y = dist_cook)) +
+  geom_point() +
+  labs(title = "Diagrama de Distancias de Cook", 
+       x = "Índice de Observación",
+       y = "Distancia de Cook")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_x_continuous(breaks = seq(1, nrow(marketing), by = 5))
+```

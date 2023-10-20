@@ -1,0 +1,209 @@
+---
+title: "SERIES DE TIEMPO - FORMULARIO"
+subtitle: "Con base en libro de Morettin."
+author:
+  - "Héctor Hernán Montes"
+  - "Julián Piedrahíta Monroy"
+output: 
+  rmdformats::readthedown:
+    css: styles.css
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+date: "2023"
+editor_options: 
+  markdown: 
+    wrap: 72
+  wrap: 72
+chunk_output_type: inline
+---
+
+```{=html}
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+```
+<div>
+
+<img src="https://media2.utp.edu.co/imagenes/Logo-UTP-Azul.png" alt="UTP" class="watermark"/>
+
+</div>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  echo = TRUE,
+  message = FALSE,
+  options(scipen=999)
+)
+
+# Librerías
+library(tidyverse)
+library(janitor)
+library(openxlsx)
+library(flextable)
+library(viridis)
+library(scales)
+library(DT)
+library(lubridate)
+library(gridExtra)
+library(ggplot2)
+library(gganimate)
+library(animation)
+library(gifski)
+library(magick)
+library(nortest)
+library(fitdistrplus)
+library(tseries)
+library(lmtest)
+library(stats)
+library(sandwich)
+#install.packages("devtools")
+library(devtools)
+
+```
+
+
+# Procesos Autoregresivos
+
+Decimos que $\left\{X_t,t \in \mathbb{Z}\right\}$ es un proceso autoregresivo de orden $p$, y escribimos $X_t \sim\ AR(p)$, si satisface la ecuación de diferencias.
+
+\begin{equation}X_t - \mu = \phi_1 (X_{t-1} - \mu) + \phi_2(X_{t-2}-\mu)+ ... + \phi_p(X_{t-p}-\mu)+ \varepsilon_t\label{eq:2.24}\end{equation}
+
+
+Donde $\mu,\phi_1,...\phi_p$ son parámetros reales y $\varepsilon \sim\ RB(0,\sigma^{2})$ siendo RB = Ruido Blanco, que quiere decir que el proceso autoregresivo tiene como condición que el error sea Ruido Blanco. Nótese que $E(X_t)= \mu$ y si escribimos el proceso en la forma:
+
+$$X_t = \phi_0 + \phi_1 X_{t-1} + ... \phi_p X_{t-p} + \varepsilon_t$$
+
+Entonces:
+
+$$\mu = E(X_t) = \frac{\phi_0}{1-\phi_{1} - ... - \phi_p}$$
+
+Definamos el operador retroactivo B a través de $B^{s}X_t = X_{t-s},s \geq 1$. Entonces (\ref{eq:2.24}) puede ser escrita.
+
+\begin{equation}\phi(B)\tilde{X}_t = \varepsilon_t\label{eq:2.25}\end{equation}
+
+Donde $\phi(B) = 1 - \phi_1B - \phi_2B^2 - ... -\phi_pB^{p}$ es el operador autoregresivo de orden $p$ y $\tilde{X}_t = X_t - \mu$. Suponga $\mu = 0$ en adelante.
+Un caso particular importante es el proceso AR(1).
+
+
+\begin{equation}$$X_t = \phi X_{t-1} + \varepsilon_t$$\label{eq:2.26}\end{equation}.
+
+Como $\phi(B) = 1 - \phi B$. A través de sustituciones sucesivas obtenemos.
+
+$$X_t = \sum\limits_{j=0}^{r} \phi^j \varepsilon_{t-1} + \phi^{r+1}X_{t-r-1}$$
+
+Se $X_t$ fuera estacionario, con la varianza finita $\sigma^2 X$, entonces.
+
+$$E[X_t - \sum\limits_{j=0}^{r}\phi^j \varepsilon_{t-j}]^2 = \phi^{2r+2}E[X_{t-r-1}^2] = \phi^{2r+2}\sigma_{X}^2$$
+
+Si $|\phi| < 1$, $\phi^{2(r+1)} \rightarrow 0$, cuando $r \rightarrow \infty$, por lo tanto sobre esta suposición, podemos escribir.
+
+\begin{equation}X_t = \sum\limits_{j=0}^{\infty}\phi^j \varepsilon_{t-j}\label{eq:2.27}\end{equation}
+
+Donde la convergencia es una media cuadratica. Luego, la condición $|\phi|<1$ es suficiente para $X_t$ ser estacionario. Multiplicando ambos miembros de (\ref{eq:2.26}) por $X_{t-\tau}$ y tomando la esperanza, obtenemos.
+
+$$\gamma_{\tau} = \phi \gamma_{\tau-1} = ... = \phi^{\tau}\gamma_0$$
+Mas de (\ref{eq:2.27}), obtenemos:
+
+
+\begin{equation}\gamma_0 = \sigma^2{X} = \sigma^2 \sum\limits_{j=0}^{\infty}\phi^{2j} = \frac{\sigma^2}{1-\sigma^2}\label{eq:2.28}\end{equation}
+
+De lo que sigue:
+
+$$\gamma_{r} = \frac{\sigma^2}{1-\phi^2}\phi^{\tau}, \tau \geq 0$$
+
+Como $\gamma_\tau$ es simétrica, podemos escribir finalmente la f.a.c.v (función de autocovarianza) de un proceso AR(1) como:
+
+\begin{equation}\gamma_\tau = \frac{\sigma^2}{1 - \phi^2} \phi^{\lvert \tau \rvert}, \quad \tau \in\mathbb{Z}\label{eq:2.29}\end{equation}
+
+La f.a.c de $X_t$ es obtenida de (\ref{eq:2.29}), es decir,
+
+
+\begin{equation}\rho_\tau = \frac{\gamma_\tau}{\gamma_0} = \phi^{\lvert \tau \rvert}, \quad \tau \in \mathbb{Z}\label{eq:2.30}\end{equation}
+
+
+# Processos de medias móviles
+
+Decimos que $\{X_t, t \in \mathbb{Z}\}$ es un proceso de medias móviles de orden $q$, denotado como $MA(q)$, si satisface la ecuación de diferencias.
+
+\begin{equation}X_t = \mu + \varepsilon_t - \theta_1 \varepsilon_{t-1} - \ldots - \theta_q \varepsilon_{t-q},\label{eq:2.36}\end{equation}
+
+Donde $\mu,\theta_1, ..., \theta_q$ son constantes reales y $\varepsilon_t \sim\ RB(0,\sigma^2)$.
+
+Nótese que $X_t$ es estacionario, con media $\mu$, y como $\varepsilon_t$ son no correlacionados, podemos obtener fácilmente la varianza del proceso.
+
+\begin{equation} \sigma^2_X = \sigma^2 \left(1 + \theta^2_1 + \ldots + \theta^2_q\right)\label{eq:2.37}\end{equation}
+
+Suponga $\mu=0$. En cuanto a la función de autocovarianza, tenemos.
+
+
+$$\gamma_\tau = E\{X_t X_{t-\tau}\} = \gamma_\varepsilon(\tau) - \sum_{k=1}^q \theta_k \gamma_\varepsilon(k - \tau)$$
+
+$$-\sum_{k=1}^q \theta_{\mathcal{l}} \gamma_\varepsilon(\tau + l) + \sum_{k=1}^q \sum_{l=1}^q \theta_k \theta_{l} \gamma_\varepsilon(\tau + l - k)$$
+
+Donde estamos denotando por $\gamma_{\varepsilon}(\tau)$ una f.a.c.v (función de autocovarianza) de $\varepsilon_t$. Resulta entonces,
+
+\begin{equation} \gamma_\tau = \begin{cases} \sigma^2 (-\theta_\tau + \theta_1 \theta_{\tau+1} + \ldots + \theta_q \theta_{q-\tau}), & \text{si } \tau = 1, \ldots, q \\ 0, & \text{si } \tau > q \\\gamma_{-\tau}, & \text{si } \tau < 0\end{cases}\label{eq:2.38}\end{equation}
+
+De (\ref{eq:2.37}) y (\ref{eq:2.38}) obtenemos una f.a.c (función de autocorrelación) del proceso $MA(q)$
+
+\begin{equation}\rho_\tau = \begin{cases}\frac{-\theta_\tau + \theta_1 \theta_{\tau+1} + \ldots + \theta_q \theta_{q-\tau}}{1 + \theta_1^2 + \ldots + \theta_q^2}, & \text{si } \tau = 1, \ldots, q \\0, & \text{si } \tau > q \\\rho_{-\tau}, & \text{si }\tau < 0\end{cases}\label{eq:2.39}\end{equation}
+
+Observamos, entonces, que la f.a.c.v (o f.a.c) de un proceso $MA(q)$ se anula para $|\tau| > q$. En particular, para un proceso $MA(1)$,
+
+\begin{equation}X_t = \varepsilon_t - \theta \varepsilon_{t-1}\label{eq:2.40}\end{equation}
+
+Obtenemos
+
+$$\text{Var}(X_t) = \sigma^2_X = \sigma^2 (1 + \theta^2)$$,
+
+\begin{equation}\rho_\tau =\begin{cases}\frac{-\theta}{1 + \theta^2}, & \text{si } \tau = \pm 1 \\0, & \text{si } \lvert \tau\rvert > 1\end{cases}\label{eq:2.41}\end{equation}
+
+Definiendose el operador de medias móviles de orden $q$ por:
+
+$\theta(B) = 1 - \theta_1B - \theta_2B^2 - \ldots - \theta_qB^q$
+
+El proceso (\ref{eq:2.36}) puede ser escrito
+
+\begin{equation}X_t = \theta(B)\varepsilon_t\label{eq:2.42}\end{equation}
+
+En particular, para el proceso $MA(1)$ tenemos $\theta(B)=1-\theta B$, de modo que podemos escribir.
+
+$X_t = (1 - \theta B)\varepsilon_t$
+
+De donde, formalmente sigue:
+
+$\varepsilon_t = (1 - \theta B)^{-1}X_t = (1 + \theta B + \theta^2 B^2 + \ldots)X_t$,
+
+Por lo que tenemos:
+
+\begin{equation}X_t = -\theta X_{t-1} - \theta^2 X_{t-2} - \ldots + \varepsilon_t\label{eq:2.43}\end{equation}
+
+Si $|\theta| < 1$, la serie del lado derecho de (\ref{eq:2.43}) converge. En esta ecuación, expresamos $X_t$ como un proceso autoregresivo de orden infinito. Decimos que $|\theta| < 1$ es una condición de invertibilidad para el proceso MA(1). En general, el proceso (\ref{eq:2.36}) puede escribirse de la siguiente manera:
+
+\begin{equation} X_t = \sum\limits_{j=1}^{\infty}\pi_j X_{t-j} + \varepsilon_t \label{eq:2.44}\end{equation},
+
+Si se satisface la siguiente condición de invertibilidad: todas las raíces de $\theta(B) = 0$ deben estar fuera del círculo unitario. Ver Box, Jenkins y Reinsel (1994) para obtener más detalles.
+
+La relación (\ref{eq:2.44}) puede ser escrita:
+
+\begin{equation}\pi (B)X_t = \varepsilon_t$\label{eq:2.45}\end{equation},
+
+donde $\pi(B) = 1 - \pi_1B - \pi_2B^2 - \ldots$, de modo que $\pi(B) = \theta(B)^{-1}$. Por lo tanto, los coeficientes $\pi_j$ pueden obtenerse a partir de la identidad $\theta(B)\pi(B) = 1$.
+
+\begin{equation} X_t = \varepsilon_t - 0.8 \varepsilon_{t-1}, \varepsilon_t \sim \text{i.i.d. }\mathcal{N}(0,1)\label{eq:2.46}\end{equation}
+
+
+
+
+
+
+
+
+
