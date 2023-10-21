@@ -54,6 +54,7 @@ library(gridExtra)
 library(stats)
 library(ggplot2)
 library(gganimate)
+library(nortest)
 source("funciones_personalizadas.R")
 ```
 
@@ -1133,25 +1134,106 @@ summary(model)
 El modelo que me entrega R indica un orden 3 para un modelo de media móvil puro. Construya usted a continuación el modelo de media móvil puro de orden 2 que dedujimos que sería apropiado con base en los análisis gráficos de ACF y PACF realizados en el capítulo 4.
 
 ```{r}
-
+model2<-arima(df_variaciones$variaciones, order=c(0,0,2))
+summary(model2)
 ```
-
-¿Qué puede decir sobre las medidas de desempeño de ambos modelos?
-
 
 # 7. Diagnóstico del modelo
 
+```{r}
+
+test_ind_1 <-Box.test(model$residuals, lag=6, type="Ljung-Box")
+test_ind_2 <- Box.test(model2$residuals, lag = 6, type="Ljung-Box")
+
+print(test_ind_1)
+print(test_ind_2)
+```
+¿Qué puede decir sobre las medidas de desempeño de ambos modelos?
+
+- Son muy competitivas entre si.
+
+```{r}
+library(nortest)
+normalidad<-lillie.test(model2$residuals)
+print(normalidad)
+hist(model2$residuals)
+graph_lilliefors(data.frame(residuals=model2$residuals),for_residuals = FALSE)
+
+```
 
 # 8. Uso en predicción
 
+```{r}
+
+predecir_sem_1 <- predict(model2, n.ahead=7,interval="confidence", level=0.95)
+print(predecir_sem_1)
+
+# AirPassengers
+```
+
+```{r}
+obj_pronostico<-forecast(model2)
+obj_pronostico$mean
+autoplot(obj_pronostico)
+```
 
 # 9. CASO APLICADO DATASET DE AGUACATE
 
-Primero observamos la apariencia de la serie de tiempo diaria:
-
+1. Calcule ACF Y PACF para el precio del dolar usando las funciones acf y pacf de R
+2. Estudie el comportamiento de esos gráficos y compare con la tabla del capítulo 5 y deduzca cuál es el orden del modelo.
+3. Estime el modelo usando la funcion arima y el argumento order, donde order fue identificado en el paso 2.
+4. Extraigan los residuales del modelo y apliquen prueba de Ljung-box a 6 rezagos y prueba de normalidad.
+5. Si el modelo pasa las pruebas construya el pronóstico de 7 pasos adelante, si no devuélvase al punto 1 y pruebe con un nuevo modelo.
 
 ```{r}
-plot(arima.sim(model = list(order = c(0, 0, 3), ma = c(0.0006, -0.1974,0.0716)), n=length(df_variaciones$variaciones)))
+# Paso 1:
+acf(dolar$precio_dolar)
+pacf(dolar$precio_dolar)
+
+
+dolar <- dolar %>% 
+  mutate(var_dolar=(precio_dolar-lag(precio_dolar))/lag(precio_dolar)) %>% 
+  filter(!is.na(var_dolar))
+
+dolar %>% 
+  ggplot(aes(x= fecha, y = var_dolar, group = 1))+
+  geom_line()
+
+acf(dolar$var_dolar)
+pacf(dolar$var_dolar)
+
+#Paso 2: Consultar tabla cap 5
+mi_orden =c(0,0,1)
+
+#Paso 3:
+model_dolar<-arima(dolar$var_dolar, order=mi_orden)
+
+#Paso 4:
+
+Ljung_box <- Box.test(model_dolar$residuals, lag=6, type="Ljung-Box")
+print(Ljung_box)
+Lillie<-lillie.test(model_dolar$residuals)
+graph_lilliefors(data.frame(residuals=model_dolar$residuals),for_residuals = FALSE)
+
+modelo_dolar_2<-auto.arima(dolar$var_dolar)
+summary(modelo_dolar_2)
+
+#Paso 5: Método 1
+predecir_sem_1 <- predict(model_dolar, n.ahead=7,interval="confidence", level=0.95)
+print(predecir_sem_1)
+#Paso 5: Método 2
+forecast(model_dolar)
+obj_predicciones<-forecast(model_dolar)
+obj_predicciones$mean
+#Para obtener los valores inferiores y superiores del intervalo de confianza de mi pronóstico 
+obj_predicciones$lower
+obj_predicciones$upper
+
+#Para graficar incluyendo el intervalo de confianza
+autoplot(obj_predicciones)
 ```
 
-# 10. Conclusiones finales y áreas de profundización
+
+
+
+
