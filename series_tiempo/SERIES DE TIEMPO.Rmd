@@ -453,13 +453,33 @@ Donde de nuevo podemos decir que: $r_{-j}=r_j$
 
 Se puede apreciar que $r_j$ es una función que depende de $j$ (el rezago considerado), es decir que para cada posible valor pasado de la serie de tiempo alejado $j$ periodos de tiempo del valor actual, tendremos un valor de $r_j$. Al conjunto de todos los valores posibles de $r_j$ se le conoce como la función de autocorrelación estimada de la serie o ACF. Ésta nos habla de la manera como cada valor de mi variable a predecir se correlaciona con los valores anteriores, es decir, con sus propios rezagos.
 
-A continuación un ejemplo de cómo estimar la ACF sobre los datos de aguacate usando la función acf que ya viene implementada en R.
+A continuación un ejemplo de cómo estimar la ACF sobre los datos de aguacate (con periodicidad diaria) usando la función acf que ya viene implementada en R.
+
+Esta es la serie de precios diarios:
+
+```{r}
+hass_dia %>% 
+  mutate(n_registro = as.numeric(rownames(.))) %>% 
+  ggplot(aes(x= fecha, y = precio_kg, group = 1))+
+  geom_line()
+```
+
+Esta es la función que me estima la autocorrelación:
 
 ```{r}
 acf_dia <- acf(hass_dia$precio_kg)
 data.frame(
   lag = acf_dia$lag,
   acf = acf_dia$acf) %>% head(10) %>% ftable()
+
+# Acá construimos las bandas de confianza que informarán si la autocorrelación
+# es significativa.
+
+T<-length(hass_dia$precio_kg)
+cuantil <- qnorm(0.975, 0,1)
+bc <- cuantil/sqrt(T)
+
+paste0("Declare la autocorrelación como significativa si |r|>", round(bc,5))
 ```
 
 El estudiante curioso puede verificar que esto es equivalente a usar nuestra definición anterior asi:
@@ -578,7 +598,7 @@ $$\hat{\phi}_{kk} = \frac{|P^*_k|}{|P_k|}$$
 
 Donde la matriz $|P_k|$ es una matriz de autocorrelaciones muestrales $r_i$, mientras que la matriz $|P^*_k|$ es la misma matriz $|P_k|$ con su última columna reemplazada por el vector de autocorrelaciones muestrales $r_i$. A las cantidades $\hat{\phi}_{kk}$ tabuladas en función del valor $k$ elegido, se le conoce como función de autocorrelación parcial estimada. Y las ecuaciones previamente construidas como las ecuaciones de Yule-Walker. 
 
-Veamos como extraer tales estimados usando R
+Veamos como extraer tales estimados usando sobre la serie de precios de aguacate con periodicidad diaria R
 
 ```{r}
 pacf_dia <- pacf(hass_dia$precio_kg)
@@ -631,15 +651,117 @@ La cual representa una serie de precios diferenciada pero luego expresada como v
 
 Cualquiera de las dos transformaciones suelen remover la integración y permiten tratar con una serie inicial estacionaria. Si pese a esta primera transformación sigue sin lograrse estacionariedad será necesaria una nueva diferenciación de la serie obtenida.
 
-[Prueba de raíces unitarias:]{style="color: red;"} 
+Vamos a estacionarizar la serie contemplando los cambios porcentuales
 
 ```{r}
 
-#Escriba acá el código para comparar el resultado de la prueba antes y después de esta transformación
+df_variaciones <- data.frame(
+  variaciones  = (hass_dia$precio_kg - lag(hass_dia$precio_kg)) / lag(hass_dia$precio_kg))
 
+df_variaciones <- df_variaciones %>% 
+  filter(!is.na(variaciones))
+
+ggplot(data= df_variaciones, aes(x= seq(1,length(variaciones)),
+                                 y = variaciones, group = 1))+
+  geom_line()
 
 ```
+Este gráfico ya parece más estable en media y por lo tanto es un mejor candidato para ser estimado usando modelos ARMA. 
 
+[Prueba de raíces unitarias:🆕 🔍]{style="color: red;"} 
+
+Una prueba de raíces (también conocida como prueba de raíz unitaria) es una prueba estadística que se utiliza en el análisis de series de tiempo para determinar si una variable tiene raíces unitarias. Las raíces unitarias indican que una serie de tiempo no es estacionaria y, por lo tanto, no es adecuada para el modelado de series de tiempo.
+
+Una variable con raíces unitarias es aquella cuyo proceso estocástico subyacente no ha convergido a una media o varianza constante a lo largo del tiempo. En otras palabras, la serie de tiempo muestra patrones de comportamiento no estacionario.
+
+Las pruebas de raíces unitarias comunes incluyen:
+
+- Prueba de Dickey-Fuller Aumentada (ADF): Esta es una de las pruebas más utilizadas. Evalúa si existe una raíz unitaria en una serie de tiempo univariada. La hipótesis nula en esta prueba es que la serie de tiempo tiene una raíz unitaria, lo que significa que no es estacionaria.
+
+- Prueba de Dickey-Fuller Aumentada con lags (ADF-GLS): Similar a la ADF, pero con corrección de errores lagged.
+
+- Prueba de Phillips-Perron: Otra prueba común para la raíz unitaria, que es similar a la ADF.
+
+- Prueba de Kwiatkowski-Phillips-Schmidt-Shin (KPSS): A diferencia de las pruebas anteriores, la KPSS se utiliza para determinar si una serie de tiempo es estacionaria en tendencia en lugar de estacionaria alrededor de una media constante.
+
+La elección de la prueba adecuada depende de la naturaleza de los datos y el objetivo del análisis. Si una variable tiene raíces unitarias, generalmente es necesario realizar transformaciones, como diferenciación, para hacer que la serie de tiempo sea estacionaria antes de aplicar técnicas de modelado de series de tiempo, como modelos ARIMA (Media Móvil Autorregresiva Integrada) o modelos GARCH (Generalized Autoregressive Conditional Heteroskedasticity).
+
+En resumen, una prueba de raíces es una herramienta importante en el análisis de series de tiempo para determinar la estacionariedad de una variable y la necesidad de realizar transformaciones antes de modelar los datos.
+
+[Prueba de Dickey Fuller:🆕 🔍]{style="color: red;"} 
+
+La prueba Dickey-Fuller se usa para detectar estadísticamente la presencia de conducta tendencial estocástica en las series temporales de las variables mediante un contraste de hipótesis.
+
+Interpretación del rechazo, o no rechazo de la Hipótesis Nula de la prueba.
+El contraste será el siguiente:
+
+- $H_0=0$ → Existe raíz unitaria, xt $\rightarrow$ La serie no es estacionaria.
+- $H_0\ne0$ → No existe raíz unitaria,xt  $\rightarrow$ La serie es estacionaria.
+
+Si:
+- $τ−calculado$ en valor absoluto > $τ−crítico$, en valor absoluto: Se rechaza la $H_0$
+- $τ−calculado$ en valor absoluto < $τ−crítico$, en valor absoluto: Se acepta la $H_0$
+
+*Vamos a aplicar la prueba para los precios del aguacate mensuales y sin ninguna transformación.*
+
+```{r}
+library(urca)
+# Vamos a guardar el resultado en un elemento llamado df que hace referencia a la prueba
+# Dickey Fuller
+df <- ur.df(hass_mes$precio_aguacate_kg, type = "none", lags = 0)
+summary(df)
+```
+
+De acuerdo con lo anterior, la serie **no es estacionaria**, porque el valor p es 0.7898, por lo tanto no tenemos evidencia suficiente para rechazar la hipotesis nula, es decir que no hay evidencia para confiar en la estacionariedad.
+
+*Ahora vamos a aplicar la prueba para las* **variaciones** *de precios del aguacate*
+
+```{r}
+# Vamos a guardar el resultado de nuevo en df que hace referencia a la prueba
+# Dickey Fuller
+df <- ur.df(df_variaciones$variaciones, type = "none", lags = 0)
+summary(df)
+```
+
+🏁 👍 Ahora si encontramos que la variable se ha transformado en una variable estacionaria, puesto que el p valor es menor a 0.05 por lo tanto, tenemos evidencia estadística suficiente para rechazar la hipótesis nula, reiterando entonces que NO EXISTE RAÍZ UNITARIA y que la variable es estacionaria.
+
+⚠️** Important:e**
+
+Acá estamos partiendo del supuesto de que la serie tiene tendencia estocástica, pero si este supuesto falla y la serie en realidad tiene tendencia deterministica, las conclusiones de la prueba DICKEY FULLER pueden ser engañosas.
+
+Porque tendríamos que entrar a analizar:
+
+- ¿Cuál es la diferencia entre tendencia estocástica y tendencia deterministica?
+
+Veamoslo con un ejemplo sacado de la Wikipedia:
+
+<figure>
+<img src="Tendencia estocastica y deterministica .svg"/>
+<figcaption>Img 3: Ejemplo de estacionaria en tendencia vs raiz unitaria </figcaption>
+</figure>
+
+El diagrama anterior representa un ejemplo de una potencial raíz unitaria. La línea roja representa una caída observada en la producción, la verde muestra el camino de la recuperación si la serie tiene una raíz unitaria. Azul muestra la recuperación si no hay raíz unitaria y la serie es estacionaria tendencia. La línea azul vuelve a cumplir y seguir la línea de tendencia de puntos, mientras que la línea verde se mantiene permanentemente por debajo de la tendencia. La  hipótesis de raíz unitaria también sostiene que un aumento en la producción dará lugar a niveles de producción superiores a la tendencia del pasado.
+
+```{r}
+acf_variaciones <- acf(df_variaciones$variaciones)
+acf_variaciones$acf
+T<-length(df_variaciones$variaciones)
+cuantil <- qnorm(0.975, 0,1)
+bc <- cuantil/sqrt(T)
+paste0("Declare la autocorrelación como significativa si |r|>", round(bc,5))
+```
+
+Hemos agotado el análisis del ACF, ahora pasemos al anális del PACF:
+
+```{r}
+pacf_variaciones <-  pacf(df_variaciones$variaciones)
+```
+
+Acá notamos que el diagrama PACF parece dominado por una mixtura de decaimientos exponenciales y sinusoidales amortiguadas (no exactamente, pero en forma aproximada)
+
+**Conclusión**:
+
+Tenemos un ACF que se corta después del rezago 2 y un PACF con comportamiento sinosuoidal que pueden ser asociados a un modelo de tipo MA(2) según se muestra en la tabla de identificación de modelos del capítulo 5. 
 
 ## 4.5 Caso 1: Modelo Autorregresivo AR(p) puro
 
@@ -706,7 +828,7 @@ A continuación dibujamos dos ejemplos de procesos AR(1), junto con sus respecti
 
 <figure>
 <img src="Procesos AR(1).png"/>
-<figcaption>Img 3: Ejemplos de ACF para procesos AR(1) a) $\phi=0.8$ b) $\phi=-0.8$</figcaption>
+<figcaption>Img 4: Ejemplos de ACF para procesos AR(1) a) $\phi=0.8$ b) $\phi=-0.8$</figcaption>
 </figure>
 
 [Proceso AR(p):]{style="color: red;"}
@@ -773,7 +895,7 @@ Luego las raices son complejas conjugadas, y de nuevo caen fuera del círculo un
 
 <figure>
 <img src="Procesos AR(p).png"/>
-<figcaption>Img 3: Ejemplos de ACF para procesos AR(2) a) $\phi=0.5, \phi_2=0.3$ b) $\phi_1=1,\phi_2=-0.89$</figcaption>
+<figcaption>Img 5: Ejemplos de ACF para procesos AR(2) a) $\phi=0.5, \phi_2=0.3$ b) $\phi_1=1,\phi_2=-0.89$</figcaption>
 </figure>
 
 ## 4.6 Caso 2: Proceso de medias móviles MA(q) puro
@@ -869,7 +991,7 @@ Donde tenemos un proceso MA(1) con $\theta_1 = 0.8$. Para este proceso reemplaza
 
 <figure>
 <img src="Proceso MA(1).png"/>
-<figcaption>Img 1: Proceso MA(1) simulado, $\theta_1=0.8$ y su f.a.c.</figcaption>
+<figcaption>Img 6: Proceso MA(1) simulado, $\theta_1=0.8$ y su f.a.c.</figcaption>
 </figure>
 
 En la gráfica puede apreciar como las autocorrelaciones estimadas con base en la única trayectoria simulada tienden a ser despreciables después del lag 1, no logrando ser 0 completamente seguramente debido a que se trata de una muestra y no del proceso teórico como un todo. 
@@ -924,7 +1046,7 @@ La siguiente figura representa 100 observaciones generadas para un proceso ARMA(
 
 <figure>
 <img src="Proceso ARMA(1,1).png"/>
-<figcaption>Img 1: Proceso ARMA(1,1) simulado, $\phi=0.8$, $\theta_1=0.3$ y f.a.c f.a.c.</figcaption>
+<figcaption>Img 7: Proceso ARMA(1,1) simulado, $\phi=0.8$, $\theta_1=0.3$ y f.a.c f.a.c.</figcaption>
 </figure>
 
 ## 4.8 Breve descripción del algoritmo de modelado
@@ -974,6 +1096,8 @@ c) Identificar el proceso ARMA(p,q) resultante por medio del análisis de las au
 | Estimaciones iniciales |$\rho1 = \frac{(1 - \phi \theta)(\phi - \theta)}{1 + \theta^2 - 2 \phi \theta}, \rho_2 = \rho_1\phi$|
 | Dominio o región admisible |$-1 < \phi <1 , -1 < \theta < 1$|
 
+Vamos a simular algunos modelos teóricos para dar cuenta de la complicación que tenemos para identificarlos sólo usando el gráfico de la serie de tiempo:
+
 ```{r}
 phi <- 0.7  # Coeficiente autorregresivo (AR)
 theta <- -0.4  # Coeficiente de promedios móviles (MA)
@@ -991,11 +1115,28 @@ plot(ma_puro, type = 'l', main = "Simulación de un Proceso MA(1)")
 plot(arma, type = 'l', main = "Simulación de un Proceso ARMA(1,1)")
 plot(arima, type = 'l', main = "Simulación de un Proceso ARIMA(1,1,1)")
 
-#par(mfrow = c(1, 1))
+par(mfrow = c(1, 1))
+```
+
+Se puede apreciar que cada modelo tiene comportamiento diferente uno respecto, pero salvo que los gráfiquemos todos juntos es díficil reconocer qué los diferencia respecto a los demás. Por eso en este caso es mejor usar una estrategia basada en los gráficos de ACF y PACF, porque la forma del gráfico da información sobre la estructura del componente autorregresivo y de media móvil del proceso subyacente. 
+
+# 6. Estimación de parámetros
+
+R nos ofrece métodos automáticos como la función auto.arima para estimar los parámetros de un modelo ARIMA, más aún nos ofrece un método para probar en automático con diferentes alternativas de modelos. Todo esto ocurre silenciosamente. Al final R nos ofrece el mejor modelo que encontró, explorando internamente diferentes órdenes para el componente AR(p) y MA(q). 
+
+```{r}
+library(forecast)
+model <- auto.arima(df_variaciones$variaciones)
+summary(model)
+```
+
+El modelo que me entrega R indica un orden 3 para un modelo de media móvil puro. Construya usted a continuación el modelo de media móvil puro de orden 2 que dedujimos que sería apropiado con base en los análisis gráficos de ACF y PACF realizados en el capítulo 4.
+
+```{r}
 
 ```
 
-# 6. Estimación de parámetros
+¿Qué puede decir sobre las medidas de desempeño de ambos modelos?
 
 
 # 7. Diagnóstico del modelo
@@ -1008,55 +1149,6 @@ plot(arima, type = 'l', main = "Simulación de un Proceso ARIMA(1,1,1)")
 
 Primero observamos la apariencia de la serie de tiempo diaria:
 
-```{r}
-hass_dia %>% 
-  mutate(n_registro = as.numeric(rownames(.))) %>% 
-  ggplot(aes(x= fecha, y = precio_kg, group = 1))+
-  geom_line()
-```
-
-```{r}
-hass_mes %>% 
-  mutate(n_registro = as.numeric(rownames(.))) %>% 
-  ggplot(aes(x= n_registro, y = precio_aguacate_kg, group = 1))+
-  geom_line()
-
-acf_mensual <- acf(hass_mes$precio_aguacate_kg)
-acf_mensual$acf
-pacf_mensual <-pacf(hass_mes$precio_aguacate_kg)
-pacf_mensual$acf
-```
-
-Como notamos tendencia vamos a estacionarizar la serie contemplando los cambios porcentuales
-
-```{r}
-
-df_variaciones <- data.frame(
-  variaciones  = (hass_dia$precio_kg - lag(hass_dia$precio_kg)) / lag(hass_dia$precio_kg))
-
-df_variaciones <- df_variaciones %>% 
-  filter(!is.na(variaciones))
-
-ggplot(data= df_variaciones, aes(x= seq(1,length(variaciones)),
-                                 y = variaciones, group = 1))+
-  geom_line()
-
-```
-
-```{r}
-acf_variaciones <- acf(df_variaciones$variaciones)
-acf_variaciones$acf
-```
-
-```{r}
-pacf_variaciones <-  pacf(df_variaciones$variaciones)
-```
-
-```{r}
-library(forecast)
-model <- auto.arima(df_variaciones$variaciones)
-df_variaciones$pronosticos <- model$fitted
-```
 
 ```{r}
 plot(arima.sim(model = list(order = c(0, 0, 3), ma = c(0.0006, -0.1974,0.0716)), n=length(df_variaciones$variaciones)))
