@@ -456,10 +456,10 @@ Se puede apreciar que $r_j$ es una función que depende de $j$ (el rezago consid
 A continuación un ejemplo de cómo estimar la ACF sobre los datos de aguacate usando la función acf que ya viene implementada en R.
 
 ```{r}
-acf_or <- acf(hass_dia$precio_kg)
+acf_dia <- acf(hass_dia$precio_kg)
 data.frame(
-  lag = acf_or$lag,
-  acf = acf_or$acf) %>% head(10) %>% ftable()
+  lag = acf_dia$lag,
+  acf = acf_dia$acf) %>% head(10) %>% ftable()
 ```
 
 El estudiante curioso puede verificar que esto es equivalente a usar nuestra definición anterior asi:
@@ -477,7 +477,7 @@ mi_acf <- function(y, k){
 }
 paste0("Esta es la autocorrelación a 1 lag calculada con mi fórmula: ",
        mi_acf(hass_dia$precio_kg,1), " y esta es la calculada con r: ",
-       acf_or$acf[2])
+       acf_dia$acf[2])
 ```
 ## 4.4 Estimación de la función de autocorrelacion parcial (PACF)
 
@@ -581,15 +581,15 @@ Donde la matriz $|P_k|$ es una matriz de autocorrelaciones muestrales $r_i$, mie
 Veamos como extraer tales estimados usando R
 
 ```{r}
-pacf_or <- pacf(hass_dia$precio_kg)
+pacf_dia <- pacf(hass_dia$precio_kg)
 data.frame(
-  lag = pacf_or$lag,
-  pacf = pacf_or$acf) %>% head(10) %>% ftable()
+  lag = pacf_dia$lag,
+  pacf = pacf_dia$acf) %>% head(10) %>% ftable()
 
 # Realicemos una comprobación usando funciones
 
 matriz_autocorrelacion <- function(x, k){
-  acf <- acf(x)$acf[2:(k+1)]
+  acf <- acf(x, plot=FALSE)$acf[2:(k+1)]
   if (k==1){
     return(acf[1])
   }else{
@@ -616,8 +616,30 @@ matriz_autocorrelacion <- function(x, k){
 phi_33 <-matriz_autocorrelacion(hass_dia$precio_kg, 3)
 
 paste0("Esta es la autocorrelación parcial a 1 lag calculada con mi fórmula: ",
-       phi_33, " y esta es la calculada con r: ",pacf_or$acf[3])
+       phi_33, " y esta es la calculada con r: ",pacf_dia$acf[3])
 ```
+
+[Nota importante:]{style="color: red;"} 
+
+En los apartados anteriores hemos calculado las funciones acf y pacf sobre la serie de precios diarios del aguacate. Debido a que acf decae muy lentamente, es indicativo de la presencia de una raíz unitaria en el polinomio autorregresivo que puede estar generando problemas de no estacionariedad. En estos casos será recomendable diferenciar la serie antes de proceder al modelamiento. En particular se sugiere primero intentar con una transformación del tipo:
+
+$$ \Delta precio_t = precio_t - precio_{t-1}$$
+Y en lugar de modelar la serie $precios_t$, modelamos la serie $\Delta precio_t$. Otra elección ampliamente usada en la práctica es crear una serie como esta:
+
+$$r_t = \Delta precio_t / precio_{t-1} = \frac{precio_t - precio_{t-1}}{precio_{t-1}}$$
+La cual representa una serie de precios diferenciada pero luego expresada como variaciones porcentuales (retornos) del precio actual respecto al del día anterior. 
+
+Cualquiera de las dos transformaciones suelen remover la integración y permiten tratar con una serie inicial estacionaria. Si pese a esta primera transformación sigue sin lograrse estacionariedad será necesaria una nueva diferenciación de la serie obtenida.
+
+[Prueba de raíces unitarias:]{style="color: red;"} 
+
+```{r}
+
+#Escriba acá el código para comparar el resultado de la prueba antes y después de esta transformación
+
+
+```
+
 
 ## 4.5 Caso 1: Modelo Autorregresivo AR(p) puro
 
@@ -930,7 +952,6 @@ a) Verificar si existe necesidad de una transformación sobre la serie original 
 b) Tomar diferencia de la serie obtenida en el item a), tantas veces como sea necesario para obtener una serie estacionaria, de modo que el proceso $\Delta X_t$ sea reducido a un proceso ARMA(p,q). El número de diferencias $d$ necesarias para que el proceso se torne estacionario es alcanzado cuando la f.a.c muestral de $\Delta X_t$ decrece rápidamente a cero. En esta etapa un test para verificar la existencia de raices unitarias en un polinomio autorregresivo puede ser de gran utilidad. Se puede utilizar acá el test de Dickey y Fuller(1979).
 
 c) Identificar el proceso ARMA(p,q) resultante por medio del análisis de las autocorrelaciones y las autocorrelaciones parciales estimadas, cuyos comportamientos deben imitar los comportamientos de las respectivas cantidades teóricas. Estos comportamientos para los modelos AR, MA, ARMA fueron estudiados en las secciones previas, pero un resumen de estas propiedades se ofrece a continuación:
-
 
 | Orden | (1,d,0) | (0,d,1) |
 | :--- | :--- | :--- |
